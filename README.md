@@ -14,8 +14,8 @@ GHL webhook (Dev Pipeline -> Intro Booked) -> routine generates the report for t
 
 ## Status
 - [x] GHL side proven end to end (scopes, pipeline IDs, address capture, file upload: HTTP 201)
-- [ ] Port zoning engine
-- [ ] Port imagery module
+- [x] Port zoning engine (`engine/property_lookup_v2.py`) — 8 live-query cities verified from container; Toronto adapter pending v1 rebuild (ward + zoning ingest)
+- [x] Port imagery module (`engine/aerial_imagery.py`) — Toronto 2025 ortho verified live (97,929 colours, edge sd 44.1)
 - [ ] Port report templates + city transforms
 - [ ] Routine + GHL webhook wiring
 
