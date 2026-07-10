@@ -7,3 +7,4 @@ outputs/
 
 # report engine
 *.pdf
+zoning_area.geojson
