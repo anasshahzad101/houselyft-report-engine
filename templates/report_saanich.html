@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#1b2a4a;--navy2:#26365c;--green:#3f7d33;--row:#f5f6f9;--line:#e4e7ee;--ink:#2a2f3a;--mut:#7a818f;--disc:#aeb6c4;}
+  *{box-sizing:border-box;}
+  body{font-family:'Open Sans',Arial,sans-serif;color:var(--ink);font-size:9.8pt;line-height:1.55;margin:0;}
+  h1,h2,h3,.os{font-family:'Oswald',Arial,sans-serif;}
+  p{margin:7px 0;} ul{margin:7px 0;padding-left:18px;} li{margin:4px 0;} small{color:var(--mut);}
+  .section{page-break-before:always;} .section.first{page-break-before:auto;}
+  h2.sec{font-family:'Oswald';font-weight:700;color:var(--navy);font-size:19pt;letter-spacing:.3px;margin:0 0 12px;}
+  h3{font-family:'Oswald';font-weight:600;color:var(--navy2);font-size:11.5pt;margin:15px 0 5px;}
+  .cover{height:238mm;display:flex;flex-direction:column;align-items:center;text-align:center;page-break-after:always;}
+  .wm{font-family:'Oswald';font-weight:700;font-size:20pt;letter-spacing:7px;margin-top:58mm;display:flex;align-items:center;gap:10px;}
+  .wm .a{color:var(--navy);} .wm .b{color:#8b93a3;}
+  .wm .emblem{width:26px;height:26px;border:3px solid var(--navy);border-radius:50%;display:inline-block;position:relative;}
+  .wm .emblem:after{content:"";position:absolute;left:4px;right:4px;bottom:6px;height:7px;background:var(--navy);clip-path:polygon(0 100%,28% 30%,50% 70%,72% 10%,100% 100%);}
+  .cover h1{font-family:'Oswald';font-weight:700;font-size:40pt;color:var(--navy);letter-spacing:1px;margin:50mm 0 14px;}
+  .cover .addr{font-family:'Oswald';font-weight:600;font-size:19pt;color:var(--navy);}
+  .cover .addr span{display:block;font-family:'Open Sans';font-weight:400;font-size:12pt;color:#55607a;margin-top:6px;}
+  .cover .foot{margin-top:auto;font-size:7.6pt;color:var(--disc);}
+  table{width:100%;border-collapse:collapse;margin:9px 0;font-size:9pt;}
+  td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--row);}
+  table.kv td:first-child{background:var(--navy);color:#fff;font-weight:600;width:34%;border-bottom:2px solid #fff;}
+  table.kv tr:nth-child(even) td:first-child{background:var(--navy);}
+  table.kv td:last-child{background:var(--row);}
+  table.g th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:600;font-size:8.7pt;}
+  .barhead{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:11pt;padding:8px 12px;text-align:center;}
+  .imgrow{display:flex;gap:10px;margin:0 0 10px;}
+  .imgbox{flex:1;height:150px;background:#eef0f4;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9aa2b2;font-size:8pt;}
+  .imgbox.tall{height:185px;} .imgbox .ic{font-size:20pt;line-height:1;margin-bottom:6px;color:#c2c8d4;}
+  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  .grid4 .imgbox{height:120px;}
+  .steps{display:flex;gap:12px;margin:16px 0;}
+  .step{flex:1;border:1px solid var(--line);border-radius:3px;overflow:hidden;}
+  .step .sh{background:var(--green);color:#fff;text-align:center;padding:10px 6px;font-family:'Oswald';}
+  .step .sh .n{font-size:8pt;letter-spacing:2px;opacity:.9;display:block;}
+  .step .sh .t{font-size:11pt;font-weight:700;}
+  .step ul{padding:11px 10px 13px 24px;margin:0;font-size:8.3pt;} .step li{margin:5px 0;}
+  .cell{border:1px solid var(--line);background:var(--row);padding:11px 13px;margin:9px 0;}
+  .cell .ct{font-family:'Oswald';font-weight:600;color:var(--navy);margin-bottom:5px;font-size:10.5pt;}
+  .opt{margin:13px 0;border:1px solid var(--line);}
+  .opt .oh{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:10.5pt;padding:7px 12px;}
+  .opt .ob{display:flex;gap:14px;padding:12px;align-items:center;}
+  .opt .massing{width:140px;flex:0 0 140px;}
+  .opt .od{flex:1;font-size:8.9pt;}
+  .ts{border:1px solid var(--line);margin:10px 0;}
+  .ts .d{display:flex;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line);} .ts .d:last-child{border-bottom:none;}
+  .ts .dt{flex:0 0 150px;font-family:'Oswald';font-weight:600;color:#b5611f;font-size:9pt;} .ts .dx{flex:1;font-size:8.8pt;}
+  .cta{background:var(--navy);color:#fff;padding:15px 17px;border-radius:4px;margin-top:12px;}
+  .cta .fee{font-family:'Oswald';font-weight:700;font-size:16pt;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="wm"><span class="emblem"></span><span class="a">HOUSE</span><span class="b">LYFT</span></div>
+  <h1>PROPERTY REPORT</h1>
+  <div class="addr">1361 Hastings Street<span>Saanich, BC (Greater Victoria)</span></div>
+  <div class="foot">Preliminary analysis only. This report is not a planning opinion, legal advice, or development permit.<br>Verify all information before making any investment decision.</div>
+</div>
+
+<!-- WHY -->
+<div class="section first">
+  <h2 class="sec">Why this report matters…</h2>
+  <p>According to Federal Data, Canadian property owners are currently sitting on an unprecedented $5.22 Trillion in untapped real estate equity.</p>
+  <p>It is the largest concentrated pile of unused wealth in our country's history!</p>
+  <p>The information inside this report has been compiled to give you a data-backed opinion on the development viability of your property before you expose your hard-earned capital to risk.</p>
+  <p>It is designed to help you identify opportunities, unlock trapped equity, generate cashflow, and build wealth by optimizing your property's usage and potential.</p>
+  <p>This Initial Report:</p>
+  <ul>
+    <li><strong>Examines Your Local Zoning Bylaw:</strong> Find out what your lot bylaws legally allow you to build.</li>
+    <li><strong>Identifies Government Grants and Subsidies:</strong> Map out your property against active municipal, provincial, and federal grant programs.</li>
+    <li><strong>Highlights Specialized Financing Frameworks:</strong> Show you possible ways to structure your project's economics to qualify for low-interest, government-backed financing, whenever possible.</li>
+  </ul>
+  <p>This is the first part of a multi-step plan to help you transform your property and reach your development goals.</p>
+</div>
+
+<!-- HOW TO USE -->
+<div class="section">
+  <h2 class="sec">How to use this report…</h2>
+  <p>Think of this report as a high-level zoning compass. It tells you what the current regulations allow you to build on your property and the possible ways you can use that to your advantage.</p>
+  <p>It's the first step in a process that takes your property from its current state to maximizing its full potential.</p>
+  <div class="steps">
+    <div class="step"><div class="sh"><span class="n">STEP 1</span><span class="t">FREE PROPERTY REPORT</span></div>
+      <ul><li>What you're allowed to build under current zoning</li><li>Grants &amp; incentives that may be available</li><li>Financing options available</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 2</span><span class="t">BUILDER READY PACKAGE™</span></div>
+      <ul><li>Design Feasibility Report</li><li>Financial Feasibility Report</li><li>Grants &amp; Incentives Report</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 3</span><span class="t">BUILDER MATCHING™</span></div>
+      <ul><li>Matched with a trusted Builder Partner suited to your project &amp; market</li><li>They lead detailed design &amp; permitting</li><li>Through construction &amp; final occupancy</li></ul></div>
+  </div>
+  <p>Once your Builder Ready Package™ is complete, we will match you with one of our trusted Builder Partners who is best suited for your project and market. Your builder will then lead the project through detailed design, permitting, construction, and final occupancy.</p>
+  <p>It's important to remember that this report is compiled using publicly available information. Physical site inspections, full architectural and engineering drawings, and other studies have yet to be completed and will come during Phase 3.</p>
+</div>
+
+<!-- ADVANTAGE -->
+<div class="section">
+  <h2 class="sec">The House Lyft Advantage</h2>
+  <p>House Lyft helps Canadian homeowners unlock the equity trapped in their property and turn it into lasting income — without navigating the development maze alone.</p>
+  <p>We are the orchestrator of one coordinated path. We confirm what your property can become, build your <strong>Builder Ready Package™</strong> — the design, financial, and incentive feasibility that turns an idea into an executable plan — and then match you with one of our trusted, vetted <strong>Builder Partners</strong>, who leads detailed design, permitting, and construction through to completion.</p>
+  <p>Instead of stitching together a dozen disconnected vendors — surveyors, designers, brokers, planners, builders — each with their own timeline and their own bill, you get a single guided route from "what can I build?" to keys in hand. One relationship, one plan, one team accountable for getting you there.</p>
+  <div class="grid4">
+    <div class="imgbox"><span class="ic">▦</span>Completed build</div><div class="imgbox"><span class="ic">▦</span>Multi-unit exterior</div>
+    <div class="imgbox"><span class="ic">▦</span>Interior</div><div class="imgbox"><span class="ic">▦</span>Streetscape</div>
+  </div>
+</div>
+
+<!-- 1 PROPERTY DETAILS -->
+<div class="section">
+  <h2 class="sec">1. Property Details</h2>
+  <div class="barhead">1361 Hastings Street, Saanich, BC&nbsp;&nbsp;V8Z 2W5</div>
+  <div class="imgrow" style="margin-top:0;">
+    <div class="imgbox tall"><span class="ic">◎</span>Aerial view<br><small>(auto-generated)</small></div>
+    <div class="imgbox tall"><span class="ic">▤</span>Street view<br><small>(auto-generated)</small></div>
+  </div>
+  <table class="kv">
+    <tr><td>Property Address</td><td>1361 Hastings Street, Saanich, BC&nbsp;&nbsp;V8Z 2W5</td></tr>
+    <tr><td>Name</td><td>Shane Restall</td></tr>
+    <tr><td>Phone Number</td><td>Provided at intake</td></tr>
+    <tr><td>Email</td><td>Provided at intake</td></tr>
+    <tr><td>Development Goals</td><td>Multiplex — maximize unit count under BC's SSMUH rules</td></tr>
+  </table>
+  <table class="kv">
+    <tr><td>Municipality</td><td>District of Saanich (Capital Regional District)</td></tr>
+    <tr><td>Region</td><td>Greater Victoria, BC</td></tr>
+    <tr><td>Current Zoning</td><td>RS-6 — Single Family (District of Saanich)</td></tr>
+    <tr><td>Governing Framework</td><td>BC Bill 44 — Small-Scale Multi-Unit Housing (SSMUH)</td></tr>
+    <tr><td>Servicing</td><td>Must be within the Urban Containment / Sewer Service Area — confirm in Phase 2</td></tr>
+    <tr><td>Legal Description</td><td>To be confirmed (via BC LTSA)</td></tr>
+    <tr><td>Year Built</td><td>To be confirmed</td></tr>
+    <tr><td>Lot size</td><td>To be confirmed — unit count depends on lot area &amp; transit proximity</td></tr>
+    <tr><td>Development Goals</td><td>Multiplex (3–6 units) under SSMUH, subject to lot size &amp; transit</td></tr>
+  </table>
+  <div class="cell">
+    <div class="ct">Neighbourhood Spotlight</div>
+    1361 Hastings Street is in the District of Saanich, part of the Greater Victoria region on southern Vancouver Island — an established, high-demand residential area:
+    <ul>
+      <li>Central Saanich location with quick access to Uptown, Downtown Victoria, and the University of Victoria</li>
+      <li>Well served by BC Transit; proximity to a frequent-transit route is the key factor in whether up to six units are permitted — confirmed in Phase 2</li>
+      <li>Strong, chronically tight rental market across Greater Victoria — supportive of a hold-and-rent strategy</li>
+      <li>Established single-family streets now opened to gentle density by provincial SSMUH rules</li>
+      <li>Note: slopes, trees, and setback/character guidelines can shape what's buildable. (Illustrative context, not a valuation.)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 2 ZONING -->
+<div class="section">
+  <h2 class="sec">2. Current Zoning</h2>
+  <table class="kv">
+    <tr><td>Current Zoning</td><td>RS-6 — Single Family (District of Saanich), now subject to provincial SSMUH permissions</td></tr>
+    <tr><td>Minimum Site Requirements</td><td>SSMUH applies to serviced residential lots inside the Urban Containment Boundary. Unit count scales with lot size and transit proximity (a 6-unit allowance requires a lot &gt;280 m² within ~400 m of frequent transit).</td></tr>
+    <tr><td>Recent Changes</td><td>Under BC Bill 44 (SSMUH, 2023) — implemented by Saanich in 2024 and tightened by Bill 25 (Nov 2025, compliance by June 30, 2026) — <strong>3 to 6 units</strong> are permitted as-of-right on lots formerly limited to a single house or duplex. No rezoning, no public hearing.</td></tr>
+    <tr><td>Permitted Uses</td><td>Triplex, fourplex, and (near frequent transit) up to a six-unit multiplex — plus secondary and garden suites. Saanich exempts projects of 4 units or fewer from a Form &amp; Character development permit. Confirmed in Phase 2.</td></tr>
+    <tr><td>Development Goals Achievable?</td><td><strong>YES</strong>; proceed to Step 2 — <strong>Builder Ready Package™</strong></td></tr>
+  </table>
+  <div class="cell">
+    <div class="ct">What this means for you…</div>
+    <ul style="margin-top:0;">
+      <li><strong>Triplex / Fourplex:</strong> 3–4 units as-of-right on the lot under SSMUH, no rezoning</li>
+      <li><strong>Six-Unit Multiplex:</strong> up to 6 units where the lot is &gt;280 m² and within ~400 m of frequent transit</li>
+      <li><strong>Suites Route:</strong> a secondary suite plus a detached garden suite — Saanich allows both on the same lot inside the boundary</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TIME SENSITIVE -->
+<div class="section">
+  <h2 class="sec">⚠️ Time-Sensitive Information</h2>
+  <div class="ts">
+    <div class="d"><div class="dt">Federal GST Rental Rebate<br><small>build by 2031</small></div><div class="dx">The federal government's 100% GST rebate on new purpose-built rental housing (projects of 4+ units, 90%+ long-term rental) applies in BC. Construction must generally begin before 2031. Structuring the project as qualifying rental from Day 1 is essential to capture this.</div></div>
+    <div class="d"><div class="dt">BC Bill 25 — SSMUH Compliance<br><small>June 30, 2026</small></div><div class="dx">Bill 25 (Nov 2025) tightened the SSMUH rules and set a June 30, 2026 deadline for municipalities, including Saanich, to finalize compliant bylaws. The applicable unit count and site standards for your lot are confirmed against Saanich's current bylaw in Phase 2.</div></div>
+    <div class="d"><div class="dt">Parking &amp; CMHC</div><div class="dx">No minimum parking is required for SSMUH projects within ~400 m of frequent transit. CMHC policy can change at any time and affects financing — applying early reduces risk.</div></div>
+  </div>
+</div>
+
+<!-- 3 REZONING -->
+<div class="section">
+  <h2 class="sec">3. Rezoning (If Applicable)</h2>
+  <p>Rezoning is when the city changes the local planning rules to legally allow more housing units, taller buildings, or different types of properties to be built on a specific piece of land than what was originally allowed. Think of it as the city giving a property a "regulatory upgrade".</p>
+</div>
+
+<!-- 4 DEVELOPMENT OPTIONS -->
+<div class="section">
+  <h2 class="sec">4. Development Options</h2>
+  <div class="opt"><div class="oh">Option A — Triplex / Fourplex (3–4 units, as-of-right)</div>
+    <div class="ob">
+      <div class="massing"><svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <ellipse cx="70" cy="92" rx="58" ry="9" fill="#e9ecf2"/>
+        <polygon points="18,32 65,18 112,32" fill="#26365c"/>
+        <rect x="22" y="32" width="86" height="58" fill="#eef0f4" stroke="#26365c" stroke-width="1.5"/>
+        <g fill="#fff" stroke="#26365c" stroke-width="1"><rect x="30" y="40" width="16" height="12"/><rect x="57" y="40" width="16" height="12"/><rect x="84" y="40" width="16" height="12"/><rect x="30" y="58" width="16" height="12"/><rect x="84" y="58" width="16" height="12"/></g>
+        <rect x="57" y="72" width="16" height="18" fill="#26365c"/></svg></div>
+      <div class="od">A triplex or fourplex built directly on the lot — the baseline SSMUH entitlement on a serviced Saanich residential lot, with no rezoning or public hearing. At four units or fewer, Saanich exempts the project from a Form &amp; Character development permit, which meaningfully shortens the approval path. Buildable size is governed by setbacks, height, lot coverage, and floor-area rules — confirmed in Phase 2.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option B — Six-Unit Multiplex (near frequent transit) — Primary Recommendation</div>
+    <div class="ob">
+      <div class="massing"><svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <ellipse cx="70" cy="94" rx="60" ry="9" fill="#e9ecf2"/>
+        <polygon points="18,20 65,6 112,20" fill="#26365c"/>
+        <rect x="22" y="20" width="86" height="70" fill="#eef0f4" stroke="#26365c" stroke-width="1.5"/>
+        <g fill="#fff" stroke="#26365c" stroke-width="1"><rect x="30" y="28" width="16" height="11"/><rect x="57" y="28" width="16" height="11"/><rect x="84" y="28" width="16" height="11"/><rect x="30" y="45" width="16" height="11"/><rect x="57" y="45" width="16" height="11"/><rect x="84" y="45" width="16" height="11"/><rect x="30" y="62" width="16" height="11"/><rect x="84" y="62" width="16" height="11"/></g>
+        <rect x="57" y="72" width="16" height="18" fill="#26365c"/></svg></div>
+      <div class="od">Where the lot is greater than 280 m² and within roughly 400 m of a frequent-transit stop, SSMUH permits up to six units as-of-right — the highest-density, strongest-income direction without rezoning. Confirming the lot's transit proximity and area is the first gating step, since it is what unlocks the 6-unit tier. No minimum parking applies within the transit radius. Confirmed in Phase 2.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option C — Suites Route (secondary + garden suite)</div>
+    <div class="ob">
+      <div class="massing"><svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <ellipse cx="70" cy="90" rx="50" ry="8" fill="#e9ecf2"/>
+        <polygon points="70,40 116,62 70,84 24,62" fill="#dbe1eb"/>
+        <polygon points="24,62 70,84 70,116 24,94" fill="#b8c1d3"/>
+        <polygon points="70,84 116,62 116,94 70,116" fill="#ccd4e1"/></svg></div>
+      <div class="od">A lower-complexity path: keep the principal dwelling and add a secondary suite plus a detached garden suite — Saanich allows both on the same lot inside the boundary, and has removed the owner-occupancy requirement. This is often the fastest route to rental income while a larger multiplex is evaluated. Suite sizes and siting confirmed in Phase 2.</div>
+    </div></div>
+</div>
+
+<!-- 5 DEVELOPMENT GOAL SUMMARY -->
+<div class="section">
+  <h2 class="sec">5. Development Goal Summary</h2>
+  <div class="barhead" style="text-align:left;">Multiplex under SSMUH (up to 6 units)</div>
+  <p>1361 Hastings Street is an RS-6 single-family lot in Saanich now opened to gentle density by BC's SSMUH rules — 3 to 6 units as-of-right depending on lot size and transit proximity. <strong>Where the lot qualifies for the six-unit tier, a six-unit multiplex is the clear primary recommendation</strong>; a triplex/fourplex is the reliable fallback, and the suites route is the fastest entry.</p>
+</div>
+
+<!-- 6 FINANCING -->
+<div class="section">
+  <h2 class="sec">6. Financing Pathways</h2>
+  <p>How you finance the development of your property can significantly impact your overall ROI, as well as your cashflow and stability.</p>
+  <p>Many property owners destroy their project margins by trying to use expensive personal cash lines or basic retail bank loans.</p>
+  <p>A successful project requires institutional underwriting before you ever pull a permit. We partner with national commercial lending desks to bypass conventional retail hurdles, allowing our qualified files to access specialized programs, rates, and terms completely unavailable to the general public.</p>
+  <table class="kv">
+    <tr><td>Mortgage Refinance</td><td>If a property has appreciated in value or the mortgage has been significantly paid down, owners can typically access up to 80% of the property's newly appraised value.</td></tr>
+    <tr><td>Home Equity Line of Credit (HELOC)</td><td>Is a flexible, revolving line of credit secured against the equity of an existing property. Unlike a refinance that issues a lump sum, a HELOC functions more like a high-limit credit card tied to your real estate.</td></tr>
+    <tr><td>Construction Financing</td><td>Also known as a progress-draw mortgage, construction financing is a short-term loan specifically designed to fund a new build from the ground up (or fund a massive structural overhaul).</td></tr>
+    <tr><td>CMHC MLI-Select</td><td>Government-backed multi-unit mortgage insurance. Requires a minimum of 5 rental units. Does not act as a direct grant, but heavily subsidizes project costs. It cuts insurance premiums by up to 30% and extends amortizations to 50 years based on a point system rewarding affordability, energy efficiency, and accessibility.</td></tr>
+  </table>
+</div>
+
+<!-- 7 GRANTS -->
+<div class="section">
+  <h2 class="sec">7. Available Grants &amp; Incentives</h2>
+  <p>Most property owners don't realize how much government assistance is available to help them complete their project.</p>
+  <p>Creating housing is a key mandate of government at all levels: federal, provincial, and municipal. The work you are considering undertaking with your property is the exact kind of work the government wants to support!</p>
+  <p>It's important to note that the timing, criteria, and application processes change regularly. Working with clients across the country, we are intimately familiar with available grants, incentives and programs that may be available for your project.</p>
+  <table class="g">
+    <tr><th style="width:70px">Level</th><th style="width:190px">Program</th><th>Notes</th></tr>
+    <tr><td>Federal</td><td>GST Purpose-Built Rental Rebate</td><td>Full 100% rebate of the 5% federal GST on new purpose-built rental projects with 4+ units, 90%+ long-term rental (construction generally before 2031). Applies in BC. Confirmed in Phase 2.</td></tr>
+    <tr><td>Federal</td><td>CMHC MLI Select / ACLP</td><td>MLI Select multi-unit mortgage insurance (5+ rental units) and the Apartment Construction Loan Program (low-interest construction financing, min $1M) — national programs that heavily subsidize a qualifying rental project. Confirmed in Phase 2.</td></tr>
+    <tr><td>Provincial (BC)</td><td>BC Secondary Suite Incentive Program</td><td>Forgivable loan reported up to $40,000 toward a new secondary suite rented below market for a set term. Eligibility and current status confirmed in Phase 2.</td></tr>
+    <tr><td>Municipal</td><td>Development Cost Charge (DCC) treatment</td><td>SSMUH and rental projects may qualify for reduced or waived DCCs; treatment varies by municipality. Confirmed against Saanich's current bylaw in Phase 2.</td></tr>
+  </table>
+</div>
+
+<!-- 8 SUMMARY -->
+<div class="section">
+  <h2 class="sec">8. Summary</h2>
+  <h3>Current Zoning Review</h3>
+  <p>1361 Hastings Street is an RS-6 single-family lot in the District of Saanich. Under BC's SSMUH framework (Bill 44, tightened by Bill 25), it is now eligible for <strong>3 to 6 units as-of-right</strong> — no rezoning, no public hearing — with the exact ceiling set by lot area and transit proximity.</p>
+  <ul>
+    <li><strong>The SSMUH Advantage:</strong> the single most valuable step is confirming lot size and distance to frequent transit, since that is what unlocks the six-unit tier — established in Phase 2.</li>
+  </ul>
+  <h3>Grants &amp; Incentives Review</h3>
+  <p>Governments at the federal, provincial, and municipal levels continue to prioritize housing development by offering grants, rebates, and other incentives to help reduce project costs. Because these programs and their eligibility criteria change frequently, we help identify and navigate the opportunities that may apply to your project, maximizing available funding and improving overall project feasibility.</p>
+  <h3>Financing Options Review</h3>
+  <p>Choosing the right financing strategy is essential to maximizing project returns, maintaining healthy cash flow, and reducing financial risk. We work with trusted lending partners to identify financing solutions that align with your development goals, including mortgage refinancing, home equity lines of credit (HELOCs), construction financing, and specialized programs such as CMHC MLI Select. By securing the right financing early in the process, we help position your project for long-term success.</p>
+</div>
+
+<!-- NEXT STEPS / ROADBLOCKS / CTA -->
+<div class="section">
+  <h2 class="sec">Next Steps</h2>
+  <p>Before you can submit for permits, lock in specialized financing, or secure municipal grants, external consultants require site-specific documentation. We break these down into 3 Steps:</p>
+  <h3>Step 1: Zoning — Development Rights and Requirements</h3>
+  <p>In order to ensure that your project plans meet local setbacks, site coverage caps, and height restrictions, you will need the following:</p>
+  <ul><li>Site Plan</li><li>Massing Diagram Options</li><li>Unit Mix, Unit Count and Unit Sizes</li></ul>
+  <h3>Step 2: Grants &amp; Incentives</h3>
+  <p>While your project may be eligible for various government rebates and incentives, most programs require documentation that is generated throughout the development and construction process. Applications are generally completed once all required information has been collected.</p>
+  <p>In order to start the application process you will need a detailed breakdown of the necessary documentation and supporting forms required for each program.</p>
+  <h3>Step 3: Financing Options</h3>
+  <p>This report identifies financing programs that may be suitable for your proposed development. Final financing approval cannot be obtained until the project has progressed through the planning stage and the required financial information, construction budgets, and supporting documentation have been prepared.</p>
+  <p>The Builder Ready Package™ provides much of the information required by lenders to begin the financing process. Additional lender-specific documentation may also be required depending on the financing program selected.</p>
+  <h3>Roadblocks</h3>
+  <p>Most property owners attempt to gather these documents piecemeal and haphazardly. They spend months going back and forth hiring a private surveyor, then waiting weeks for an independent designer, then shopping around blindly for a commercial mortgage broker, and then trying to negotiate independently with city planners. This uncoordinated approach creates massive friction. By the time they get a single piece of the puzzle solved, their other data is outdated, municipal deadlines have passed, grant pools are fully depleted, and they have burned through thousands of dollars in dead carrying costs.</p>
+  <h3>The House Lyft Advantage</h3>
+  <p>We designed our Phase 2 where over the next 30 days, our lending partners, planning and grants and incentives consultants will compile everything simultaneously into a single next step option for you. This gives you everything required to accurately plan and build your roadmap.</p>
+  <p>In addition, if you decide to move forward with the project and use one of our approved and vetted builder partners, they will credit you the full cost of your Phase 2 work right back to your construction balance on Day 1.</p>
+  <div class="cta">
+    Your total investment for the Phase 2 blueprint is a single flat fee of<br><span class="fee">$5,000.00</span>
+    <div style="margin-top:10px;font-size:8.8pt;">Getting started is simple:</div>
+    <ol style="margin:6px 0 0;font-size:8.8pt;padding-left:18px;">
+      <li><strong>Authorize the Phase 2 Work Order:</strong> Review and sign our Builder Ready Package Agreement.</li>
+      <li><strong>Submit the Phase 2 Payment:</strong> to activate our trusted team of consultants.</li>
+      <li><strong>Submit the Financial Intake Forms:</strong> as provided by our lender partner.</li>
+      <li><strong>Book Your Initial Planning Session:</strong> set up your initial meeting with our planner and Senior Relationship Manager to finalize your development objectives and plan next steps.</li>
+    </ol>
+  </div>
+</div>
+
+</body>
+</html>
