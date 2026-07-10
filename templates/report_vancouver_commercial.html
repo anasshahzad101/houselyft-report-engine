@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#1b2a4a;--navy2:#26365c;--green:#3f7d33;--row:#f5f6f9;--line:#e4e7ee;--ink:#2a2f3a;--mut:#7a818f;--disc:#aeb6c4;}
+  *{box-sizing:border-box;}
+  body{font-family:'Open Sans',Arial,sans-serif;color:var(--ink);font-size:9.8pt;line-height:1.55;margin:0;}
+  h1,h2,h3,.os{font-family:'Oswald',Arial,sans-serif;}
+  p{margin:7px 0;} ul{margin:7px 0;padding-left:18px;} li{margin:4px 0;} small{color:var(--mut);}
+  .section{page-break-before:always;} .section.first{page-break-before:auto;}
+  h2.sec{font-family:'Oswald';font-weight:700;color:var(--navy);font-size:19pt;letter-spacing:.3px;margin:0 0 12px;}
+  h3{font-family:'Oswald';font-weight:600;color:var(--navy2);font-size:11.5pt;margin:15px 0 5px;}
+  .cover{height:238mm;display:flex;flex-direction:column;align-items:center;text-align:center;page-break-after:always;}
+  .wm{font-family:'Oswald';font-weight:700;font-size:20pt;letter-spacing:7px;margin-top:58mm;display:flex;align-items:center;gap:10px;}
+  .wm .a{color:var(--navy);} .wm .b{color:#8b93a3;}
+  .wm .emblem{width:26px;height:26px;border:3px solid var(--navy);border-radius:50%;display:inline-block;position:relative;}
+  .wm .emblem:after{content:"";position:absolute;left:4px;right:4px;bottom:6px;height:7px;background:var(--navy);clip-path:polygon(0 100%,28% 30%,50% 70%,72% 10%,100% 100%);}
+  .cover h1{font-family:'Oswald';font-weight:700;font-size:40pt;color:var(--navy);letter-spacing:1px;margin:50mm 0 14px;}
+  .cover .addr{font-family:'Oswald';font-weight:600;font-size:19pt;color:var(--navy);}
+  .cover .addr span{display:block;font-family:'Open Sans';font-weight:400;font-size:12pt;color:#55607a;margin-top:6px;}
+  .cover .foot{margin-top:auto;font-size:7.6pt;color:var(--disc);}
+  table{width:100%;border-collapse:collapse;margin:9px 0;font-size:9pt;}
+  td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--row);}
+  table.kv td:first-child{background:var(--navy);color:#fff;font-weight:600;width:34%;border-bottom:2px solid #fff;}
+  table.kv tr:nth-child(even) td:first-child{background:var(--navy);}
+  table.kv td:last-child{background:var(--row);}
+  table.g th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:600;font-size:8.7pt;}
+  .barhead{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:11pt;padding:8px 12px;text-align:center;}
+  .imgrow{display:flex;gap:10px;margin:0 0 10px;}
+  .imgbox{flex:1;height:150px;background:#eef0f4;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9aa2b2;font-size:8pt;}
+  .imgbox.tall{height:185px;} .imgbox .ic{font-size:20pt;line-height:1;margin-bottom:6px;color:#c2c8d4;}
+  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  .grid4 .imgbox{height:120px;}
+  .steps{display:flex;gap:12px;margin:16px 0;}
+  .step{flex:1;border:1px solid var(--line);border-radius:3px;overflow:hidden;}
+  .step .sh{background:var(--green);color:#fff;text-align:center;padding:10px 6px;font-family:'Oswald';}
+  .step .sh .n{font-size:8pt;letter-spacing:2px;opacity:.9;display:block;}
+  .step .sh .t{font-size:11pt;font-weight:700;}
+  .step ul{padding:11px 10px 13px 24px;margin:0;font-size:8.3pt;} .step li{margin:5px 0;}
+  .cell{border:1px solid var(--line);background:var(--row);padding:11px 13px;margin:9px 0;}
+  .cell .ct{font-family:'Oswald';font-weight:600;color:var(--navy);margin-bottom:5px;font-size:10.5pt;}
+  .opt{margin:13px 0;border:1px solid var(--line);}
+  .opt .oh{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:10.5pt;padding:7px 12px;}
+  .opt .ob{display:flex;gap:14px;padding:12px;align-items:center;}
+  .opt .massing{width:140px;flex:0 0 140px;}
+  .opt .od{flex:1;font-size:8.9pt;}
+  .ts{border:1px solid var(--line);margin:10px 0;}
+  .ts .d{display:flex;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line);} .ts .d:last-child{border-bottom:none;}
+  .ts .dt{flex:0 0 150px;font-family:'Oswald';font-weight:600;color:#b5611f;font-size:9pt;} .ts .dx{flex:1;font-size:8.8pt;}
+  .cta{background:var(--navy);color:#fff;padding:15px 17px;border-radius:4px;margin-top:12px;}
+  .cta .fee{font-family:'Oswald';font-weight:700;font-size:16pt;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="wm"><span class="emblem"></span><span class="a">HOUSE</span><span class="b">LYFT</span></div>
+  <h1>PROPERTY REPORT</h1>
+  <div class="addr">638 East Broadway<span>Vancouver, BC</span></div>
+  <div class="foot">Preliminary analysis only. This report is not a planning opinion, legal advice, or development permit.<br>Verify all information before making any investment decision.</div>
+</div>
+
+<!-- WHY -->
+<div class="section first">
+  <h2 class="sec">Why this report matters…</h2>
+  <p>A commercial development lives or dies on the numbers — and the numbers turn on entitlement, program, and cost certainty long before a shovel hits the ground.</p>
+  <p>This report is a data-backed read on the development viability of your site, compiled so you can pressure-test the opportunity before committing capital to detailed design and construction.</p>
+  <p>This Initial Report:</p>
+  <ul>
+    <li><strong>Confirms Your Zoning &amp; Entitlement:</strong> the use, density, and height the site supports — and where the approval currently stands.</li>
+    <li><strong>Frames the Buildable Envelope:</strong> what the FSR and height translate to in floor area, and the program options that fit it.</li>
+    <li><strong>Maps the Cost &amp; Financing Picture:</strong> the levies, contributions, and financing structure that decide whether the pro forma clears.</li>
+  </ul>
+  <p>This is the first step in a coordinated path from an approved site to a finished, operating asset.</p>
+</div>
+
+<!-- HOW TO USE -->
+<div class="section">
+  <h2 class="sec">How to use this report…</h2>
+  <p>Think of this report as a high-level entitlement and feasibility compass. It confirms what the site is approved to support and frames the program options that fit the envelope.</p>
+  <p>It's the first step in a process that takes an approved site through to a finished, operating asset.</p>
+  <div class="steps">
+    <div class="step"><div class="sh"><span class="n">STEP 1</span><span class="t">FREE PROPERTY REPORT</span></div>
+      <ul><li>Zoning &amp; entitlement status</li><li>Buildable envelope (FSR, height, program)</li><li>Cost &amp; financing framework</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 2</span><span class="t">BUILDER READY PACKAGE™</span></div>
+      <ul><li>Design Feasibility (massing, key/unit count)</li><li>Financial Feasibility (development pro forma)</li><li>Entitlement &amp; Cost Report (levies, linkage, permit path)</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 3</span><span class="t">BUILDER MATCHING™</span></div>
+      <ul><li>Matched with a vetted commercial general contractor</li><li>For a hotel, an operator / flag partner</li><li>They lead design, permitting, construction &amp; opening</li></ul></div>
+  </div>
+  <p>Once your Builder Ready Package™ is complete, we match you with vetted commercial partners — a general contractor, and for a hotel an operator or flag — best suited to your project and market. They lead the project through detailed design, permitting, construction, and opening.</p>
+  <p>It's important to remember that this report is compiled using publicly available information. Physical site inspections, full architectural and engineering drawings, and other studies have yet to be completed and will come during Phase 3.</p>
+</div>
+
+<!-- ADVANTAGE -->
+<div class="section">
+  <h2 class="sec">The House Lyft Advantage</h2>
+  <p>House Lyft coordinates development from an approved site to a finished, operating asset — without the owner having to assemble and manage a dozen disconnected consultants.</p>
+  <p>We confirm what the site supports, build your <strong>Builder Ready Package™</strong> — the design, financial, and entitlement feasibility that turns an approval into an executable plan — and then match you with vetted commercial partners (a general contractor, and for a hotel an operator or flag) who lead detailed design, permitting, and construction through to opening.</p>
+  <p>Instead of stitching together surveyors, architects, cost consultants, lenders, and contractors — each with their own timeline and their own bill — you get a single coordinated path and one accountable team.</p>
+  <div class="grid4">
+    <div class="imgbox"><span class="ic">▦</span>Completed build</div><div class="imgbox"><span class="ic">▦</span>Multi-unit exterior</div>
+    <div class="imgbox"><span class="ic">▦</span>Interior</div><div class="imgbox"><span class="ic">▦</span>Streetscape</div>
+  </div>
+</div>
+
+<!-- 1 PROPERTY DETAILS -->
+<div class="section">
+  <h2 class="sec">1. Property Details</h2>
+  <div class="barhead">638 East Broadway, Vancouver, BC&nbsp;&nbsp;V5T 1X6</div>
+  <div class="imgrow" style="margin-top:0;">
+    <div class="imgbox tall"><span class="ic">◎</span>Aerial view<br><small>(auto-generated)</small></div>
+    <div class="imgbox tall"><span class="ic">▤</span>Street view<br><small>(auto-generated)</small></div>
+  </div>
+  <table class="kv">
+    <tr><td>Property Address</td><td>638 East Broadway, Vancouver, BC&nbsp;&nbsp;V5T 1X6</td></tr>
+    <tr><td>Name</td><td>Rachel B</td></tr>
+    <tr><td>Phone Number</td><td>Provided at intake</td></tr>
+    <tr><td>Email</td><td>Provided at intake</td></tr>
+    <tr><td>Development Goals</td><td>6-storey boutique hotel (micro-suite format); feasibility vs. a 16-unit residential alternative</td></tr>
+  </table>
+  <table class="kv">
+    <tr><td>Municipality</td><td>City of Vancouver</td></tr>
+    <tr><td>Area Plan</td><td>Broadway Plan — Mount Pleasant / Broadway Corridor</td></tr>
+    <tr><td>Current Zoning</td><td>C-2 Commercial (hotel-enabled — confirm C-2 sub-district / C-2A in Phase 2)</td></tr>
+    <tr><td>Approved Use</td><td>Hotel (per client — rezoning / approval in principle secured)</td></tr>
+    <tr><td>Density &amp; Height</td><td>~3.5 FSR, 6 storeys (~23 m) — confirm final entitlement in Phase 2</td></tr>
+    <tr><td>Legal Description</td><td>To be confirmed (via BC LTSA)</td></tr>
+    <tr><td>Building Status</td><td>Vacant building — unoccupied for an extended period</td></tr>
+    <tr><td>Lot size</td><td>~33 ft × 122 ft (≈ 4,026 sq ft / ~374 m²) — per intake, confirm in Phase 2</td></tr>
+    <tr><td>Development Goals</td><td>Boutique hotel (micro-suites); 16-unit residential as an alternative</td></tr>
+  </table>
+  <div class="cell">
+    <div class="ct">Neighbourhood Spotlight</div>
+    638 East Broadway sits on the East Broadway commercial corridor in Vancouver's Mount Pleasant area — a dense, high-traffic, transit-rich part of the city and a focus of the Broadway Plan:
+    <ul>
+      <li>On an arterial commercial strip with strong pedestrian traffic and established retail frontage</li>
+      <li>Close to the Broadway–City Hall and Mount Pleasant SkyTrain stations (Broadway Subway) — a major driver of hotel demand</li>
+      <li>Minutes from Downtown, False Creek, and Main Street's dining and culture — strong boutique-hotel catchment</li>
+      <li>Vancouver's hotel vacancy is chronically tight and the City is actively targeting new room supply</li>
+      <li>Note: commercial linkage, development cost levies, and design review shape the pro forma. (Illustrative context, not a valuation.)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 2 ZONING -->
+<div class="section">
+  <h2 class="sec">2. Current Zoning</h2>
+  <table class="kv">
+    <tr><td>Current Zoning</td><td>C-2 Commercial (Broadway Plan area). Confirm the exact sub-district / new C-2A designation in Phase 2.</td></tr>
+    <tr><td>Use &amp; Policy</td><td>Hotel use is enabled on C-2 commercial sites under Vancouver's Hotel Development Policy (2025) and the Broadway Plan. Vancouver's new C-2A framework allows small hotels up to 6 storeys via a development-permit path, reducing the need for a full rezoning.</td></tr>
+    <tr><td>Density &amp; Height</td><td>~3.5 FSR and 6 storeys (~23 m) for the hotel. Ground-floor commercial is typically required. Final numbers confirmed against the approval and current schedule in Phase 2.</td></tr>
+    <tr><td>Approval Status</td><td>Per the client, hotel approval/rezoning is in principle secured — the file moves to detailed design and development permit.</td></tr>
+    <tr><td>Development Goals Achievable?</td><td><strong>YES</strong>; proceed to Step 2 — <strong>Builder Ready Package™</strong></td></tr>
+  </table>
+  <div class="cell">
+    <div class="ct">What this means for you…</div>
+    <ul style="margin-top:0;">
+      <li><strong>Boutique Hotel (micro-suites):</strong> maximize the number of hotel keys within the ~3.5 FSR / 6-storey envelope — the primary goal</li>
+      <li><strong>Ground-Floor Commercial:</strong> retail / hospitality at street level, typically required on the corridor</li>
+      <li><strong>Residential Alternative:</strong> approximately 16 larger (3-bedroom) units, as a comparison scenario</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TIME SENSITIVE -->
+<div class="section">
+  <h2 class="sec">⚠️ Time-Sensitive Information</h2>
+  <div class="ts">
+    <div class="d"><div class="dt">Vancouver C-2A / Hotel Policy<br><small>active</small></div><div class="dx">Vancouver's Hotel Development Policy and new C-2A framework are actively streamlining small-hotel approvals on commercial corridors via development permit — an advantage for moving from approval to build. Confirm the current schedule and any conditions in Phase 2.</div></div>
+    <div class="d"><div class="dt">DCLs &amp; Commercial Linkage<br><small>project cost</small></div><div class="dx">Broadway Plan commercial projects carry Development Cost Levies and a Commercial Linkage / amenity contribution. These are project <strong>costs</strong> (not grants) and must be built into the pro forma from Day 1. Confirmed in Phase 2.</div></div>
+    <div class="d"><div class="dt">Financing Climate</div><div class="dx">High construction and financing costs are the central risk for hotel/commercial projects right now. Lining up commercial construction financing early — before detailed design locks — materially de-risks the project.</div></div>
+  </div>
+</div>
+
+<!-- 3 REZONING -->
+<div class="section">
+  <h2 class="sec">3. Rezoning (If Applicable)</h2>
+  <p>Rezoning is when the city changes the local planning rules to legally allow more housing units, taller buildings, or different types of properties to be built on a specific piece of land than what was originally allowed. Think of it as the city giving a property a "regulatory upgrade".</p>
+</div>
+
+<!-- 4 DEVELOPMENT OPTIONS -->
+<div class="section">
+  <h2 class="sec">4. Development Options</h2>
+  <div class="opt"><div class="oh">Option A — Boutique Hotel, Micro-Suite Format (primary goal)</div>
+    <div class="ob">
+      <div class="massing"><svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <ellipse cx="70" cy="92" rx="58" ry="9" fill="#e9ecf2"/>
+        <polygon points="18,32 65,18 112,32" fill="#26365c"/>
+        <rect x="22" y="32" width="86" height="58" fill="#eef0f4" stroke="#26365c" stroke-width="1.5"/>
+        <g fill="#fff" stroke="#26365c" stroke-width="1"><rect x="30" y="40" width="16" height="12"/><rect x="57" y="40" width="16" height="12"/><rect x="84" y="40" width="16" height="12"/><rect x="30" y="58" width="16" height="12"/><rect x="84" y="58" width="16" height="12"/></g>
+        <rect x="57" y="72" width="16" height="18" fill="#26365c"/></svg></div>
+      <div class="od">A 6-storey boutique hotel designed around efficient micro-suites to maximize the number of rentable keys within the ~3.5 FSR envelope on the ~33 ft × 122 ft lot, with ground-floor commercial at street level. On a ~4,026 sq ft lot, 3.5 FSR yields roughly 14,000 sq ft of buildable area (confirm in Phase 2) — micro-suite efficiency is what drives the key count and the revenue-per-square-foot. This is a commercial hospitality build: room count, brand/flag strategy, and operating pro forma are defined in Phase 2, not assumed here.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option B — Residential Alternative (~16 three-bed units)</div>
+    <div class="ob">
+      <div class="massing"><svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <ellipse cx="70" cy="94" rx="60" ry="9" fill="#e9ecf2"/>
+        <polygon points="18,20 65,6 112,20" fill="#26365c"/>
+        <rect x="22" y="20" width="86" height="70" fill="#eef0f4" stroke="#26365c" stroke-width="1.5"/>
+        <g fill="#fff" stroke="#26365c" stroke-width="1"><rect x="30" y="28" width="16" height="11"/><rect x="57" y="28" width="16" height="11"/><rect x="84" y="28" width="16" height="11"/><rect x="30" y="45" width="16" height="11"/><rect x="57" y="45" width="16" height="11"/><rect x="84" y="45" width="16" height="11"/><rect x="30" y="62" width="16" height="11"/><rect x="84" y="62" width="16" height="11"/></g>
+        <rect x="57" y="72" width="16" height="18" fill="#26365c"/></svg></div>
+      <div class="od">The comparison scenario you raised: roughly 16 larger three-bedroom residential units instead of a hotel. This changes the entire model — purpose-built rental unlocks residential financing and rebates a hotel cannot use (federal GST rental rebate, CMHC MLI Select), but forgoes hotel nightly-rate revenue and carries Broadway Plan residential requirements. Phase 2 runs the hotel and the residential pro formas side by side so the numbers decide.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option C — Mixed-Use (hotel + ground-floor commercial)</div>
+    <div class="ob">
+      <div class="massing"><svg viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <ellipse cx="70" cy="90" rx="50" ry="8" fill="#e9ecf2"/>
+        <polygon points="70,40 116,62 70,84 24,62" fill="#dbe1eb"/>
+        <polygon points="24,62 70,84 70,116 24,94" fill="#b8c1d3"/>
+        <polygon points="70,84 116,62 116,94 70,116" fill="#ccd4e1"/></svg></div>
+      <div class="od">Not a separate scheme so much as a requirement to design in: the corridor typically expects active commercial at street level. A well-designed ground-floor retail or café frontage supports the hotel's guest experience, satisfies the policy expectation, and adds a second revenue line. The existing vacant building's demolition and site servicing are early-path items to confirm in Phase 2.</div>
+    </div></div>
+</div>
+
+<!-- 5 DEVELOPMENT GOAL SUMMARY -->
+<div class="section">
+  <h2 class="sec">5. Development Goal Summary</h2>
+  <div class="barhead" style="text-align:left;">6-Storey Boutique Hotel (micro-suite)</div>
+  <p>638 East Broadway is a C-2 commercial site on a transit-rich Broadway Plan corridor with hotel approval in principle already secured. <strong>The boutique micro-suite hotel is the primary direction</strong>, with the ~16-unit residential build as the comparison scenario. The decision is a numbers question — nightly-rate hotel revenue versus residential financing advantages — which the Phase 2 pro formas resolve.</p>
+</div>
+
+<!-- 6 FINANCING -->
+<div class="section">
+  <h2 class="sec">6. Financing Pathways</h2>
+  <p>How a commercial project is capitalized drives its returns, its risk, and whether it can be built at all.</p>
+  <p>Commercial development is financed differently from a home — through a stack of senior construction debt, mezzanine, and equity, replaced by long-term financing once the asset is operating. Lining this up early, before detailed design locks, is what de-risks the project.</p>
+  <p>We work with commercial lending and capital partners to structure the stack appropriately for the program you choose.</p>
+  <table class="kv">
+    <tr><td>Commercial Construction Financing</td><td>A project-specific construction loan (typically a share of total loan-to-cost) released on progress draws to fund the build. Underwriting hinges on the pro forma, sponsor strength, and the entitlement being in hand.</td></tr>
+    <tr><td>Take-Out / Term Financing</td><td>Long-term commercial financing that replaces the construction loan once the asset is complete and stabilized — for a hotel, once it is operating and generating revenue.</td></tr>
+    <tr><td>Mezzanine &amp; Equity</td><td>Gap financing and equity partners that top up the capital stack above senior debt where construction costs exceed conventional loan-to-cost limits.</td></tr>
+    <tr><td>Hotel Flag / Franchise Support</td><td>A recognized hotel brand can improve lender terms and, in some cases, contribute key money or financing support (hotel scenario only).</td></tr>
+    <tr><td>Residential-Only: CMHC MLI Select</td><td>Applies <strong>only</strong> to the ~16-unit residential alternative — government-backed multi-unit insurance (5+ rental units) that heavily subsidizes cost. A hotel cannot use it; a key input to the hotel-vs-residential comparison.</td></tr>
+  </table>
+</div>
+
+<!-- 7 GRANTS -->
+<div class="section">
+  <h2 class="sec">7. Available Grants &amp; Incentives</h2>
+  <p>Most property owners don't realize how much government assistance is available to help them complete their project.</p>
+  <p>Creating housing is a key mandate of government at all levels: federal, provincial, and municipal. The work you are considering undertaking with your property is the exact kind of work the government wants to support!</p>
+  <p>It's important to note that the timing, criteria, and application processes change regularly. Working with clients across the country, we are intimately familiar with available grants, incentives and programs that may be available for your project.</p>
+  <table class="g">
+    <tr><th style="width:70px">Level</th><th style="width:190px">Program</th><th>Notes</th></tr>
+    <tr><td colspan="3" style="background:#fbf1de;color:#7d5a17;font-weight:600;">Note: this is a commercial hotel project — homeowner / residential grant programs (ARU grants, purpose-built rental rebates) do not apply to the hotel scenario. The items below are the relevant commercial considerations.</td></tr>
+    <tr><td>Federal</td><td>GST — Input Tax Credits</td><td>GST on commercial construction is generally recoverable as input tax credits for a GST-registered commercial (hotel) operator, rather than rebated as with residential rental. Confirm structure with a tax advisor in Phase 2.</td></tr>
+    <tr><td>Federal</td><td>Residential-Only: GST Rental Rebate + CMHC MLI Select</td><td>These apply <strong>only</strong> if the ~16-unit residential alternative is chosen — the hotel cannot use them. A key input to the hotel-vs-residential comparison.</td></tr>
+    <tr><td>Municipal</td><td>Development Cost Levies (DCLs)</td><td>A per-square-foot charge on new floor area in Vancouver — a project <strong>cost</strong>, not a grant. Rates and any waivers confirmed in Phase 2.</td></tr>
+    <tr><td>Municipal</td><td>Commercial Linkage / Amenity Contribution</td><td>Broadway Plan commercial projects carry a linkage/amenity contribution. Another pro-forma cost to confirm against the current policy in Phase 2.</td></tr>
+  </table>
+</div>
+
+<!-- 8 SUMMARY -->
+<div class="section">
+  <h2 class="sec">8. Summary</h2>
+  <h3>Current Zoning Review</h3>
+  <p>638 East Broadway is a C-2 commercial site in Vancouver's Broadway Plan area with hotel use enabled under the City's Hotel Development Policy, and (per the client) approval in principle secured. It sits on a transit-rich corridor the City has explicitly targeted for new hotel supply.</p>
+  <ul>
+    <li><strong>The Hotel Opportunity:</strong> a 6-storey, ~3.5 FSR boutique hotel with ground-floor commercial — the key variables are room count (driven by micro-suite efficiency), operating strategy, and the Broadway Plan cost contributions, all resolved in Phase 2.</li>
+  </ul>
+  <h3>Grants &amp; Incentives Review</h3>
+  <p>Governments at the federal, provincial, and municipal levels continue to prioritize housing development by offering grants, rebates, and other incentives to help reduce project costs. Because these programs and their eligibility criteria change frequently, we help identify and navigate the opportunities that may apply to your project, maximizing available funding and improving overall project feasibility.</p>
+  <h3>Financing Options Review</h3>
+  <p>Choosing the right capital structure is essential to maximizing project returns, protecting cash flow, and reducing risk. We work with commercial lending and capital partners to structure the stack — construction financing, take-out / term financing, and mezzanine or equity — around the program you choose, with residential-only programs such as CMHC MLI Select reserved for the residential-alternative scenario. Securing this early positions the project for long-term success.</p>
+</div>
+
+<!-- NEXT STEPS / ROADBLOCKS / CTA -->
+<div class="section">
+  <h2 class="sec">Next Steps</h2>
+  <p>Before you can submit for permits, lock in specialized financing, or secure municipal grants, external consultants require site-specific documentation. We break these down into 3 Steps:</p>
+  <h3>Step 1: Entitlement &amp; Design — Rights and Envelope</h3>
+  <p>To confirm the program fits the approval and the site's setbacks, coverage, and height, you will need:</p>
+  <ul><li>Site Plan &amp; survey</li><li>Massing / program options (hotel vs. residential)</li><li>Key or unit count, mix, and sizes</li></ul>
+  <h3>Step 2: Cost &amp; Contributions</h3>
+  <p>Commercial projects carry Development Cost Levies and a Broadway Plan linkage / amenity contribution. These are project costs that must be quantified and built into the pro forma, alongside servicing and demolition of the existing vacant building.</p>
+  <p>You will need a detailed breakdown of the applicable levies, contributions, and permit-path requirements to complete the financial picture.</p>
+  <h3>Step 3: Financing Options</h3>
+  <p>This report identifies financing programs that may be suitable for your proposed development. Final financing approval cannot be obtained until the project has progressed through the planning stage and the required financial information, construction budgets, and supporting documentation have been prepared.</p>
+  <p>The Builder Ready Package™ provides much of the information required by lenders to begin the financing process. Additional lender-specific documentation may also be required depending on the financing program selected.</p>
+  <h3>Roadblocks</h3>
+  <p>Most property owners attempt to gather these documents piecemeal and haphazardly. They spend months going back and forth hiring a private surveyor, then waiting weeks for an independent designer, then shopping around blindly for a commercial mortgage broker, and then trying to negotiate independently with city planners. This uncoordinated approach creates massive friction. By the time they get a single piece of the puzzle solved, their other data is outdated, municipal deadlines have passed, grant pools are fully depleted, and they have burned through thousands of dollars in dead carrying costs.</p>
+  <h3>The House Lyft Advantage</h3>
+  <p>Our Phase 2 compiles the design, financial, and entitlement work simultaneously — architect, cost consultant, and capital partner working in parallel — into a single executable plan, rather than the piecemeal, sequential approach that stalls most projects.</p>
+  <p>In addition, if you proceed with one of our vetted commercial partners, the cost of your Phase 2 work is credited back against the project on Day 1.</p>
+  <div class="cta">
+    Your Builder Ready Package™ for a commercial project of this scale is<br><span class="fee">Scoped per project</span>
+    <div style="margin-top:10px;font-size:8.8pt;">A commercial feasibility engagement is quoted to the program — not a flat homeowner fee. Getting started:</div>
+    <ol style="margin:6px 0 0;font-size:8.8pt;padding-left:18px;">
+      <li><strong>Confirm Scope:</strong> we align on the hotel and residential-comparison program to be tested.</li>
+      <li><strong>Authorize the Builder Ready Package™:</strong> review and sign the engagement for your project.</li>
+      <li><strong>Submit Project &amp; Financial Intake:</strong> so the design, cost, and capital work can begin in parallel.</li>
+      <li><strong>Book Your Kickoff Session:</strong> with our planner and Senior Relationship Manager to finalize objectives and next steps.</li>
+    </ol>
+  </div>
+</div>
+
+</body>
+</html>
