@@ -425,6 +425,90 @@ def toronto_rules(zoning, ward):
 
 # ---------------- Router ----------------
 
+
+
+# ---------------------------------------------------------------- Edmonton
+# Zoning Bylaw 20001 (in force Jan 1, 2024; replaced ZBL 12800).
+# Rules verified 2026-07-11:
+#   - RS (Small Scale Residential) consolidates RF1-RF4; row/multi-unit
+#     housing permitted by default (edmonton.ca ZBL 20001 guide).
+#   - Mid-block maximum reduced 8 -> 6 dwellings in the one-year-review
+#     amendments (mid-2025); developments of MORE than 8 dwellings are
+#     limited to corner sites (Residential Land Use Matrix note).
+#   - Backyard housing permitted; counts toward total dwellings on site.
+#   - Height: 10.5 m now; drops to 9.5 m for applications from Aug 1, 2026
+#     (approved Apr 27, 2026) — TIME-SENSITIVE for anything in design now.
+#   - Since Jul 8, 2025: max two dwelling entrances facing an interior side
+#     lot line; a side-facing entrance triggers a 1.9 m setback on that side.
+EDMONTON_FS = ("https://gis.edmonton.ca/site1/rest/services/"
+               "ZoningWebApp/Zoning_Map/FeatureServer")
+EDMONTON_RES_ZONES = ("RS", "RSF", "RSM", "RM", "RL", "RR")
+
+def _edm_point(layer, lat, lon, fields="*"):
+    params = urllib.parse.urlencode({
+        "geometry": f"{lon},{lat}", "geometryType": "esriGeometryPoint",
+        "inSR": "4326", "spatialRel": "esriSpatialRelIntersects",
+        "outFields": fields, "returnGeometry": "false", "f": "json"})
+    req = urllib.request.Request(f"{EDMONTON_FS}/{layer}/query?{params}",
+                                 headers={"User-Agent": UA})
+    with urllib.request.urlopen(req, timeout=20) as r:
+        out = json.load(r)
+    f = out.get("features", [])
+    return f[0]["attributes"] if f else None
+
+def edmonton_zoning(lat, lon):
+    z = _edm_point(5, lat, lon, "ZONING,ZONING_STRING,BYLAW_NO,STATUS")
+    if not z:
+        return None
+    ward = _edm_point(34, lat, lon, "DESCRIPTIVE_NAME,COUNCILLOR1") or {}
+    hood = _edm_point(35, lat, lon, "DESCRIPTIVE_NAME,DESCRIPTION") or {}
+    league = _edm_point(36, lat, lon, "NAME") or {}
+    flood = _edm_point(7, lat, lon, "OBJECTID")
+    airport = _edm_point(9, lat, lon, "OBJECTID")
+    return {
+        "zone": z.get("ZONING"),
+        "zn_string": z.get("ZONING_STRING") or z.get("ZONING"),
+        "bylaw_ref": f"Edmonton Zoning Bylaw {z.get('BYLAW_NO') or '20001'}",
+        "ward": ward.get("DESCRIPTIVE_NAME"),
+        "councillor": ward.get("COUNCILLOR1"),
+        "neighbourhood": hood.get("DESCRIPTIVE_NAME"),
+        "neighbourhood_desc": (hood.get("DESCRIPTION") or "")[:600] or None,
+        "community_league": league.get("NAME"),
+        "flags": [f for f, hit in
+                  [("Floodplain Protection Overlay — verify in design", flood),
+                   ("Airport Protection Overlay — verify in design", airport)] if hit],
+    }
+
+def edmonton_rules(z):
+    zone = str((z or {}).get("zone") or "").upper()
+    gate = zone.startswith(EDMONTON_RES_ZONES)
+    rs = zone == "RS"
+    return {
+        "gate_pass": gate,
+        "main_units_max": 6 if rs else (None if gate else 0),
+        "corner_units_max": 8 if rs else None,
+        "unit_combo": ("RS: up to 6 dwellings mid-block as-of-right "
+                       "(one-year-review amendment, 2025; down from 8); up to 8 on "
+                       "corner sites, and developments of more than 8 dwellings are "
+                       "limited to corner sites per the Residential Matrix. Backyard "
+                       "housing permitted and counts toward the total.") if rs else
+                      (f"{zone}: residential zone under ZBL 20001 — detailed unit "
+                       "rulebook not yet encoded; treat as needs-review." if gate else
+                       "Not a small-scale residential zone."),
+        "sixplex_as_of_right": rs,
+        "adu_stacking_on_multiplex": rs,
+        "incentive_note": ("TIME-SENSITIVE: RS max height drops 10.5 m -> 9.5 m for "
+                           "applications from Aug 1, 2026 (approved Apr 27, 2026) — "
+                           "file before the cut-off to keep the 10.5 m envelope. "
+                           "Since Jul 8, 2025 max two entrances may face an interior "
+                           "side lot line; side entrances trigger a 1.9 m setback. "
+                           "No DC-waiver equivalent — Edmonton incentives differ from "
+                           "Ontario programs; verify per project.") if rs else
+                          "Verify zone-specific incentives per project.",
+        "source": "gis.edmonton.ca ZoningWebApp (live) + ZBL 20001, verified 2026-07-11",
+    }
+
+
 def detect_city(display_name):
     dn = display_name.lower()
     if "mississauga" in dn: return "Mississauga"
@@ -436,6 +520,7 @@ def detect_city(display_name):
     if "burlington" in dn: return "Burlington"
     if "oshawa" in dn: return "Oshawa"
     if "toronto" in dn: return "Toronto"
+    if "edmonton" in dn: return "Edmonton"
     return None
 
 def lookup(address):
@@ -483,6 +568,11 @@ def lookup(address):
         out["zoning"] = z
         out["engine"] = oshawa_rules(z)
         out["source"] = "Zoning: City of Oshawa Open Data ArcGIS (ZBL 60-94, live). Geocode: OSM."
+    elif city == "Edmonton":
+        z = edmonton_zoning(geo["lat"], geo["lon"])
+        out["zoning"] = z
+        out["engine"] = edmonton_rules(z)
+        out["source"] = "gis.edmonton.ca ZoningWebApp FeatureServer (live)"
     elif city == "Toronto":
         z = toronto_zoning(geo["lat"], geo["lon"])
         w = get_ward(geo["lat"], geo["lon"])
