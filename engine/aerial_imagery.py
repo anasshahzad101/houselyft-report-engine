@@ -145,6 +145,13 @@ SOURCES: dict[str, list[Source]] = {
     "burlington":    _chain(LIO_ONTARIO_CONTEXT),
     "oshawa":        _chain(LIO_ONTARIO_CONTEXT),
     "cambridge":     _chain(LIO_ONTARIO_CONTEXT),
+
+    # Edmonton: the city publicly serves Pictometry (EagleView) imagery -
+    # third-party licence, excluded per the licensing doctrine above. No
+    # verified open lot-scale source yet; resolves to nothing (or Mapbox
+    # when a token is configured) and fails loudly rather than shipping
+    # unlicensed imagery.
+    "edmonton":      _chain(),
 }
 
 
