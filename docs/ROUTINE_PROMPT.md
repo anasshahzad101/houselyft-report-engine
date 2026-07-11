@@ -13,8 +13,8 @@ If the token or a contact ID is missing, stop and do nothing.
 
 ## Safety rails (absolute)
 - Work only on the single contact named in the trigger. Never touch any other contact.
-- Email: send EXACTLY ONE internal notification per report, to <RECIPIENT_EMAIL>
-  and no one else. NEVER email the lead/homeowner. Never send SMS.
+- Email: NOT CONFIGURED YET. Do not send any email or SMS to anyone, ever,
+  until a recipient address is added to step 8 of this prompt.
 - Google Drive: write ONLY into folder 1_VjKsh864qsvPc1Jmv2cdIjZ_iUpWxoT.
   Never read, move, or delete anything else in Drive.
 - Never move pipeline stages, never delete anything.
@@ -48,15 +48,11 @@ If the token or a contact ID is missing, stop and do nothing.
 7. **Deliver to Drive** - upload the same PDF via the Google Drive connector into
    folder `1_VjKsh864qsvPc1Jmv2cdIjZ_iUpWxoT`, same filename. Capture the file link.
    If this fails: continue, and record "Drive upload failed" in a GHL note.
-8. **Internal email** - via the Gmail connector, send ONE email:
-   - To: <RECIPIENT_EMAIL>
-   - Subject: `New report ready: {Lead Name} - {Address}`
-   - Body: lead name, address, city, zone + max units one-liner, confidence tag,
-     the Drive link (if step 7 succeeded), and "PDF is attached to the contact in GHL."
-   - Attach the PDF if the connector supports it; otherwise links only.
-   If this fails: record "internal email failed" in a GHL note.
+8. **Internal email - DISABLED.** No recipient is configured yet. Skip this step
+   and send nothing. (When enabled, this step will send exactly one internal
+   email with the Drive link - the recipient line will be added here.)
 9. **Verify** - re-fetch the contact, confirm the file is on the field. End with a
-   one-line outcome summary covering all three deliveries.
+   one-line outcome summary covering the GHL and Drive deliveries.
 
 Failure isolation rule: steps 7 and 8 are extras - their failure must never undo
 or block step 6, and must always be recorded in a GHL note so nothing fails silently.
