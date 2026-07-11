@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Oswald';src:url('fonts/Oswald.ttf') format('truetype');font-weight:200 700;}
+@font-face{font-family:'Lato';src:url('fonts/Lato-Regular.ttf') format('truetype');font-weight:400;}
+@font-face{font-family:'Lato';src:url('fonts/Lato-Bold.ttf') format('truetype');font-weight:700;}
+body{zoom:0.94;}
+</style>
 <style>
   :root{--navy:#1b2a4a;--navy2:#26365c;--green:#3f7d33;--row:#f5f6f9;--line:#e4e7ee;--ink:#2a2f3a;--mut:#7a818f;--disc:#aeb6c4;}
   *{box-sizing:border-box;}
-  body{font-family:'Open Sans',Arial,sans-serif;color:var(--ink);font-size:9.8pt;line-height:1.55;margin:0;}
+  body{font-family:'Lato',Arial,sans-serif;color:var(--ink);font-size:9.8pt;line-height:1.55;margin:0;}
   h1,h2,h3,.os{font-family:'Oswald',Arial,sans-serif;}
   p{margin:7px 0;} ul{margin:7px 0;padding-left:18px;} li{margin:4px 0;} small{color:var(--mut);}
   .section{page-break-before:always;} .section.first{page-break-before:auto;} .section.flow{page-break-before:auto;}
@@ -21,10 +24,10 @@
   .wm .emblem:after{content:"";position:absolute;left:4px;right:4px;bottom:6px;height:7px;background:var(--navy);clip-path:polygon(0 100%,28% 30%,50% 70%,72% 10%,100% 100%);}
   .cover h1{font-family:'Oswald';font-weight:700;font-size:40pt;color:var(--navy);letter-spacing:1px;margin:50mm 0 14px;}
   .cover .addr{font-family:'Oswald';font-weight:600;font-size:19pt;color:var(--navy);}
-  .cover .addr span{display:block;font-family:'Open Sans';font-weight:400;font-size:12pt;color:#55607a;margin-top:6px;}
+  .cover .addr span{display:block;font-family:'Lato';font-weight:400;font-size:12pt;color:#55607a;margin-top:6px;}
   .cover .foot{margin-top:auto;font-size:7.6pt;color:var(--disc);}
   table{width:100%;border-collapse:collapse;margin:9px 0;font-size:9pt;}
-  td{padding:5px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
   tr:nth-child(even) td{background:var(--row);}
   table.kv td:first-child{background:var(--navy);color:#fff;font-weight:600;width:34%;border-bottom:2px solid #fff;}
   table.kv tr:nth-child(even) td:first-child{background:var(--navy);}
@@ -33,7 +36,7 @@
   .barhead{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:11pt;padding:8px 12px;text-align:center;}
   .imgrow{display:flex;gap:10px;margin:0 0 10px;}
   .imgbox{flex:1;height:150px;background:#eef0f4;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9aa2b2;font-size:8pt;}
-  .imgbox.tall{height:128px;} .imgbox .ic{font-size:20pt;line-height:1;margin-bottom:6px;color:#c2c8d4;}
+  .imgbox.tall{height:148px;} .imgbox .ic{font-size:20pt;line-height:1;margin-bottom:6px;color:#c2c8d4;}
   .grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
   .grid4 .imgbox{height:120px;}
   .steps{display:flex;gap:12px;margin:16px 0;}
@@ -41,8 +44,8 @@
   .step .sh{background:var(--green);color:#fff;text-align:center;padding:10px 6px;font-family:'Oswald';}
   .step .sh .n{font-size:8pt;letter-spacing:2px;opacity:.9;display:block;}
   .step .sh .t{font-size:11pt;font-weight:700;}
-  .step ul{padding:8px 10px 9px 24px;margin:0;font-size:8.3pt;} .step li{margin:3px 0;}
-  .cell{border:1px solid var(--line);background:var(--row);padding:9px 13px;margin:8px 0;}
+  .step ul{padding:11px 10px 13px 24px;margin:0;font-size:8.3pt;} .step li{margin:5px 0;}
+  .cell{border:1px solid var(--line);background:var(--row);padding:11px 13px;margin:9px 0;}
   .cell .ct{font-family:'Oswald';font-weight:600;color:var(--navy);margin-bottom:5px;font-size:10.5pt;}
   .opt{margin:13px 0;border:1px solid var(--line);}
   .opt .oh{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:10.5pt;padding:7px 12px;}
@@ -280,7 +283,7 @@
   <h3>The House Lyft Advantage</h3>
   <p>We designed our Phase 2 where over the next 30 days, our lending partners, planning and grants and incentives consultants will compile everything simultaneously into a single next step option for you. This gives you everything required to accurately plan and build your roadmap.</p>
   <p>In addition, if you decide to move forward with the project and use one of our approved and vetted builder partners, they will credit you the full cost of your Phase 2 work right back to your construction balance on Day 1.</p>
-  <div class="cta">
+  <div class="cta" style="page-break-before:always;">
     Your total investment for the Phase 2 blueprint is a single flat fee of<br><span class="fee">$5,000.00</span>
     <div style="margin-top:10px;font-size:8.8pt;">Getting started is simple:</div>
     <ol style="margin:6px 0 0;font-size:8.8pt;padding-left:18px;">
