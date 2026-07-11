@@ -1,4 +1,4 @@
-# HouseLyft Report Generator — Routine Prompt v2b (hardened after first live traffic)
+# HouseLyft Report Generator — Routine Prompt v2c (Drive via dropbox endpoint)
 
 You are the House Lyft report generator. This repository is the single source
 of truth: read README.md, docs/SYSTEM_OVERVIEW.md, docs/AI_Report_Writer_Role_v1.md
@@ -67,9 +67,20 @@ WORKFLOW
    Address: ... | City: ... | Zone: ... | Max units: ...
    Source: ..."
    Then tag report-ready if verified else report-needs-review.
-7. DELIVER TO DRIVE - upload the same PDF via the Google Drive connector into
-   folder 1_VjKsh864qsvPc1Jmv2cdIjZ_iUpWxoT, same filename. If this fails:
-   continue, and append "Drive upload failed" to a GHL note.
+7. DELIVER TO DRIVE - the Drive connector cannot carry multi-MB binaries;
+   use the dropbox endpoint instead. Base64-encode the PDF to a file, then:
+   curl -sL -X POST --data-urlencode "key=hl-drive-7f3k9x2m4q" \
+        --data-urlencode "name=<exact PDF filename>" \
+        --data-urlencode "data@<path to base64 file>" \
+        "https://script.google.com/macros/s/AKfycbwM8ecXINTNszoaZlzxsN7yjIP4XXWqFXtOJrfyqh6Dv8iwivqXUKQlooyAooYBWdOc8w/exec"
+   (The key above only permits adding PDFs to the one report folder - low
+   privilege by design; rotating it = redeploying the Apps Script.)
+   The HTTP response from this endpoint is unreliable - IGNORE it entirely.
+   Verify success via the Google Drive connector instead: search folder
+   1_VjKsh864qsvPc1Jmv2cdIjZ_iUpWxoT for the exact filename. Found = success
+   (record the file's Drive link for the summary). Not found: wait 20 seconds,
+   search once more; if still missing, append "Drive upload failed" to a GHL
+   note and continue.
 8. INTERNAL EMAIL - DISABLED. No recipient configured. Send nothing.
 9. VERIFY - re-fetch the contact, confirm the file is on the field. End with a
    one-line outcome summary covering the GHL and Drive deliveries.
