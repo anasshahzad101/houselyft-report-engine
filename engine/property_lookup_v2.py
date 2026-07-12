@@ -29,17 +29,35 @@ MISS_ZONING = ("https://services6.arcgis.com/hM5ymMLbxIyWTjn2/ArcGIS/rest/servic
 MISS_FOURPLEX_BASE_ZONES = {"R1","R2","R3","R4","R5","R6","R7","R8","R9","R10","R11",
                             "R15","R16","RM1","RM2","RM7"}
 
-def mississauga_zoning(lat, lon):
-    params = urllib.parse.urlencode({
-        "geometry": f"{lon},{lat}", "geometryType": "esriGeometryPoint",
-        "inSR": "4326", "spatialRel": "esriSpatialRelIntersects",
-        "outFields": "ZONE_CODE,ZONE_DESCRIPTION,ZONE_CATEGORY,BASE_ZONE_DESIGNATION,"
-                     "EXCEPTION_ZONE_NUMBER,GREENLANDS_OVERLAY,BYLAW,HOLDING_PROVISION",
-        "returnGeometry": "false", "f": "json"})
-    req = urllib.request.Request(f"{MISS_ZONING}?{params}", headers={"User-Agent": UA})
+def _miss_query(lat, lon, distance=None):
+    p = {"geometry": f"{lon},{lat}", "geometryType": "esriGeometryPoint",
+         "inSR": "4326", "spatialRel": "esriSpatialRelIntersects",
+         "outFields": "ZONE_CODE,ZONE_DESCRIPTION,ZONE_CATEGORY,BASE_ZONE_DESIGNATION,"
+                      "EXCEPTION_ZONE_NUMBER,GREENLANDS_OVERLAY,BYLAW,HOLDING_PROVISION",
+         "returnGeometry": "false", "f": "json"}
+    if distance:
+        p["distance"] = distance
+        p["units"] = "esriSRUnit_Meter"
+    req = urllib.request.Request(f"{MISS_ZONING}?{urllib.parse.urlencode(p)}",
+                                 headers={"User-Agent": UA})
     with urllib.request.urlopen(req, timeout=20) as r:
-        out = json.load(r)
-    f = out.get("features", [])
+        return json.load(r).get("features", [])
+
+def mississauga_zoning(lat, lon):
+    # Exact-point query first. Geocoded coordinates sometimes land in a road
+    # allowance or a sliver gap between zoning polygons and return nothing; in
+    # that case escalate a small search buffer and take the majority zone found
+    # (the parcel that surrounds the point), so a good address is not lost to a
+    # few metres of geocode drift.
+    f = _miss_query(lat, lon)
+    if not f:
+        for d in (20, 40):
+            f = _miss_query(lat, lon, distance=d)
+            if f:
+                codes = [x["attributes"].get("ZONE_CODE") for x in f]
+                top = max(set(codes), key=codes.count)
+                f = [x for x in f if x["attributes"].get("ZONE_CODE") == top]
+                break
     if not f:
         return None
     a = f[0]["attributes"]
