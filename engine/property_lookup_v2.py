@@ -212,6 +212,8 @@ OAKVILLE_1414 = ("https://maps.oakville.ca/oakgis/rest/services/SBS/"
                  "Zoning_By_law_2014_014/FeatureServer/10")
 OAKVILLE_2009 = ("https://maps.oakville.ca/oakgis/rest/services/SBS/"
                  "Zoning_By_law_2009_189/FeatureServer/4")
+OAKVILLE_PARCEL = ("https://maps.oakville.ca/oakgis/rest/services/SBS/"
+                   "Parcel_Address/FeatureServer/0")
 
 def _oakville_query(url, lat, lon):
     params = urllib.parse.urlencode({
@@ -225,13 +227,52 @@ def _oakville_query(url, lat, lon):
     f = out.get("features", [])
     return f[0]["attributes"] if f else None
 
-def oakville_zoning(lat, lon):
-    """Oakville dual-bylaw: ZBL 2014-014 (south of Dundas), legacy 2009-189 (North Oakville)."""
-    a = _oakville_query(OAKVILLE_1414, lat, lon)
-    bylaw = "Oakville ZBL 2014-014 (as amended by 2024-053/054/111)"
+def _oakville_parcel_centroid(address):
+    """OSM often geocodes to the road centreline, which lands in the gap between
+    zoning polygons (a road is not zoned) and returns no zone. Re-anchor to the
+    Town's own parcel record: match ADDRESS on the Parcel_Address layer and
+    return the parcel-polygon centroid. Returns (lat, lon) or None."""
+    if not address:
+        return None
+    street = address.split(",")[0].strip().upper()      # "1251 BRILLINGER STREET"
+    toks = street.split()
+    if len(toks) < 2 or not toks[0][0].isdigit():
+        return None
+    like = f"{toks[0]} {toks[1]}%"                       # "1251 BRILLINGER%"
+    where = f"ADDRESS LIKE '{like.replace(chr(39), chr(39)*2)}'"
+    params = urllib.parse.urlencode({
+        "where": where, "outFields": "ADDRESS", "returnGeometry": "true",
+        "outSR": "4326", "resultRecordCount": "1", "f": "json"})
+    try:
+        req = urllib.request.Request(f"{OAKVILLE_PARCEL}/query?{params}",
+                                     headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            f = json.load(r).get("features", [])
+        rings = (f[0].get("geometry") or {}).get("rings") if f else None
+        if not rings:
+            return None
+        pts = rings[0]
+        return (sum(p[1] for p in pts) / len(pts),
+                sum(p[0] for p in pts) / len(pts))
+    except Exception:
+        return None
+
+def oakville_zoning(lat, lon, address=None):
+    """Oakville dual-bylaw: ZBL 2014-014 (south of Dundas), legacy 2009-189 (North Oakville).
+    Falls back to the parcel-address centroid when the geocoded point misses every
+    zoning polygon (typically a road-centreline geocode)."""
+    def _resolve(la, lo):
+        a = _oakville_query(OAKVILLE_1414, la, lo)
+        bl = "Oakville ZBL 2014-014 (as amended by 2024-053/054/111)"
+        if not a:
+            a = _oakville_query(OAKVILLE_2009, la, lo)
+            bl = "Oakville ZBL 2009-189 (North Oakville)"
+        return a, bl
+    a, bylaw = _resolve(lat, lon)
     if not a:
-        a = _oakville_query(OAKVILLE_2009, lat, lon)
-        bylaw = "Oakville ZBL 2009-189 (North Oakville)"
+        c = _oakville_parcel_centroid(address)
+        if c:
+            a, bylaw = _resolve(*c)
     if not a:
         return None
     return {"zone": a.get("ZONE"), "zone_name": a.get("CLASS"),
@@ -549,7 +590,7 @@ def lookup(address):
         out["engine"] = markham_rules(z)
         out["source"] = "Zoning + heritage: City of Markham ArcGIS (live). Geocode: OSM."
     elif city == "Oakville":
-        z = oakville_zoning(geo["lat"], geo["lon"])
+        z = oakville_zoning(geo["lat"], geo["lon"], address=address)
         out["zoning"] = z
         out["engine"] = oakville_rules(z)
         out["source"] = "Zoning: Town of Oakville GIS (ZBL 2014-014 + 2009-189 fallback, live). Geocode: OSM."
