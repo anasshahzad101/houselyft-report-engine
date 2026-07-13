@@ -186,9 +186,40 @@ def _get(url: str) -> bytes:
     return urllib.request.urlopen(req, timeout=TIMEOUT).read()
 
 
+# --- hard monthly cap for the paid Mapbox fallback -------------------------
+# The free tier is 50,000 images/month. We stop far below that so a charge is
+# impossible. The counter lives in the Apps Script dropbox (persists across
+# cloud runs). FAIL-CLOSED: any error checking or bumping the counter means we
+# skip Mapbox entirely rather than risk an uncounted paid call.
+MAPBOX_MONTHLY_CAP = int(os.environ.get("MAPBOX_MONTHLY_CAP", "10000"))
+_DROPBOX_URL = os.environ.get("HL_DROPBOX_URL", "")
+_DROPBOX_KEY = os.environ.get("HL_DROPBOX_KEY", "")
+
+
+def _mapbox_budget_ok(n: int = 1) -> bool:
+    """Reserve n Mapbox images this month. True only if under the cap AND the
+    counter was successfully incremented. Any failure returns False."""
+    if not (_DROPBOX_URL and _DROPBOX_KEY):
+        return False
+    try:
+        import json as _json
+        from datetime import datetime, timezone
+        month = datetime.now(timezone.utc).strftime("%Y%m")
+        q = urllib.parse.urlencode({"action": "mapcount", "key": _DROPBOX_KEY,
+                                    "month": month, "n": n, "cap": MAPBOX_MONTHLY_CAP})
+        with urllib.request.urlopen(f"{_DROPBOX_URL}?{q}", timeout=15) as r:
+            out = _json.loads(r.read().decode())
+        return bool(out.get("ok") and out.get("allowed"))
+    except Exception:
+        return False
+
+
 def _fetch(src: Source, x: float, y: float, half_m: float, px: int,
            lat: float = 0.0, lon: float = 0.0) -> bytes:
     if src.kind == "mapbox":
+        if not _mapbox_budget_ok(1):
+            raise RuntimeError("Mapbox monthly cap reached or counter "
+                               "unavailable - skipping paid fallback (fail-closed)")
         token = os.environ["MAPBOX_TOKEN"]
         zoom = max(1.0, min(20.0,
                    math.log2(156543.03392 * math.cos(math.radians(lat))
