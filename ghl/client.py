@@ -148,3 +148,26 @@ def set_text_field(contact_id, value, field_id=FOLDER_LINK_FIELD_ID):
     Used to store the Drive folder link (link-only model - no PDF in GHL)."""
     return _send("PUT", f"/contacts/{contact_id}",
                  {"customFields": [{"id": field_id, "value": value}]})
+
+
+# ---- Drive dropbox upload (proven body-POST pattern, lands inside a folder) -----
+
+DROPBOX_URL = "https://script.google.com/macros/s/AKfycbwYLhb0y0nASFH4CPucM3X8xB00QQEl-fZ0o1liogfIbXXfMqApOYPbxMw91QFvxxtpvw/exec"
+DROPBOX_KEY = "hl-drive-7f3k9x2m4q"
+
+def drive_upload(pdf_path, folder_id, name=None):
+    """Upload a PDF into a specific Drive folder via the Apps Script dropbox.
+    Sends base64 in the RAW POST BODY (params in query string) - the only
+    transport that survives Apps Script's 302 redirect intact. Returns the
+    file's Drive URL, or raises on failure."""
+    import base64 as _b64, urllib.parse as _up, urllib.request as _ur, json as _json
+    name = name or os.path.basename(pdf_path)
+    b64 = _b64.b64encode(open(pdf_path, "rb").read()).decode()
+    qs = _up.urlencode({"key": DROPBOX_KEY, "name": name, "folderId": folder_id})
+    req = _ur.Request(f"{DROPBOX_URL}?{qs}", data=b64.encode(),
+                      headers={"Content-Type": "text/plain"})
+    with _ur.urlopen(req, timeout=180) as r:
+        out = _json.loads(r.read().decode())
+    if not out.get("ok"):
+        raise RuntimeError(f"dropbox upload failed: {out.get('err')}")
+    return out["url"]
