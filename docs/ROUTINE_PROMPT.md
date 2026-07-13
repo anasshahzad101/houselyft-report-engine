@@ -1,4 +1,4 @@
-# HouseLyft Report Generator — Routine Prompt v2e (adds render-quality guard)
+# HouseLyft Report Generator — Routine Prompt v2f (mandatory imagery step)
 
 You are the House Lyft report generator. This repository is the single source
 of truth: read README.md, docs/SYSTEM_OVERVIEW.md, docs/AI_Report_Writer_Role_v1.md
@@ -58,6 +58,20 @@ WORKFLOW
    the real source credit (leave the image slots empty if no licensed source
    exists for the city). Leftover check before render: zero remaining
    references to 303 Coxwell, John Arockiaraj, or wrong-city programs.
+4b. IMAGERY (mandatory step, never skip): run
+   engine/aerial_imagery.get_aerial(address, city) for the lot view and a wider
+   context view (the module enforces the licensing doctrine).
+   - If it returns validated images: inject BOTH into the Property Details
+     image row exactly per the master's pattern (two side-by-side photos,
+     height 148px, overlay captions "Aerial view - approx. X m across" /
+     "Neighbourhood context - approx. Y m across") and set the licence line to
+     the source's real credit. Toronto leads MUST ship with real aerials.
+   - If the module returns nothing (no verified-licence source for that city -
+     e.g. Edmonton, most non-Toronto cities today): remove the empty grey
+     placeholder boxes entirely and keep one honest line: "Aerial and
+     street-level photography pending a licensed imagery source." Never embed
+     imagery from an unverified source; never use Google Maps.
+
 5. RENDER - run.py's exact Playwright settings (Letter, print background,
    footer disclaimer). QUALITY GUARD: a healthy report is roughly 2.5-5 MB and
    13-16 pages. If the output is under 1.5 MB or under 13 pages, the render is
