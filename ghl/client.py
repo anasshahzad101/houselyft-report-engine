@@ -137,3 +137,14 @@ if __name__ == "__main__":
         print("address:", contact_address(c))
         for o in opportunities_for(cs[0]["id"]):
             print("opp:", o["id"], "trigger-stage:", in_trigger_stage(o))
+
+
+# ---- text custom field writer (for the Feasibility Report Link) ----------------
+
+FOLDER_LINK_FIELD_ID = "eUGAPkugk1U4FHNJDP9Q"
+
+def set_text_field(contact_id, value, field_id=FOLDER_LINK_FIELD_ID):
+    """Write a plain text/URL value into a contact custom field.
+    Used to store the Drive folder link (link-only model - no PDF in GHL)."""
+    return _send("PUT", f"/contacts/{contact_id}",
+                 {"customFields": [{"id": field_id, "value": value}]})
