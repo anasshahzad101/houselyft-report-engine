@@ -65,7 +65,13 @@ def get_ward(lat, lon):
     if not feats:
         return {"ward_no": None, "ward_name": None}
     a = feats[0]["attributes"]
-    return {"ward_no": str(a.get("AREA_SHORT_CODE")),
+    # AREA_SHORT_CODE arrives zero-padded ("09"); normalise to the bare ward
+    # number so both display and SIXPLEX_WARDS membership (which uses "4","9",
+    # ...) work for single-digit wards. Non-numeric codes pass through as-is.
+    code = a.get("AREA_SHORT_CODE")
+    ward_no = str(int(code)) if str(code).strip().lstrip("-").isdigit() else (
+        str(code) if code is not None else None)
+    return {"ward_no": ward_no,
             "ward_name": a.get("AREA_NAME")}
 
 
