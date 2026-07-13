@@ -59,13 +59,14 @@ def process_contact(contact_id, html_path, pdf_name, move_to_stage=None):
         return {"status": "skipped", "reason": "no address"}
 
     z = lookup(addr)
-    verified = "No adapter" not in str(z.get("engine", {}).get("note", ""))
+    eng = z.get("engine", {}) or {}
+    zone_found = bool((z.get("zoning") or {}).get("zone"))
+    verified = zone_found and "No adapter" not in str(eng.get("note", ""))
 
     out_pdf = os.path.join(ROOT, pdf_name)
     render_pdf(html_path, out_pdf)
     up = client.upload_report(contact_id, out_pdf)
 
-    eng = z.get("engine", {})
     summary = (f"{VERIFIED_NOTE if verified else REVIEW_NOTE}\n"
                f"Address: {addr}\nCity: {z.get('city')}  |  "
                f"Zone: {(z.get('zoning') or {}).get('zone')}  |  "
