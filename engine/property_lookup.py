@@ -16,7 +16,7 @@ SELF-PROVISIONING:
     Data (CKAN, Open Government Licence - Toronto) and cached beside this
     file. Refreshing = delete the file.
 """
-import json, os, urllib.parse, urllib.request
+import json, os, re, urllib.parse, urllib.request
 
 from shapely.geometry import shape, Point
 from shapely.strtree import STRtree
@@ -43,13 +43,54 @@ def _http_json(url):
 
 # ---- step 1: geocode --------------------------------------------------------
 
+# Nominatim is picky about spelled-out directionals and trailing postal codes:
+# e.g. "5308 35 Avenue Northwest, Edmonton, Alberta, T6L 1V8" returns nothing,
+# while "5308 35 Avenue NW, Edmonton, Alberta" resolves cleanly. We keep the
+# caller's address for display but try progressively-normalized query variants.
+_DIR_ABBR = [(r"\bNorthwest\b", "NW"), (r"\bNortheast\b", "NE"),
+             (r"\bSouthwest\b", "SW"), (r"\bSoutheast\b", "SE"),
+             (r"\bNorth\b", "N"), (r"\bSouth\b", "S"),
+             (r"\bEast\b", "E"), (r"\bWest\b", "W")]
+_CA_POSTAL = re.compile(r"\b[A-Za-z]\d[A-Za-z]\s*\d[A-Za-z]\d\b")
+
+
+def _tidy(s):
+    s = re.sub(r"\s{2,}", " ", s)
+    s = re.sub(r"\s*,\s*,", ",", s)
+    return s.strip().strip(",").strip()
+
+
+def _geocode_candidates(address):
+    """Ordered, de-duplicated query variants to try against Nominatim."""
+    cands, seen = [], set()
+
+    def add(c):
+        c = _tidy(c)
+        if c and c.lower() not in seen:
+            seen.add(c.lower())
+            cands.append(c)
+
+    abbr = address
+    for pat, repl in _DIR_ABBR:
+        abbr = re.sub(pat, repl, abbr, flags=re.IGNORECASE)
+
+    for base in (address, abbr):
+        add(base)
+        add(_CA_POSTAL.sub("", base))          # drop trailing postal code
+    for base in list(cands):
+        if "canada" not in base.lower():
+            add(base + ", Canada")             # nudge the country
+    return cands
+
+
 def geocode(address):
-    q = urllib.parse.urlencode({"q": address, "format": "json", "limit": 1})
-    data = _http_json("https://nominatim.openstreetmap.org/search?" + q)
-    if not data:
-        raise LookupError("Could not geocode: " + address)
-    return {"matched": data[0]["display_name"],
-            "lat": float(data[0]["lat"]), "lon": float(data[0]["lon"])}
+    for q in _geocode_candidates(address):
+        params = urllib.parse.urlencode({"q": q, "format": "json", "limit": 1})
+        data = _http_json("https://nominatim.openstreetmap.org/search?" + params)
+        if data:
+            return {"matched": data[0]["display_name"],
+                    "lat": float(data[0]["lat"]), "lon": float(data[0]["lon"])}
+    raise LookupError("Could not geocode: " + address)
 
 
 # ---- step 2: ward (live ArcGIS, field names probed 2026-07-10) --------------
