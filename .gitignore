@@ -8,3 +8,19 @@ outputs/
 # report engine
 *.pdf
 zoning_area.geojson
+
+# Per-lead generated reports + transforms: written fresh on every routine run,
+# they embed homeowner PII (name, phone, email) and ~1MB of base64 imagery.
+# Never commit live-lead data. Tracked demo templates/xforms and the master are
+# unaffected — .gitignore does not untrack already-committed files.
+/templates/report_*.html
+/scripts/xform_*.py
+!/templates/report_houselyft_master.html
+!/templates/report_cambridge.html
+!/templates/report_saanich.html
+!/templates/report_vancouver.html
+!/templates/report_vancouver_commercial.html
+!/scripts/xform_cambridge.py
+!/scripts/xform_saanich.py
+!/scripts/xform_van.py
+!/scripts/xform_van_comm.py
