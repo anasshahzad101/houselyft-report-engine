@@ -171,3 +171,32 @@ def drive_upload(pdf_path, folder_id, name=None):
     if not out.get("ok"):
         raise RuntimeError(f"dropbox upload failed: {out.get('err')}")
     return out["url"]
+
+
+# ---- internal email via the same Apps Script web app (GmailApp send) ------------
+# The claude.ai Gmail connector is draft-only, so the routine's internal
+# notification cannot be auto-sent through it. This helper reuses the SAME Apps
+# Script web app + key as drive_upload to actually send mail: the script's
+# `action=sendEmail` branch calls GmailApp.sendEmail from the account that owns
+# the web app. Same proven transport as the upload (fields in the query string,
+# body as the raw text POST body) so it survives Apps Script's 302 redirect.
+# Optionally attaches a Drive file already uploaded via drive_upload, by its id.
+
+def send_email(to, subject, body, attachment_file_id=None):
+    """Send ONE internal email through the Apps Script web app. Returns the
+    parsed response dict on success, raises RuntimeError on failure. `to` is a
+    single address string. `attachment_file_id` is a Drive file id (the PDF
+    already sitting in the client folder) — attached server-side, no re-upload."""
+    import urllib.parse as _up, urllib.request as _ur, json as _json
+    params = {"action": "sendEmail", "key": DROPBOX_KEY, "to": to, "subject": subject}
+    if attachment_file_id:
+        params["fileId"] = attachment_file_id
+    qs = _up.urlencode(params)
+    req = _ur.Request(f"{DROPBOX_URL}?{qs}",
+                      data=(body or "").encode("utf-8"),
+                      headers={"Content-Type": "text/plain; charset=utf-8"})
+    with _ur.urlopen(req, timeout=90) as r:
+        out = _json.loads(r.read().decode())
+    if not out.get("ok"):
+        raise RuntimeError(f"send_email failed: {out.get('err')}")
+    return out
