@@ -171,3 +171,22 @@ def drive_upload(pdf_path, folder_id, name=None):
     if not out.get("ok"):
         raise RuntimeError(f"dropbox upload failed: {out.get('err')}")
     return out["url"]
+
+
+# ---- internal email via the Apps Script (GmailApp) - connector-independent ----
+
+def send_notice(to_addr, subject, body):
+    """Send a plain internal email through the Apps Script dropbox (runs as the
+    script owner's Google account via GmailApp - works in unattended runs, no
+    Gmail connector/scope needed). Params in query string, body in POST body.
+    Returns True on success; never raises (email is a non-blocking extra)."""
+    import urllib.parse as _up, urllib.request as _ur, json as _json
+    try:
+        qs = _up.urlencode({"action": "sendmail", "key": DROPBOX_KEY,
+                            "to": to_addr, "subject": subject})
+        req = _ur.Request(f"{DROPBOX_URL}?{qs}", data=body.encode("utf-8"),
+                          headers={"Content-Type": "text/plain; charset=utf-8"})
+        with _ur.urlopen(req, timeout=30) as r:
+            return bool(_json.loads(r.read().decode()).get("ok"))
+    except Exception:
+        return False
