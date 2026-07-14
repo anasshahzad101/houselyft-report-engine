@@ -152,7 +152,7 @@ def set_text_field(contact_id, value, field_id=FOLDER_LINK_FIELD_ID):
 
 # ---- Drive dropbox upload (proven body-POST pattern, lands inside a folder) -----
 
-DROPBOX_URL = "https://script.google.com/macros/s/AKfycbwYLhb0y0nASFH4CPucM3X8xB00QQEl-fZ0o1liogfIbXXfMqApOYPbxMw91QFvxxtpvw/exec"
+DROPBOX_URL = "https://script.google.com/macros/s/AKfycbz8-TqOYUIjCtSyoB-UjAuLAG4If90-lXhwTbQU-1Ok3v9vm06GMvDUlmXp14hkZU4iXA/exec"
 DROPBOX_KEY = "hl-drive-7f3k9x2m4q"
 
 def drive_upload(pdf_path, folder_id, name=None):
