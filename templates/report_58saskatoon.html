@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face{font-family:'Oswald';src:url('fonts/Oswald.ttf') format('truetype');font-weight:200 700;}
+@font-face{font-family:'Lato';src:url('fonts/Lato-Regular.ttf') format('truetype');font-weight:400;}
+@font-face{font-family:'Lato';src:url('fonts/Lato-Bold.ttf') format('truetype');font-weight:700;}
+body{zoom:0.94;}
+</style>
+<style>
+  :root{--navy:#1b2a4a;--navy2:#26365c;--green:#3f7d33;--row:#f5f6f9;--line:#e4e7ee;--ink:#2a2f3a;--mut:#7a818f;--disc:#aeb6c4;}
+  *{box-sizing:border-box;}
+  body{font-family:'Lato',Arial,sans-serif;color:var(--ink);font-size:9.8pt;line-height:1.55;margin:0;}
+  h1,h2,h3,.os{font-family:'Oswald',Arial,sans-serif;}
+  p{margin:7px 0;} ul{margin:7px 0;padding-left:18px;} li{margin:4px 0;} small{color:var(--mut);}
+    .co-green{border-left:4px solid #2f7d46;background:#edf4ed;padding:12px 16px;margin:14px 0 18px;font-size:9.4pt;}
+  .co-green .ct2{font-family:'Oswald';font-weight:600;color:#2f7d46;font-size:11pt;margin-bottom:4px;}
+  .co-amber{border-left:4px solid #e0a23d;background:#fff6e8;padding:11px 16px;margin:16px 0 0;font-size:9pt;color:#5a4a1f;}
+  .co-amber .sub{color:#a4761c;}
+  .cmp{width:100%;border-collapse:collapse;margin:6px 0 18px;font-size:9pt;}
+  .cmp th{text-align:left;padding:8px 10px;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);background:#f4f6f9;}
+  .cmp td{padding:8px 10px;border-bottom:1px solid var(--line);background:#fff;}
+  .cmp td.g{color:#2f7d46;font-weight:700;}
+  .cmp td.n{color:#9aa2b2;}
+  .twocard{display:flex;gap:14px;margin:8px 0 18px;}
+  .card2{flex:1;border:1px solid var(--line);background:#fafbfc;padding:12px 14px;font-size:9.2pt;}
+  .section{page-break-before:always;} .section.first{page-break-before:auto;} .section.flow{page-break-before:auto;}
+  h2.sec{font-family:'Oswald';font-weight:700;color:var(--navy);font-size:19pt;letter-spacing:.3px;margin:0 0 12px;}
+  h3{font-family:'Oswald';font-weight:600;color:var(--navy2);font-size:11.5pt;margin:15px 0 5px;}
+  .cover{height:238mm;display:flex;flex-direction:column;align-items:center;text-align:center;page-break-after:always;}
+  .wm{font-family:'Oswald';font-weight:700;font-size:20pt;letter-spacing:7px;margin-top:58mm;display:flex;align-items:center;gap:10px;}
+  .wm .a{color:var(--navy);} .wm .b{color:#8b93a3;}
+  .wm .emblem{width:26px;height:26px;border:3px solid var(--navy);border-radius:50%;display:inline-block;position:relative;}
+  .wm .emblem:after{content:"";position:absolute;left:4px;right:4px;bottom:6px;height:7px;background:var(--navy);clip-path:polygon(0 100%,28% 30%,50% 70%,72% 10%,100% 100%);}
+  .cover h1{font-family:'Oswald';font-weight:700;font-size:40pt;color:var(--navy);letter-spacing:1px;margin:50mm 0 14px;}
+  .cover .addr{font-family:'Oswald';font-weight:600;font-size:19pt;color:var(--navy);}
+  .cover .addr span{display:block;font-family:'Lato';font-weight:400;font-size:12pt;color:#55607a;margin-top:6px;}
+  .cover .foot{margin-top:auto;font-size:7.6pt;color:var(--disc);}
+  table{width:100%;border-collapse:collapse;margin:9px 0;font-size:9pt;}
+  td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--row);}
+  table.kv td:first-child{background:var(--navy);color:#fff;font-weight:600;width:34%;border-bottom:2px solid #fff;}
+  table.kv tr:nth-child(even) td:first-child{background:var(--navy);}
+  table.kv td:last-child{background:var(--row);}
+  table.g th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:600;font-size:8.7pt;}
+  .barhead{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:11pt;padding:8px 12px;text-align:center;}
+  .imgrow{display:flex;gap:10px;margin:0 0 10px;}
+  .imgbox{flex:1;height:150px;background:#eef0f4;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9aa2b2;font-size:8pt;}
+  .imgbox.tall{height:148px;} .imgbox .ic{font-size:20pt;line-height:1;margin-bottom:6px;color:#c2c8d4;}
+  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  .grid4 .imgbox{height:120px;}
+  .steps{display:flex;gap:12px;margin:16px 0;}
+  .step{flex:1;border:1px solid var(--line);border-radius:3px;overflow:hidden;}
+  .step .sh{background:var(--green);color:#fff;text-align:center;padding:10px 6px;font-family:'Oswald';}
+  .step .sh .n{font-size:8pt;letter-spacing:2px;opacity:.9;display:block;}
+  .step .sh .t{font-size:11pt;font-weight:700;}
+  .step ul{padding:11px 10px 13px 24px;margin:0;font-size:8.3pt;} .step li{margin:5px 0;}
+  .cell{border:1px solid var(--line);background:var(--row);padding:11px 13px;margin:9px 0;}
+  .cell .ct{font-family:'Oswald';font-weight:600;color:var(--navy);margin-bottom:5px;font-size:10.5pt;}
+  .opt{margin:13px 0;border:1px solid var(--line);}
+  .opt .oh{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:10.5pt;padding:7px 12px;}
+  .opt .ob{display:flex;gap:14px;padding:12px;align-items:center;}
+  .opt .massing{width:215px;flex:0 0 215px;}
+  .opt .massing img{width:100%;height:auto;display:block;}
+  .photorow{display:flex;gap:10px;margin-top:10px;}
+  .photorow img{width:50%;height:auto;object-fit:cover;border:1px solid var(--line);display:block;}
+  .opt .od{flex:1;font-size:8.9pt;}
+  .ts{border:1px solid var(--line);margin:10px 0;}
+  .ts .d{display:flex;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line);} .ts .d:last-child{border-bottom:none;}
+  .ts .dt{flex:0 0 150px;font-family:'Oswald';font-weight:600;color:#b5611f;font-size:9pt;} .ts .dx{flex:1;font-size:8.8pt;}
+  .cta{background:var(--navy);color:#fff;padding:15px 17px;border-radius:4px;margin-top:12px;}
+  .cta .fee{font-family:'Oswald';font-weight:700;font-size:16pt;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="wm"><span class="emblem"></span><span class="a">HOUSE</span><span class="b">LYFT</span></div>
+  <h1>PROPERTY REPORT</h1>
+  <div class="addr">58 Saskatoon Drive<span>Etobicoke (Toronto), ON</span></div>
+  <div class="foot">Preliminary analysis only. This report is not a planning opinion, legal advice, or development permit.<br>Verify all information before making any investment decision.</div>
+</div>
+
+<!-- WHY -->
+<div class="section first">
+  <h2 class="sec">Why this report matters…</h2>
+  <p>According to Federal Data, Canadian property owners are currently sitting on an unprecedented $5.22 Trillion in untapped real estate equity.</p>
+  <p>It is the largest concentrated pile of unused wealth in our country's history!</p>
+  <p>The information inside this report has been compiled to give you a data-backed opinion on the development viability of your property before you expose your hard-earned capital to risk.</p>
+  <p>It is designed to help you identify opportunities, unlock trapped equity, generate cashflow, and build wealth by optimizing your property's usage and potential.</p>
+  <p>This Initial Report:</p>
+  <ul>
+    <li><strong>Examines Your Local Zoning Bylaw:</strong> Find out what your lot bylaws legally allow you to build.</li>
+    <li><strong>Identifies Government Grants and Subsidies:</strong> Map out your property against active municipal, provincial, and federal grant programs.</li>
+    <li><strong>Highlights Specialized Financing Frameworks:</strong> Show you possible ways to structure your project's economics to qualify for low-interest, government-backed financing, whenever possible.</li>
+  </ul>
+  <p>This is the first part of a multi-step plan to help you transform your property and reach your development goals.</p>
+</div>
+
+<!-- HOW TO USE -->
+<div class="section">
+  <h2 class="sec">How to use this report…</h2>
+  <p>Think of this report as a high-level zoning compass. It tells you what the current regulations allow you to build on your property and the possible ways you can use that to your advantage.</p>
+  <p>It's the first step in a process that takes your property from its current state to maximizing its full potential.</p>
+  <div class="steps">
+    <div class="step"><div class="sh"><span class="n">STEP 1</span><span class="t">FREE PROPERTY REPORT</span></div>
+      <ul><li>What you're allowed to build under current zoning</li><li>Grants &amp; incentives that may be available</li><li>Financing options available</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 2</span><span class="t">BUILDER READY PACKAGE™</span></div>
+      <ul><li>Design Feasibility Report</li><li>Financial Feasibility Report</li><li>Grants &amp; Incentives Report</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 3</span><span class="t">BUILDER MATCHING™</span></div>
+      <ul><li>Matched with a trusted Builder Partner suited to your project &amp; market</li><li>They lead detailed design &amp; permitting</li><li>Through construction &amp; final occupancy</li></ul></div>
+  </div>
+  <p>Once your Builder Ready Package™ is complete, we will match you with one of our trusted Builder Partners who is best suited for your project and market. Your builder will then lead the project through detailed design, permitting, construction, and final occupancy.</p>
+  <p>It's important to remember that this report is compiled using publicly available information. Physical site inspections, full architectural and engineering drawings, and other studies have yet to be completed and will come during Phase 3.</p>
+</div>
+
+<!-- ADVANTAGE -->
+<div class="section">
+  <h2 class="sec">The House Lyft Advantage</h2>
+  <p>House Lyft helps Canadian homeowners unlock the equity trapped in their property and turn it into lasting income — without navigating the development maze alone.</p>
+  <p>We are the orchestrator of one coordinated path. We confirm what your property can become, build your <strong>Builder Ready Package™</strong> — the design, financial, and incentive feasibility that turns an idea into an executable plan — and then match you with one of our trusted, vetted <strong>Builder Partners</strong>, who leads detailed design, permitting, and construction through to completion.</p>
+  <p>Instead of stitching together a dozen disconnected vendors — surveyors, designers, brokers, planners, builders — each with their own timeline and their own bill, you get a single guided route from "what can I build?" to keys in hand. One relationship, one plan, one team accountable for getting you there.</p>
+  <div class="photorow">
+    <img src="static_photo1.png" alt="Completed multi-unit development">
+    <img src="static_photo2.png" alt="Completed projects">
+  </div>
+</div>
+
+<!-- 1 PROPERTY DETAILS -->
+<div class="section">
+  <h2 class="sec">1. Property Details</h2>
+  <div class="barhead">58 Saskatoon Drive, Etobicoke, Toronto, ON&nbsp;&nbsp;M9P 2G2</div>
+  <div class="imgrow" style="margin-top:0;">
+    <div class="imgbox tall" style="position:relative;padding:0;overflow:hidden;">
+      <img src="aerial_58saskatoon_lot.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div style="position:absolute;left:0;right:0;bottom:0;background:rgba(27,42,74,.72);color:#fff;font-size:7pt;font-family:'Lato',Arial,sans-serif;padding:3px 7px;text-align:left;">Aerial view — approx. 90 m across</div>
+    </div>
+    <div class="imgbox tall" style="position:relative;padding:0;overflow:hidden;">
+      <img src="aerial_58saskatoon_ctx.jpg" style="width:100%;height:100%;object-fit:cover;display:block;">
+      <div style="position:absolute;left:0;right:0;bottom:0;background:rgba(27,42,74,.72);color:#fff;font-size:7pt;font-family:'Lato',Arial,sans-serif;padding:3px 7px;text-align:left;">Neighbourhood context — approx. 220 m across</div>
+    </div>
+  </div>
+  <div class="imglicense" style="font-size:6pt;color:#9aa2b2;margin:-6px 0 8px;">Imagery: City of Toronto Orthophoto 2025 (8&nbsp;cm). Contains information licensed under the Open Government Licence – Toronto.</div>
+  <table class="kv">
+    <tr><td>Property Address</td><td>58 Saskatoon Drive, Etobicoke, Toronto, ON&nbsp;&nbsp;M9P 2G2</td></tr>
+    <tr><td>Name</td><td>H K</td></tr>
+    <tr><td>Phone Number</td><td>Provided at intake</td></tr>
+    <tr><td>Email</td><td>Provided at intake</td></tr>
+    <tr><td>Development Goals</td><td>Multiplex development — 4-plex + ADU (per intake)</td></tr>
+  </table>
+  <table class="kv">
+    <tr><td>Municipality</td><td>Toronto (Etobicoke)</td></tr>
+    <tr><td>Neighbourhood</td><td>Kingsview Village–The Westway</td></tr>
+    <tr><td>Ward</td><td>Ward 2 — Etobicoke Centre</td></tr>
+    <tr><td>Waste Collection</td><td>Contact City of Toronto for local schedule</td></tr>
+    <tr><td>Current Bylaw</td><td>Toronto Zoning By-law 569-2013</td></tr>
+    <tr><td>Zoning</td><td>RD (f13.5; a510; d0.45) — Residential Detached</td></tr>
+    <tr><td>Legal Description</td><td>To be confirmed</td></tr>
+    <tr><td>Year Built</td><td>To be confirmed</td></tr>
+    <tr><td>Lot size</td><td>To be confirmed</td></tr>
+    <tr><td>Development Goals</td><td>4-plex + garden suite (4+1); maximize as-of-right units</td></tr>
+  </table>
+  <div class="cell">
+    <div class="ct">Neighbourhood Spotlight</div>
+    58 Saskatoon Drive is located in Kingsview Village–The Westway, an established residential neighbourhood in central Etobicoke:
+    <ul>
+      <li>Quiet, low-rise residential streets of the kind that rent well and hold value</li>
+      <li>Close to the Humber River valley and its trail system to the east</li>
+      <li>Well connected by road to Highways 401 and 427 and the Pearson Airport employment lands</li>
+      <li>TTC bus service along nearby arterials such as The Westway, Kipling Avenue, and Royal York Road</li>
+      <li>Illustrative context only, not a valuation — local amenities and transit confirmed in Phase 2</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 2 ZONING -->
+<div class="section">
+  <h2 class="sec">2. Current Zoning</h2>
+  <table class="kv">
+    <tr><td>Current Zoning</td><td>RD (f13.5; a510; d0.45) — Residential Detached (Toronto Zoning By-law 569-2013)</td></tr>
+    <tr><td>Minimum Site Requirements</td><td>Official Plan Designation: Neighbourhoods. The RD zone permits detached house-form buildings; a multiplex of up to four units is permitted as-of-right in residential zones city-wide, subject to the built-form standards of the zone.</td></tr>
+    <tr><td>Recent Changes</td><td>Up to 4 units as-of-right city-wide under Toronto's multiplex by-law (By-law 474-2023). Ward 2 (Etobicoke Centre) is not among the nine wards where a sixth unit is permitted as-of-right, so this analysis is built on the 4-unit envelope. No rezoning is required for a fourplex.</td></tr>
+    <tr><td>Permitted Uses</td><td>Multi-Unit Housing Types — the RD zone allows a detached multiplex of up to <strong>4 residential units</strong> as-of-right, plus a rear garden suite, subject to technical review of site conditions.</td></tr>
+    <tr><td>Development Goals Achievable?</td><td><strong>YES</strong>; proceed to Step 2 — <strong>Builder Ready Package™</strong></td></tr>
+  </table>
+  <div class="cell">
+    <div class="ct">What this means for you…</div>
+    <ul style="margin-top:0;">
+      <li><strong>Townhouse &amp; Stacked Townhouse:</strong> Multi-unit attached homes — side-by-side units (townhouse) or vertically stacked units (stacked townhouse)</li>
+      <li><strong>Detached Houseplex / Semi-detached Houseplex:</strong> Standalone multi-unit homes</li>
+      <li><strong>Low-Rise Apartment Building:</strong> Small-scale apartment buildings</li>
+      <li><strong>Internal &amp; Backyard Suites:</strong> Secondary suites (like basement or garden suites) can be seamlessly paired with main dwellings to boost density</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TIME SENSITIVE -->
+<div class="section">
+  <h2 class="sec">⚠️ Time-Sensitive Information</h2>
+  <div class="ts">
+    <div class="d"><div class="dt">Ontario HST Rebate — Act Now<br><small>~ 6 weeks from now</small></div><div class="dx">Ontario's 2026 Budget (March 26, 2026) introduced a 100% rebate of the 8% provincial HST component on new purpose-built rental housing, stacking on top of the existing federal PBRH rebate. For units valued up to $1M, savings can reach $80,000 per unit in provincial relief alone. This is a temporary enhancement — applications require the agreement be signed between April 1, 2026 and March 31, 2027. Structuring the project correctly from Day 1 is essential to capture this.</div></div>
+    <div class="d"><div class="dt">DC Waiver — Already in Effect<br><small>~ 3 weeks from now</small></div><div class="dx">Development charges are fully eliminated for multiplexes up to 6 units in Toronto (Bill 185, January 2025). This saves $200,000–$270,000 per project — approximately $45,000–$50,000 per unit — at no application required. This benefit is locked in as long as your project stays within the six-unit multiplex envelope the waiver covers.</div></div>
+    <div class="d"><div class="dt">CMHC</div><div class="dx">Canada Mortgage Housing Corporation (CMHC) policy changes can occur at any time, potentially affecting financing options. It is recommended to submit your application as early as possible to reduce any risk.</div></div>
+  </div>
+</div>
+
+<!-- 3 REZONING -->
+<div class="section">
+  <h2 class="sec">3. Rezoning (If Applicable)</h2>
+  <p>Rezoning is when the city changes the local planning rules to legally allow more housing units, taller buildings, or different types of properties to be built on a specific piece of land than what was originally allowed. Think of it as the city giving a property a "regulatory upgrade".</p>
+  <div class="co-green"><div class="ct2">Not Required for This Property</div>The recommended 4+1 configuration is permitted as-of-right — the four-unit multiplex under Toronto's city-wide multiplex by-law (474-2023) and the rear garden suite under the Garden Suite By-law (February 2022).</div>
+  <div class="barhead" style="text-align:left;">As-of-Right vs. The Rezoning Path</div>
+  <table class="cmp">
+    <tr><th></th><th>Your Path — As-of-Right</th><th>If Rezoning Were Needed</th></tr>
+    <tr><td>Change to the zoning by-law</td><td class="g">None required</td><td class="n">Required</td></tr>
+    <tr><td>Public consultation meeting</td><td class="g">Not required</td><td class="n">Required</td></tr>
+    <tr><td>City Council decision</td><td class="g">Not required</td><td class="n">Required</td></tr>
+    <tr><td>Appeal exposure (OLT)</td><td class="g">Not applicable</td><td class="n">Possible</td></tr>
+    <tr><td>What governs your build</td><td class="g">The city-wide multiplex by-law (474-2023)</td><td class="n">A new site-specific by-law</td></tr>
+  </table>
+  <div class="barhead" style="text-align:left;">Also permitted as-of-right on this lot</div>
+  <div class="twocard">
+    <div class="card2"><div class="ct">Four-unit multiplex</div>Toronto's city-wide multiplex by-law (474-2023) permits up to four units in a residential zone without rezoning — the basis for this analysis.</div>
+    <div class="card2"><div class="ct">Rear garden suite</div>Toronto's Garden Suite By-law (February 2022) permits a rear ancillary suite on a non-laneway lot as-of-right in residential zones.</div>
+  </div>
+  <div class="barhead" style="text-align:left;">What this means for 58 Saskatoon Drive</div>
+  <p>Because 58 Saskatoon Drive already permits the recommended build under existing zoning, no rezoning application is contemplated in this analysis. Your project advances directly to design and permitting. The comparison below shows what that avoids. This assessment reflects the by-laws in force at the date of this report and is subject to technical review of site conditions.</p>
+  <div class="co-amber"><b>One item to confirm: the lot's exact area, frontage, and depth.</b><br><span class="sub">The buildable envelope for the multiplex and any garden suite depends on the confirmed lot dimensions (MPAC / survey) and the RD setback and coverage standards — finalized in Phase 2.</span></div>
+</div>
+
+<!-- 4 DEVELOPMENT OPTIONS -->
+<div class="section">
+  <h2 class="sec">4. Development Options</h2>
+  <div class="opt"><div class="oh">Option A — Four-Unit Multiplex + Garden Suite (4+1) — Primary Recommendation</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_a.png" alt="Massing illustration"></div>
+      <div class="od">A detached four-unit multiplex on the main building, plus one garden suite in the rear yard — five independent units in total. Both are permitted as-of-right in the RD zone: the multiplex under Toronto's city-wide multiplex by-law (474-2023) and the rear suite under the Garden Suite By-law (February 2022). No rezoning is required. The RD zone's built-form standards — height, setbacks, coverage — together with the lot's confirmed area and frontage set the final envelope, finalized in Phase 2. No parking minimums apply to multiplexes in Toronto. Development charges are fully waived for multiplexes up to six units (Bill 185), which covers this configuration.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option B — Four-Unit Multiplex</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_b.png" alt="Massing illustration"></div>
+      <div class="od">A detached four-unit multiplex on the main building, without a rear suite — four independent units, fully as-of-right under Toronto's city-wide multiplex by-law (474-2023). A simpler build that still captures the multiplex development-charge waiver and the no-parking-minimum advantage, and leaves the option to add a garden suite in a later phase. Unit mix and sizes are set within the RD built-form envelope and confirmed in Phase 2.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option C — Garden Suite as a First Phase</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_c.png" alt="Massing illustration"></div>
+      <div class="od">A single detached garden suite in the rear yard as a standalone first phase — one additional rental unit, permitted as-of-right under Toronto's Garden Suite By-law (February 2022) on a non-laneway lot. A lower-cost entry point that adds income while you keep the existing home, and can precede the full multiplex build. The suite's size and siting depend on the rear-yard dimensions, setbacks, and servicing, confirmed in Phase 2.</div>
+    </div></div>
+</div>
+
+<!-- 5 DEVELOPMENT GOAL SUMMARY -->
+<div class="section flow">
+  <h2 class="sec">5. Development Goal Summary</h2>
+  <div class="barhead" style="text-align:left;">4+1 Configuration</div>
+  <p>58 Saskatoon Drive is in Ward 2 (Etobicoke Centre), where up to four units are permitted as-of-right in a residential zone under Toronto's city-wide multiplex by-law, and a rear garden suite is permitted under the Garden Suite By-law. <strong>The 4+1 configuration — a four-unit multiplex plus one garden suite — is the clear primary recommendation.</strong></p>
+</div>
+
+<!-- 6 FINANCING -->
+<div class="section">
+  <h2 class="sec">6. Financing Pathways</h2>
+  <p>How you finance the development of your property can significantly impact your overall ROI, as well as your cashflow and stability.</p>
+  <p>Many property owners destroy their project margins by trying to use expensive personal cash lines or basic retail bank loans.</p>
+  <p>A successful project requires institutional underwriting before you ever pull a permit. We partner with national commercial lending desks to bypass conventional retail hurdles, allowing our qualified files to access specialized programs, rates, and terms completely unavailable to the general public.</p>
+  <table class="kv">
+    <tr><td>Mortgage Refinance</td><td>If a property has appreciated in value or the mortgage has been significantly paid down, owners can typically access up to 80% of the property's newly appraised value.</td></tr>
+    <tr><td>Home Equity Line of Credit (HELOC)</td><td>Is a flexible, revolving line of credit secured against the equity of an existing property. Unlike a refinance that issues a lump sum, a HELOC functions more like a high-limit credit card tied to your real estate.</td></tr>
+    <tr><td>Construction Financing</td><td>Also known as a progress-draw mortgage, construction financing is a short-term loan specifically designed to fund a new build from the ground up (or fund a massive structural overhaul).</td></tr>
+    <tr><td>CMHC MLI-Select</td><td>Government-backed multi-unit mortgage insurance. Requires a minimum of 5 rental units. Does not act as a direct grant, but heavily subsidizes project costs. It cuts insurance premiums by up to 30% and extends amortizations to 50 years based on a point system rewarding affordability, energy efficiency, and accessibility.</td></tr>
+  </table>
+</div>
+
+<!-- 7 GRANTS -->
+<div class="section">
+  <h2 class="sec">7. Available Grants &amp; Incentives</h2>
+  <p>Most property owners don't realize how much government assistance is available to help them complete their project.</p>
+  <p>Creating housing is a key mandate of government at all levels: federal, provincial, and municipal. The work you are considering undertaking with your property is the exact kind of work the government wants to support!</p>
+  <p>It's important to note that the timing, criteria, and application processes change regularly. Working with clients across the country, we are intimately familiar with available grants, incentives and programs that may be available for your project.</p>
+  <table class="g">
+    <tr><th style="width:70px">Level</th><th style="width:190px">Program</th><th>Notes</th></tr>
+    <tr><td>Federal</td><td>GST/HST Purpose-Built Rental Housing (PBRH) Rebate</td><td>Full 100% rebate of the 5% federal GST on new purpose-built rental projects with 4+ units, 90%+ as long-term rental. Construction must start before 2031. Ontario mirrors this with a 100% rebate of the 8% provincial HST component — together up to $130,000 in tax savings per unit on projects valued up to $1.5M. Temporary enhancement active April 1, 2026 to March 31, 2027.</td></tr>
+    <tr><td>Federal</td><td>CMHC Apartment Construction Loan Program (ACLP)</td><td>Provides low-interest construction loans up to 100% of residential project cost for purpose-built rental. Minimum $1M loan. Open as of June 2026. Can be structured to bridge into MLI Select permanent financing at project completion.</td></tr>
+    <tr><td>Federal</td><td>CMHC Prefab Plus (modular construction)</td><td>A newly expanded CMHC program (as of May 2026) that brings modular/prefab construction into the MLI Select financing framework. Could shorten construction timelines.</td></tr>
+    <tr><td>Municipal</td><td>Toronto Development Charge Waiver (Bill 185)</td><td>Development charges fully eliminated for multiplexes up to 6 units (Bill 185, January 2025). Saves $200,000–$270,000 per project (~$45,000–$50,000 per unit). Parking minimums also waived city-wide since February 2022, saving an additional $50,000–$100,000 in site costs. No application required — benefit applies automatically to compliant builds.</td></tr>
+  </table>
+</div>
+
+<!-- 8 SUMMARY -->
+<div class="section">
+  <h2 class="sec">8. Summary</h2>
+  <h3>Current Zoning Review</h3>
+  <p>58 Saskatoon Drive confirms a strong development option. This RD-zoned lot in Ward 2 (Etobicoke Centre) supports up to <strong>four residential units as-of-right in a detached multiplex</strong>, plus a rear garden suite — five income units in total, with no rezoning, no public hearing, and no Council approval required.</p>
+  <ul>
+    <li><strong>The As-of-Right Multiplex Advantage:</strong> Toronto's city-wide multiplex by-law lets this lot add up to four units in the main building, and the Garden Suite By-law adds a rear suite — all under existing zoning, avoiding the cost and uncertainty of a rezoning.</li>
+  </ul>
+  <h3>Grants &amp; Incentives Review</h3>
+  <p>Governments at the federal, provincial, and municipal levels continue to prioritize housing development by offering grants, rebates, and other incentives to help reduce project costs. Because these programs and their eligibility criteria change frequently, we help identify and navigate the opportunities that may apply to your project, maximizing available funding and improving overall project feasibility.</p>
+  <h3>Financing Options Review</h3>
+  <p>Choosing the right financing strategy is essential to maximizing project returns, maintaining healthy cash flow, and reducing financial risk. We work with trusted lending partners to identify financing solutions that align with your development goals, including mortgage refinancing, home equity lines of credit (HELOCs), construction financing, and specialized programs such as CMHC MLI Select. By securing the right financing early in the process, we help position your project for long-term success.</p>
+</div>
+
+<!-- NEXT STEPS / ROADBLOCKS / CTA -->
+<div class="section">
+  <h2 class="sec">Next Steps</h2>
+  <p>Before you can submit for permits, lock in specialized financing, or secure municipal grants, external consultants require site-specific documentation. We break these down into 3 Steps:</p>
+  <h3>Step 1: Zoning — Development Rights and Requirements</h3>
+  <p>In order to ensure that your project plans meet local setbacks, site coverage caps, and height restrictions, you will need the following:</p>
+  <ul><li>Site Plan</li><li>Massing Diagram Options</li><li>Unit Mix, Unit Count and Unit Sizes</li></ul>
+  <h3>Step 2: Grants &amp; Incentives</h3>
+  <p>While your project may be eligible for various government rebates and incentives, most programs require documentation that is generated throughout the development and construction process. Applications are generally completed once all required information has been collected.</p>
+  <p>In order to start the application process you will need a detailed breakdown of the necessary documentation and supporting forms required for each program.</p>
+  <h3>Step 3: Financing Options</h3>
+  <p>This report identifies financing programs that may be suitable for your proposed development. Final financing approval cannot be obtained until the project has progressed through the planning stage and the required financial information, construction budgets, and supporting documentation have been prepared.</p>
+  <p>The Builder Ready Package™ provides much of the information required by lenders to begin the financing process. Additional lender-specific documentation may also be required depending on the financing program selected.</p>
+  <h3>Roadblocks</h3>
+  <p>Most property owners attempt to gather these documents piecemeal and haphazardly. They spend months going back and forth hiring a private surveyor, then waiting weeks for an independent designer, then shopping around blindly for a commercial mortgage broker, and then trying to negotiate independently with city planners. This uncoordinated approach creates massive friction. By the time they get a single piece of the puzzle solved, their other data is outdated, municipal deadlines have passed, grant pools are fully depleted, and they have burned through thousands of dollars in dead carrying costs.</p>
+  <h3>The House Lyft Advantage</h3>
+  <p>We designed our Phase 2 where over the next 30 days, our lending partners, planning and grants and incentives consultants will compile everything simultaneously into a single next step option for you. This gives you everything required to accurately plan and build your roadmap.</p>
+  <p>In addition, if you decide to move forward with the project and use one of our approved and vetted builder partners, they will credit you the full cost of your Phase 2 work right back to your construction balance on Day 1.</p>
+  <div class="cta" style="page-break-before:always;">
+    Your total investment for the Phase 2 blueprint is a single flat fee of<br><span class="fee">$5,000.00</span>
+    <div style="margin-top:10px;font-size:8.8pt;">Getting started is simple:</div>
+    <ol style="margin:6px 0 0;font-size:8.8pt;padding-left:18px;">
+      <li><strong>Authorize the Phase 2 Work Order:</strong> Review and sign our Builder Ready Package Agreement.</li>
+      <li><strong>Submit the Phase 2 Payment:</strong> to activate our trusted team of consultants.</li>
+      <li><strong>Submit the Financial Intake Forms:</strong> as provided by our lender partner.</li>
+      <li><strong>Book Your Initial Planning Session:</strong> set up your initial meeting with our planner and Senior Relationship Manager to finalize your development objectives and plan next steps.</li>
+    </ol>
+  </div>
+</div>
+
+</body>
+</html>
