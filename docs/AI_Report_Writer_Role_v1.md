@@ -44,8 +44,13 @@ Built by code from the lookup + rulebook. The AI gets this and nothing else. Eve
     "max_footprint_sqm": {"value": null, "tag": "CONFIRM", "reason": "awaiting lot_area + coverage%"}
   },
   "programs": [
-    {"name": "DC waiver (≤6 units)", "detail": "...", "tag": "VERIFIED", "source": "By-law 654-2025"}
+    {"name": "DC waiver (≤6 units)", "detail": "...", "tag": "VERIFIED", "source": "By-law 654-2025",
+     "gate": {"max_units": 6, "municipality_in": ["Toronto"]}, "gate_result": "CLEARS"}
   ],
+  "scope": {
+    "units_added": {"value": 6, "tag": "VERIFIED", "source": "GHL EPzqHHy5AU2iIvHIAhKf / oPfN9unZ4y37M1g1NwTq"},
+    "render_mode": "scoped"
+  },
   "education_notes": ["Rezoning not required — as-of-right.", "..."]
 }
 ```
@@ -88,7 +93,11 @@ ABSOLUTE RULES — accuracy is non-negotiable:
 
 6. FORBIDDEN CONTENT. Never mention the federal "Canada Secondary Suite Loan
    Program" — it was not implemented. Never name any financing or grant program
-   unless it appears in the packet with a source.
+   unless it appears in the packet with a source AND it has cleared its gate
+   (config/programs.json — see docs/PROGRAM_GATING_v1.md). A program that fails
+   its gate must not appear anywhere: not in a table, not in prose, not as an
+   aside. Programs are gated on what the homeowner wants, never on what the
+   zoning allows.
 
 7. NO LEGAL OR PLANNING OPINIONS. This report is preliminary information, not
    advice. Keep the disclaimer framing where the template calls for it.
@@ -132,10 +141,14 @@ def validate(draft_text, packet):
         if term.lower() in draft_text.lower():
             issues.append(("BANNED PHRASE", term))
 
-    # 4. Every named program must carry a source from the packet.
+    # 4. Every named program must carry a source AND have cleared its gate.
+    #    Scans the WHOLE draft - prose as well as tables. A gated-out program
+    #    surviving in an intro sentence is the exact defect this catches.
     for prog in named_programs(draft_text):
         if not has_source(prog, packet):
             issues.append(("UNSOURCED PROGRAM", prog))
+        elif gate_result(prog, packet) != "CLEARS":
+            issues.append(("GATED PROGRAM PRESENT", prog))   # e.g. MLI Select on a 1-unit ADU
 
     return issues   # empty list = clears to render; otherwise → human review
 ```
