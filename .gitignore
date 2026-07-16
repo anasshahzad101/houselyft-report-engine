@@ -8,3 +8,8 @@ outputs/
 # report engine
 *.pdf
 zoning_area.geojson
+
+# per-run scratch working dir (aerials, screenshots, rendered PDF) - ephemeral
+scratch_report/
+# per-lead rendered report (base64-embedded imagery); reports live in Drive (link-only)
+templates/report_98calverley.html
