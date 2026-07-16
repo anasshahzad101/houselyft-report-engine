@@ -1,0 +1,226 @@
+{
+  "_comment": "Gates are DATA, not prose. A gate in a prompt gets interpreted; a table gets applied. Every program declares its own threshold. Re-verify each source before scaling - programs change (see: Canada Secondary Suite Loan Program, announced but never implemented).",
+  "_version": "1.0",
+  "_updated": "2026-07-16",
+  "programs": [
+    {
+      "id": "mli_select",
+      "name": "CMHC MLI Select",
+      "level": "Federal",
+      "gate": {
+        "min_rental_units": 5
+      },
+      "source": "CMHC MLI Select product terms",
+      "note_if_gated_out": "Requires a minimum of five rental units.",
+      "verify_by": "2026-12-31"
+    },
+    {
+      "id": "gst_hst_pbrh",
+      "name": "GST/HST Purpose-Built Rental Housing (PBRH) Rebate",
+      "level": "Federal",
+      "gate": {
+        "min_rental_units": 4,
+        "long_term_rental_share_min": 0.9,
+        "construction_start_before": "2031-01-01"
+      },
+      "source": "Federal PBRH rebate; Ontario provincial component mirrors it",
+      "note_if_gated_out": "Requires four or more self-contained rental units.",
+      "verify_by": "2026-12-31"
+    },
+    {
+      "id": "cmhc_aclp",
+      "name": "CMHC Apartment Construction Loan Program (ACLP)",
+      "level": "Federal",
+      "gate": {
+        "min_loan_cad": 1000000
+      },
+      "gate_input": "project_budget (Phase 2) - NOT unit count",
+      "source": "CMHC ACLP program terms",
+      "note_if_gated_out": "Requires a minimum $1M loan.",
+      "verify_by": "2026-12-31"
+    },
+    {
+      "id": "cmhc_prefab_plus",
+      "name": "CMHC Prefab Plus",
+      "level": "Federal",
+      "gate": {
+        "inherits": "mli_select"
+      },
+      "source": "CMHC Prefab Plus (expanded May 2026)",
+      "note_if_gated_out": "Feeds the MLI Select framework, so it carries the same five-unit minimum.",
+      "verify_by": "2026-12-31"
+    },
+    {
+      "id": "mhrtc",
+      "name": "Multigenerational Home Renovation Tax Credit",
+      "level": "Federal",
+      "gate": {
+        "occupant_in": [
+          "senior_65_plus",
+          "dtc_eligible"
+        ]
+      },
+      "gate_input": "occupant - rarely confirmable. Default SILENT.",
+      "source": "Canada Revenue Agency - MHRTC",
+      "note_if_gated_out": "Applies only where the new unit houses a senior or DTC-eligible relative.",
+      "verify_by": "2026-12-31"
+    },
+    {
+      "id": "toronto_dc_waiver",
+      "name": "Toronto Development Charge Waiver (Bill 185)",
+      "level": "Municipal",
+      "gate": {
+        "max_units": 6,
+        "municipality_in": [
+          "Toronto"
+        ]
+      },
+      "source": "City of Toronto, Bill 185 (January 2025)",
+      "note_if_gated_out": "Toronto only. Does not apply outside the City of Toronto.",
+      "verify_by": "2026-12-31"
+    },
+    {
+      "id": "bill23_dc_exemption",
+      "name": "Development-Charge Exemption for Additional Residential Units (Bill 23)",
+      "level": "Provincial",
+      "gate": {
+        "max_additional_units": 2,
+        "province_in": [
+          "Ontario"
+        ]
+      },
+      "source": "Ontario More Homes Built Faster Act (Bill 23)",
+      "note_if_gated_out": "Covers the first two additional residential units only.",
+      "verify_by": "2026-12-31"
+    },
+    {
+      "id": "simcoe_secondary_suites",
+      "name": "County of Simcoe Secondary Suites Program",
+      "level": "Municipal (County)",
+      "gate": {
+        "creates_suite": true,
+        "county_in": [
+          "Simcoe"
+        ]
+      },
+      "gate_input": "COUNTY level - applies to Barrie, Angus/Essa, Innisfil, Springwater. Check county, not just city.",
+      "source": "County of Simcoe Social Housing - verify against the current fact sheet",
+      "figures_hedged": true,
+      "verify_by": "2026-09-30"
+    },
+    {
+      "id": "mississauga_fourth_unit",
+      "name": "Mississauga Fourth-Unit Incentive",
+      "level": "Municipal",
+      "gate": {
+        "exact_units": 4,
+        "municipality_in": [
+          "Mississauga"
+        ],
+        "rental_commitment_years": 25,
+        "no_condo_conversion": true
+      },
+      "source": "engine incentive_note (property_lookup_v2, Mississauga adapter)",
+      "note_if_gated_out": "Attaches to the fourth unit specifically. Not a blanket waiver.",
+      "verify_by": "2026-12-31"
+    },
+    {
+      "id": "refinance",
+      "name": "Mortgage Refinance",
+      "level": "Financing",
+      "gate": {
+        "any_scale": true
+      },
+      "source": "conventional lending"
+    },
+    {
+      "id": "heloc",
+      "name": "Home Equity Line of Credit (HELOC)",
+      "level": "Financing",
+      "gate": {
+        "any_scale": true
+      },
+      "source": "conventional lending"
+    },
+    {
+      "id": "construction",
+      "name": "Construction Financing",
+      "level": "Financing",
+      "gate": {
+        "any_scale": true
+      },
+      "source": "conventional lending"
+    }
+  ],
+  "scope_map": {
+    "_source_field": "EPzqHHy5AU2iIvHIAhKf",
+    "_field_label": "What sort of project are you consider?",
+    "_populated": "10/10 leads as of 2026-07-16",
+    "Secondary Suite": {
+      "units_added": 1,
+      "confidence": "high",
+      "render": "scoped"
+    },
+    "Basement Apartment": {
+      "units_added": 1,
+      "confidence": "high",
+      "form": "interior",
+      "render": "scoped"
+    },
+    "Garden Suite, Laneway Home or ADU": {
+      "units_added": 1,
+      "confidence": "high",
+      "form": "detached",
+      "render": "scoped"
+    },
+    "Multiplex Development": {
+      "units_added": null,
+      "confidence": "class_only",
+      "class_min_units": 3,
+      "render": "tiered",
+      "lead_with": "multiplex",
+      "_note": "Class is known (not 1 unit). Number is not. Render tiers across the as-of-right range, lead with multiplex tiers. NEVER scope to smallest - that strips programs a developer may qualify for."
+    },
+    "Other": {
+      "units_added": null,
+      "confidence": "none",
+      "render": "tiered",
+      "lead_with": "read_sentences",
+      "_note": "Read the sentence field first. If it names a number, treat as scoped. If not, render tiers and ask the scope question in the report."
+    }
+  },
+  "capital_map": {
+    "_source_field": "bvJsGbtyHmEeOLQUEuBu",
+    "_field_label": "How much capital are you considering deploying?",
+    "_populated": "0/10 - UNUSABLE until the form makes it required",
+    "Under $500k": {
+      "max_loan_cad": 500000
+    },
+    "$500k-$1M": {
+      "max_loan_cad": 1000000
+    },
+    "$1M-$2.5M": {
+      "max_loan_cad": 2500000
+    },
+    "$2.5M +": {
+      "max_loan_cad": null
+    }
+  },
+  "render_modes": {
+    "_principle": "NEVER halt. A report is always produced. Unknown scope changes HOW it renders, not WHETHER it renders.",
+    "scoped": {
+      "when": "units_added resolved to a number",
+      "options": "Lead with the stated goal. Larger options labelled as upside.",
+      "programs": "Render only those clearing the stated scope. Programs clearing only a larger option move INTO that option's description. Programs no option reaches are dropped entirely."
+    },
+    "tiered": {
+      "when": "units_added unresolved (class-only, or no signal)",
+      "options": "Present tiers across the as-of-right range, smallest to largest.",
+      "programs": "Attach each program to the SMALLEST tier that clears its gate. Show the threshold beside it. Never state a program as 'available to you' - it is available AT A TIER.",
+      "framing": "This is the positive form of the gate: 'at 1 unit you have X; at 4 you also reach Y; at 5 you also reach Z.' It shows what scale unlocks - a sales asset, not a hedge.",
+      "tag": "needs-scope-review",
+      "ask": "Put the scope question in the report itself, in the owner's language."
+    }
+  },
+  "_hard_rule": "No program is EVER stated as available without its gate satisfied or its threshold shown. Scoped mode satisfies it. Tiered mode shows it."
+}
