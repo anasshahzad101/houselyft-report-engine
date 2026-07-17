@@ -521,11 +521,237 @@ def detect_city(display_name):
     if "oshawa" in dn: return "Oshawa"
     if "toronto" in dn: return "Toronto"
     if "edmonton" in dn: return "Edmonton"
+    if "calgary" in dn: return "Calgary"
     return None
 
+# ---------------------------------------------------------------- Calgary
+# Calgary parcels are ADDRESS-keyed. OSM resolves "Ogden Road" but not
+# "7236 Ogden Road", so this adapter resolves the parcel from the City's own
+# assessment roll, then does a true point-in-polygon against the land-use
+# districts layer. Two independent City sources; if they disagree we SAY SO
+# rather than pick one. No third-party deps (urllib + own PIP) so the routine
+# environment needs nothing extra.
+CALGARY_ASSESS = "https://data.calgary.ca/resource/4bsw-nn7w.json"
+CALGARY_LU     = "https://data.calgary.ca/resource/qe6k-p9nh.json"
+
+# Post-repeal ceilings. Blanket rezoning repealed 8 Apr 2026, in force 4 Aug
+# 2026: ~300k parcels revert to R-C1/R-C2; R-CG drops 4 -> 3 upper units,
+# corner-only. Verify: calgary.ca/planning/projects/rezoning.html
+CALGARY_UNIT_CEILING = {"R-C1": 1, "R-C1L": 1, "R-C1N": 1, "R-C2": 2, "R-CG": 3, "R-G": 3}
+
+CALGARY_REPEAL_NOTE = (
+    "Calgary repealed blanket rezoning on 8 Apr 2026, in force 4 Aug 2026: most "
+    "residential parcels revert to R-C1/R-C2, and R-CG drops from 4 upper units to "
+    "3 on corner sites only. Applications filed before 8 Apr 2026, and rowhouse "
+    "approvals granted before 4 Aug 2026, keep the old rules. Verify at "
+    "calgary.ca/planning/projects/rezoning.html")
+
+def _cal_get(url, params):
+    q = urllib.parse.urlencode(params)
+    req = urllib.request.Request(url + "?" + q,
+                                 headers={"User-Agent": "houselyft-report/1.0"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.loads(r.read().decode())
+
+def _pip(x, y, ring):
+    """Ray-casting point-in-polygon. ring = [[lon,lat], ...]"""
+    inside = False
+    n = len(ring)
+    j = n - 1
+    for i in range(n):
+        xi, yi = ring[i][0], ring[i][1]
+        xj, yj = ring[j][0], ring[j][1]
+        if ((yi > y) != (yj > y)) and \
+           (x < (xj - xi) * (y - yi) / ((yj - yi) or 1e-18) + xi):
+            inside = not inside
+        j = i
+    return inside
+
+def _geom_contains(geom, x, y):
+    if not geom:
+        return False
+    polys = [geom["coordinates"]] if geom.get("type") == "Polygon" else geom.get("coordinates") or []
+    for poly in polys:
+        if poly and _pip(x, y, poly[0]) and not any(_pip(x, y, h) for h in poly[1:]):
+            return True
+    return False
+
+def _ring_stats(ring):
+    """Shoelace area (m2) + centroid of a lon/lat ring.
+
+    Coordinates are translated to a LOCAL ORIGIN first. Without this the
+    shoelace cross-products subtract numbers of order 5,800 to yield ~1e-8,
+    burning ~12 of float64's ~16 digits. The area survives that; the centroid
+    does not, because the (x0+x1) weighting amplifies the noise - it lands the
+    point tens of metres away, silently in the WRONG land-use polygon.
+    """
+    import math as _math
+    pts = ring[:-1] if len(ring) > 1 and ring[0] == ring[-1] else ring
+    n = len(pts)
+    if n < 3:
+        xs = [p[0] for p in pts] or [0]; ys = [p[1] for p in pts] or [0]
+        return 0.0, sum(xs) / len(xs), sum(ys) / len(ys)
+    ox, oy = pts[0][0], pts[0][1]          # local origin
+    a = cx = cy = 0.0
+    for i in range(n):
+        x0 = pts[i][0] - ox;            y0 = pts[i][1] - oy
+        x1 = pts[(i + 1) % n][0] - ox;  y1 = pts[(i + 1) % n][1] - oy
+        cross = x0 * y1 - x1 * y0
+        a  += cross
+        cx += (x0 + x1) * cross
+        cy += (y0 + y1) * cross
+    a *= 0.5
+    if abs(a) < 1e-18:
+        xs = [p[0] for p in pts]; ys = [p[1] for p in pts]
+        return 0.0, sum(xs) / len(xs), sum(ys) / len(ys)
+    cx = cx / (6 * a) + ox
+    cy = cy / (6 * a) + oy
+    m2 = abs(a) * (111320.0 ** 2) * _math.cos(_math.radians(cy))
+    return m2, cx, cy
+
+def _cal_parcel(address):
+    import re as _re
+    m = _re.match(r"\s*(\d+)\s+([A-Za-z0-9]+)", str(address).strip())
+    if not m:
+        return None
+    num, street = m.group(1), m.group(2).upper()
+    try:
+        rows = _cal_get(CALGARY_ASSESS,
+                        {"$where": f"upper(address) like '{num} {street}%'", "$limit": 5})
+        return rows[0] if rows else None
+    except Exception as e:
+        sys.stderr.write(f"[calgary] parcel lookup failed: {type(e).__name__}: {e}\n")
+        return None
+
+def _cal_dc_bylaw_url(dc_bylaw):
+    """120Z99 -> .../direct-control-districts/1999/1999z120.pdf"""
+    import re as _re
+    if not dc_bylaw:
+        return None
+    m = _re.match(r"(\d+)\s*[Zz]\s*(\d{2,4})$", str(dc_bylaw).strip())
+    if not m:
+        return None
+    num, yr = m.group(1), m.group(2)
+    year = int(yr) if len(yr) == 4 else (2000 + int(yr) if int(yr) < 50 else 1900 + int(yr))
+    return ("https://www.calgary.ca/content/dam/www/pda/pd/documents/"
+            f"direct-control-districts/{year}/{year}z{num}.pdf")
+
+def calgary_zoning(address, lat=None, lon=None):
+    rec = _cal_parcel(address)
+    lot_m2 = px = py = None
+    if rec and rec.get("multipolygon"):
+        try:
+            ring = rec["multipolygon"]["coordinates"][0][0]
+            lot_m2, px, py = _ring_stats(ring)
+            lot_m2 = round(lot_m2)
+        except Exception:
+            pass
+    if px is None and lat and lon:
+        px, py = lon, lat
+    if px is None and not rec:
+        return None
+
+    lu = None
+    if px is not None:
+        try:
+            rows = _cal_get(CALGARY_LU,
+                {"$where": f"within_circle(multipolygon, {py}, {px}, 400)", "$limit": 60})
+            for row in rows:
+                if _geom_contains(row.get("multipolygon"), px, py):
+                    lu = row
+                    break
+        except Exception as e:
+            sys.stderr.write(f"[calgary] land-use lookup failed: {type(e).__name__}: {e}\n")
+
+    code = (lu or {}).get("lu_code") or (rec or {}).get("land_use_designation")
+    assess_code = (rec or {}).get("land_use_designation")
+    conflict = None
+    if assess_code and (lu or {}).get("lu_code") and assess_code != lu["lu_code"]:
+        conflict = (f"City sources disagree — assessment roll says '{assess_code}', "
+                    f"land-use map says '{lu['lu_code']}'. Confirm on the City rezoning map.")
+    dc_bylaw = (lu or {}).get("dc_bylaw")
+    dc_site  = (lu or {}).get("dc_site_no")
+    return {
+        "zone": code,
+        "zn_string": (lu or {}).get("label") or code,
+        "zone_desc": (lu or {}).get("description"),
+        "dc_bylaw": dc_bylaw,
+        "dc_site_no": dc_site,
+        "dc_bylaw_url": _cal_dc_bylaw_url(dc_bylaw),
+        "bylaw_ref": (f"Calgary Direct Control Bylaw {dc_bylaw}"
+                      + (f", {dc_site}" if dc_site else "")) if dc_bylaw
+                     else "Calgary Land Use Bylaw 1P2007",
+        "community": (rec or {}).get("comm_name"),
+        "lot_m2": lot_m2,
+        "year_built": (rec or {}).get("year_of_construction"),
+        "assessed_value": (rec or {}).get("assessed_value"),
+        "assessment_class": (rec or {}).get("assessment_class_description"),
+        "coordinates": {"lat": py, "lon": px} if px is not None else None,
+        "flags": [f for f in [conflict] if f],
+    }
+
+def calgary_rules(z):
+    z = z or {}
+    code = str(z.get("zone") or "").upper()
+    if code == "DC":
+        return {
+            "gate_pass": True,
+            "main_units_max": None,   # a DC's ceiling lives in its own bylaw - never assume
+            "unit_combo": (
+                f"Direct Control — site-specific rules set by Bylaw {z.get('dc_bylaw')}"
+                + (f" ({z.get('dc_site_no')})" if z.get("dc_site_no") else "")
+                + ". A DC is a custom designation: its uses and density come from that "
+                  "bylaw alone, which usually cross-references a standard district. "
+                  "READ THE BYLAW — do not assume a unit ceiling."),
+            "sixplex_as_of_right": False,
+            "adu_stacking_on_multiplex": False,
+            "dc_bylaw_url": z.get("dc_bylaw_url"),
+            "incentive_note": (
+                "The 4 Aug 2026 blanket-rezoning repeal reverts R-CG parcels — it does "
+                "NOT re-designate a DC parcel, so this lot is not on that clock. It "
+                "still matters indirectly: it makes a future redesignation to R-CG "
+                "weaker (3 units, corner sites only)."),
+            "flags": (z.get("flags") or []) + [
+                "DC parcel — unit ceiling is NOT machine-readable. Read the DC bylaw "
+                "before asserting any unit count.", CALGARY_REPEAL_NOTE],
+        }
+    ceiling = CALGARY_UNIT_CEILING.get(z.get("zone"))
+    if ceiling is not None:
+        return {
+            "gate_pass": True,
+            "main_units_max": ceiling,
+            "unit_combo": (f"{z.get('zone')} — up to {ceiling} unit(s) under Land Use "
+                           "Bylaw 1P2007 post-repeal. Secondary suite rules apply "
+                           "separately; confirm at design."),
+            "sixplex_as_of_right": False,
+            "adu_stacking_on_multiplex": False,
+            "incentive_note": CALGARY_REPEAL_NOTE,
+            "flags": (z.get("flags") or []) + [CALGARY_REPEAL_NOTE],
+        }
+    return {
+        "gate_pass": False,
+        "main_units_max": None,
+        "unit_combo": (f"{z.get('zone') or 'unknown'} — not in the encoded low-density "
+                       "set (may be commercial, multi-residential or mixed-use). "
+                       "Route to manual review."),
+        "sixplex_as_of_right": False,
+        "adu_stacking_on_multiplex": False,
+        "incentive_note": CALGARY_REPEAL_NOTE,
+        "flags": (z.get("flags") or []) + ["Zone outside the encoded Calgary rulebook."],
+    }
+
 def lookup(address):
-    geo = geocode(address)
-    city = detect_city(geo["matched"])
+    # OSM resolves "Ogden Road" but not "7236 Ogden Road" — Calgary parcels are
+    # address-keyed in the City's own data, so a geocode miss must not abort the
+    # lookup. Fall back to detecting the city from the raw address string.
+    try:
+        geo = geocode(address)
+        city = detect_city(geo["matched"])
+    except LookupError:
+        geo = {"matched": address, "lat": None, "lon": None}
+        city = detect_city(address)
+        if city is None:
+            raise
     out = {"address": address, "matched": geo["matched"],
            "coordinates": {"lat": geo["lat"], "lon": geo["lon"]}, "city": city}
     if city == "Mississauga":
@@ -573,6 +799,14 @@ def lookup(address):
         out["zoning"] = z
         out["engine"] = edmonton_rules(z)
         out["source"] = "gis.edmonton.ca ZoningWebApp FeatureServer (live)"
+    elif city == "Calgary":
+        z = calgary_zoning(address, geo["lat"], geo["lon"])
+        out["zoning"] = z
+        out["engine"] = calgary_rules(z)
+        out["source"] = ("Parcel + designation: City of Calgary Open Data (assessment "
+                         "roll + land-use districts, point-in-polygon, live). DC bylaws: "
+                         "calgary.ca. Geocode: Calgary assessment roll (OSM does not "
+                         "resolve Calgary house numbers).")
     elif city == "Toronto":
         z = toronto_zoning(geo["lat"], geo["lon"])
         w = get_ward(geo["lat"], geo["lon"])
