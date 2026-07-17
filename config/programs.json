@@ -12,7 +12,8 @@
       },
       "source": "CMHC MLI Select product terms",
       "note_if_gated_out": "Requires a minimum of five rental units.",
-      "verify_by": "2026-12-31"
+      "verify_by": "2026-12-31",
+      "scope_note": "FEDERAL \u2014 applies nationwide. Gate on units/loan/occupant only, never on province."
     },
     {
       "id": "gst_hst_pbrh",
@@ -25,7 +26,8 @@
       },
       "source": "Federal PBRH rebate; Ontario provincial component mirrors it",
       "note_if_gated_out": "Requires four or more self-contained rental units.",
-      "verify_by": "2026-12-31"
+      "verify_by": "2026-12-31",
+      "scope_note": "FEDERAL \u2014 applies nationwide. Gate on units/loan/occupant only, never on province."
     },
     {
       "id": "cmhc_aclp",
@@ -37,7 +39,8 @@
       "gate_input": "project_budget (Phase 2) - NOT unit count",
       "source": "CMHC ACLP program terms",
       "note_if_gated_out": "Requires a minimum $1M loan.",
-      "verify_by": "2026-12-31"
+      "verify_by": "2026-12-31",
+      "scope_note": "FEDERAL \u2014 applies nationwide. Gate on units/loan/occupant only, never on province."
     },
     {
       "id": "cmhc_prefab_plus",
@@ -48,7 +51,8 @@
       },
       "source": "CMHC Prefab Plus (expanded May 2026)",
       "note_if_gated_out": "Feeds the MLI Select framework, so it carries the same five-unit minimum.",
-      "verify_by": "2026-12-31"
+      "verify_by": "2026-12-31",
+      "scope_note": "FEDERAL \u2014 applies nationwide. Gate on units/loan/occupant only, never on province."
     },
     {
       "id": "mhrtc",
@@ -63,7 +67,8 @@
       "gate_input": "occupant - rarely confirmable. Default SILENT.",
       "source": "Canada Revenue Agency - MHRTC",
       "note_if_gated_out": "Applies only where the new unit houses a senior or DTC-eligible relative.",
-      "verify_by": "2026-12-31"
+      "verify_by": "2026-12-31",
+      "scope_note": "FEDERAL \u2014 applies nationwide. Gate on units/loan/occupant only, never on province."
     },
     {
       "id": "toronto_dc_waiver",
@@ -150,6 +155,85 @@
         "any_scale": true
       },
       "source": "conventional lending"
+    },
+    {
+      "id": "alberta_no_pst",
+      "name": "No-PST Advantage (Alberta)",
+      "level": "Provincial",
+      "gate": {
+        "province_in": [
+          "Alberta"
+        ],
+        "any_scale": true
+      },
+      "source": "Alberta has no provincial sales tax \u2014 structural, automatic, no application",
+      "detail": "Alberta levies no PST, so construction materials carry only the 5% federal GST rather than a combined rate. Against an HST province this is a real structural saving on the build budget. Automatic \u2014 nothing to apply for.",
+      "figures_hedged": true,
+      "_note": "The Edmonton Grants report quantified this at ~$18K on an 8-unit build. Scale to the project; do NOT reuse that figure."
+    },
+    {
+      "id": "alberta_sharp",
+      "name": "Alberta SHARP \u2014 Seniors Home Adaptation and Repair Program",
+      "level": "Provincial",
+      "gate": {
+        "province_in": [
+          "Alberta"
+        ],
+        "occupant_in": [
+          "senior_65_plus"
+        ],
+        "income_tested": true
+      },
+      "source": "alberta.ca \u2014 Seniors Home Adaptation and Repair Program",
+      "detail": "Low-interest home-equity loan up to $40,000 for renovation or adaptation. Income-tested; equity required.",
+      "gate_input": "occupant \u2014 rarely confirmable. Default SILENT."
+    },
+    {
+      "id": "alberta_ramp",
+      "name": "Alberta RAMP \u2014 Residential Access Modification Program",
+      "level": "Provincial",
+      "gate": {
+        "province_in": [
+          "Alberta"
+        ],
+        "occupant_in": [
+          "mobility_disability"
+        ]
+      },
+      "source": "alberta.ca \u2014 Residential Access Modification Program",
+      "detail": "Grant up to $24,000 for mobility-related modification: ramps, lifts, widened doorways, accessible bathrooms.",
+      "gate_input": "occupant \u2014 rarely confirmable. Default SILENT."
+    },
+    {
+      "id": "edmonton_iif",
+      "name": "Edmonton Infill Infrastructure Fund (IIF)",
+      "level": "Municipal",
+      "gate": {
+        "municipality_in": [
+          "Edmonton"
+        ]
+      },
+      "source": "edmonton.ca \u2014 Infill Infrastructure Fund",
+      "detail": "Funds off-site public infrastructure. HAF-funded.",
+      "status": "FULLY ALLOCATED \u2014 $39M across 33 projects. Monitor for future rounds.",
+      "note_if_gated_out": "Edmonton only.",
+      "verify_by": "2026-12-31"
+    },
+    {
+      "id": "edmonton_secondary_suite",
+      "name": "Edmonton Secondary Suite Incentive",
+      "level": "Municipal",
+      "gate": {
+        "municipality_in": [
+          "Edmonton"
+        ],
+        "creates_suite": true
+      },
+      "source": "edmonton.ca \u2014 Secondary Suite Incentive Program",
+      "detail": "Up to $10,000 toward a legal internal suite. One application per owner.",
+      "status": "WAITLISTED as of 24 Jun 2026 \u2014 apply to hold a position.",
+      "note_if_gated_out": "Edmonton only.",
+      "verify_by": "2026-12-31"
     }
   ],
   "scope_map": {
@@ -222,5 +306,6 @@
       "ask": "Put the scope question in the report itself, in the owner's language."
     }
   },
-  "_hard_rule": "No program is EVER stated as available without its gate satisfied or its threshold shown. Scoped mode satisfies it. Tiered mode shows it."
+  "_hard_rule": "No program is EVER stated as available without its gate satisfied or its threshold shown. Scoped mode satisfies it. Tiered mode shows it.",
+  "_geography_rule": "Every non-federal program MUST declare province_in / municipality_in / county_in. Without it, an Ontario program renders on an Alberta report and an Edmonton program renders in Calgary \u2014 the same defect as the Toronto DC Waiver appearing on a Mississauga report, just on the geography axis instead of scale."
 }
