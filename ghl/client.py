@@ -143,11 +143,33 @@ if __name__ == "__main__":
 
 FOLDER_LINK_FIELD_ID = "eUGAPkugk1U4FHNJDP9Q"
 
-def set_text_field(contact_id, value, field_id=FOLDER_LINK_FIELD_ID):
+def set_text_field(contact_id, value, field_id=FOLDER_LINK_FIELD_ID, verify=True):
     """Write a plain text/URL value into a contact custom field.
-    Used to store the Drive folder link (link-only model - no PDF in GHL)."""
-    return _send("PUT", f"/contacts/{contact_id}",
+    Used to store the Drive folder link (link-only model - no PDF in GHL).
+
+    ARG ORDER IS (contact_id, VALUE, field_id) - value SECOND. Passing the
+    field id as the value is silently accepted: GHL returns 200 for a PUT
+    against a non-existent field id and writes nothing. A truthy return means
+    "the request succeeded", NOT "the value landed".
+
+    So we read back by default and raise if it did not stick. Pass verify=False
+    only where a caller genuinely cannot afford the extra GET.
+    """
+    resp = _send("PUT", f"/contacts/{contact_id}",
                  {"customFields": [{"id": field_id, "value": value}]})
+    if not verify:
+        return resp
+    got = None
+    for cf in (get_contact(contact_id) or {}).get("customFields", []):
+        if cf.get("id") == field_id:
+            got = cf.get("value")
+            break
+    if got != value:
+        raise RuntimeError(
+            f"set_text_field did not stick: field {field_id} on {contact_id} "
+            f"reads {got!r}, expected {value!r}. Check the argument order — "
+            f"it is (contact_id, value, field_id).")
+    return resp
 
 
 # ---- Drive dropbox upload (proven body-POST pattern, lands inside a folder) -----
