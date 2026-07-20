@@ -8,3 +8,7 @@ outputs/
 # report engine
 *.pdf
 zoning_area.geojson
+
+# per-lead rendered reports (base64-embedded aerials; the deliverable lives in
+# Drive, not the repo). The reusable transform is scripts/xform_<lead>.py.
+templates/report_17_theresa.html
