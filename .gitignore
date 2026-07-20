@@ -8,3 +8,9 @@ outputs/
 # report engine
 *.pdf
 zoning_area.geojson
+
+# batch generation intermediates — per-lead report HTML + fetched aerials.
+# These are throwaway artifacts written into templates/ so relative font/asset
+# paths resolve at render time; the deliverables live in Google Drive, never git.
+templates/_b_*
+templates/report_b_*
