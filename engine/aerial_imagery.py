@@ -41,6 +41,16 @@ from typing import Optional
 
 from PIL import Image, ImageFilter, ImageStat
 
+# Province-wide OIWMS fallback. Lives in a sibling module so the tile
+# fetch/stitch/blank-check stays out of the resolver. Import works whether this
+# module is loaded flat (engine/ on sys.path, as run.py does) or as a package.
+try:
+    from ontario_provincial import SOURCE_LABEL as ONTARIO_PROVINCIAL_LABEL
+    from ontario_provincial import fetch_ontario_provincial
+except ImportError:  # pragma: no cover - imported as engine.aerial_imagery
+    from engine.ontario_provincial import SOURCE_LABEL as ONTARIO_PROVINCIAL_LABEL
+    from engine.ontario_provincial import fetch_ontario_provincial
+
 USER_AGENT = "HouseLyft-PropertyReport/1.0"
 TIMEOUT = 45
 
@@ -117,6 +127,21 @@ MAPBOX = Source(
     notes="Requires MAPBOX_TOKEN env var. Paid. Commercial print use permitted.",
 )
 
+# ---- province-wide fallback (Ontario) -------------------------------------
+# OIWMS cached tile service, handled by engine/ontario_provincial.py. This
+# Source is only the registry marker the resolver dispatches on (kind =
+# "ontario_provincial"); the fetch/stitch/blank-check live in that module. It
+# sits BELOW any city-specific high-res adapter and ABOVE the Mapbox fallback,
+# so every Ontario municipality resolves to a real lot-scale aerial even where
+# no city-specific open source exists.
+ONTARIO_PROVINCIAL = Source(
+    name="Ontario Imagery Web Map Service (OIWMS)",
+    url="",  # not a bbox endpoint - ontario_provincial.py owns the tile URLs
+    kind="ontario_provincial",
+    attribution=ONTARIO_PROVINCIAL_LABEL,
+    notes="Province-wide OIWMS tile fallback for any Ontario municipality.",
+)
+
 
 def _chain(*sources: Source) -> list[Source]:
     """Append Mapbox as last resort only when a token is configured."""
@@ -126,25 +151,37 @@ def _chain(*sources: Source) -> list[Source]:
     return chain
 
 
+def _on_chain(*sources: Source) -> list[Source]:
+    """Ontario resolution chain: the given city-specific / context sources,
+    then the province-wide OIWMS lot-scale fallback, then Mapbox (only when a
+    token is configured). OIWMS sits below city-specific adapters and above
+    Mapbox, so any Ontario municipality resolves to a real lot-scale aerial."""
+    return _chain(*sources, ONTARIO_PROVINCIAL)
+
+
 SOURCES: dict[str, list[Source]] = {
-    # verified lot-scale
-    "toronto":       _chain(TORONTO_2025),
-    "brampton":      _chain(BRAMPTON_2023, LIO_ONTARIO_CONTEXT),
+    # verified lot-scale. Ontario cities carry the province-wide OIWMS fallback
+    # BELOW their city-specific adapter (and above Mapbox) via _on_chain; the
+    # BC cities do not (OIWMS is Ontario-only).
+    "toronto":       _on_chain(TORONTO_2025),
+    "brampton":      _on_chain(BRAMPTON_2023, LIO_ONTARIO_CONTEXT),
     "vancouver":     _chain(VANCOUVER_2018),
     "saanich":       _chain(CRD_ORTHO),
     "victoria":      _chain(CRD_ORTHO),
 
-    # GAPS — no verified lot-scale municipal source yet.
-    # Resolve to context-only (or Mapbox, if enabled). A lot-scale request
-    # fails loudly rather than shipping a blank square.
-    "mississauga":   _chain(LIO_ONTARIO_CONTEXT),
-    "vaughan":       _chain(LIO_ONTARIO_CONTEXT),
-    "markham":       _chain(LIO_ONTARIO_CONTEXT),
-    "richmond hill": _chain(LIO_ONTARIO_CONTEXT),
-    "oakville":      _chain(LIO_ONTARIO_CONTEXT),
-    "burlington":    _chain(LIO_ONTARIO_CONTEXT),
-    "oshawa":        _chain(LIO_ONTARIO_CONTEXT),
-    "cambridge":     _chain(LIO_ONTARIO_CONTEXT),
+    # Ontario municipalities with no city-specific open source. Formerly a GAP
+    # (context-inset only); now resolve to the province-wide OIWMS lot-scale
+    # fallback, then Mapbox if enabled. LIO_ONTARIO_CONTEXT stays first for
+    # wide-extent requests - it is skipped at lot scale, so a lot-scale crop
+    # falls through to OIWMS.
+    "mississauga":   _on_chain(LIO_ONTARIO_CONTEXT),
+    "vaughan":       _on_chain(LIO_ONTARIO_CONTEXT),
+    "markham":       _on_chain(LIO_ONTARIO_CONTEXT),
+    "richmond hill": _on_chain(LIO_ONTARIO_CONTEXT),
+    "oakville":      _on_chain(LIO_ONTARIO_CONTEXT),
+    "burlington":    _on_chain(LIO_ONTARIO_CONTEXT),
+    "oshawa":        _on_chain(LIO_ONTARIO_CONTEXT),
+    "cambridge":     _on_chain(LIO_ONTARIO_CONTEXT),
 
     # Edmonton: the city publicly serves Pictometry (EagleView) imagery -
     # third-party licence, excluded per the licensing doctrine above. No
@@ -156,7 +193,11 @@ SOURCES: dict[str, list[Source]] = {
 
 
 def sources_for(city: str) -> list[Source]:
-    return SOURCES.get(city.strip().lower(), _chain(LIO_ONTARIO_CONTEXT))
+    # Unknown city -> assume an Ontario municipality (the historical default)
+    # and give it the province-wide OIWMS fallback. Out-of-province addresses
+    # return blank/uncovered tiles, which fetch_ontario_provincial rejects
+    # (None), so the chain falls through rather than shipping wrong imagery.
+    return SOURCES.get(city.strip().lower(), _on_chain(LIO_ONTARIO_CONTEXT))
 
 
 # ---------------------------------------------------------------- geometry
@@ -283,7 +324,7 @@ def validate(raw: bytes) -> tuple[bool, dict]:
 @dataclass
 class AerialResult:
     image: bytes
-    source: Source
+    source: Source | str        # Source for city adapters; SOURCE_LABEL str for OIWMS
     metrics: dict
     lat: float
     lon: float
@@ -299,6 +340,28 @@ def get_aerial(address: str, city: str, half_m: float = 45.0, px: int = 1200,
     x, y = to_web_mercator(lat, lon)
 
     for src in sources_for(city):
+        if src.kind == "ontario_provincial":
+            # Province-wide OIWMS fallback (below city-specific, above Mapbox).
+            # The module fetches, stitches and blank-checks the tiles itself,
+            # returning (jpeg_bytes, label) or None so we fall through.
+            try:
+                provincial = fetch_ontario_provincial(lat, lon)
+            except Exception as exc:
+                if verbose:
+                    print(f"  [skip] {src.name}: fetch failed ({type(exc).__name__})")
+                continue
+            if provincial is None:
+                if verbose:
+                    print(f"  [skip] {src.name}: no provincial coverage / blank")
+                continue
+            raw, label = provincial
+            metrics = {"provider": "ontario_provincial", "bytes": len(raw)}
+            caption = f"Aerial imagery: {label}"
+            if verbose:
+                print(f"  [ok]   {src.name} ({len(raw)} bytes)")
+            # .image = jpeg bytes, .source = SOURCE_LABEL (str) per the contract.
+            return AerialResult(raw, label, metrics, lat, lon, caption)
+
         if half_m < src.min_half_m:
             if verbose:
                 print(f"  [skip] {src.name}: context-only "
