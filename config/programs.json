@@ -234,6 +234,45 @@
       "status": "WAITLISTED as of 24 Jun 2026 \u2014 apply to hold a position.",
       "note_if_gated_out": "Edmonton only.",
       "verify_by": "2026-12-31"
+    },
+    {
+      "id": "bc_ssmuh",
+      "name": "BC SSMUH (Bill 44) as-of-right density",
+      "level": "Provincial",
+      "gate": {
+        "province_in": [
+          "British Columbia"
+        ],
+        "any_scale": true
+      },
+      "source": "BC Housing Statutes (Residential Development) Amendment Act, 2023 (Bill 44)",
+      "detail": "Requires municipalities to permit small-scale multi-unit housing (3-4 units, up to 6 near frequent transit) as-of-right on most single-family/duplex lots UNDER 1 acre within the urban containment boundary. Not a grant - a zoning entitlement. Exempts lots over one acre.",
+      "gate_input": "lot must be <4,050 sqm and within Metro Van Urban Containment Boundary"
+    },
+    {
+      "id": "bc_hst_none",
+      "name": "No PST on labour + BC new-rental considerations",
+      "level": "Provincial",
+      "gate": {
+        "province_in": [
+          "British Columbia"
+        ],
+        "any_scale": true
+      },
+      "source": "BC tax framework",
+      "detail": "BC applies GST (5%) federally; the federal GST purpose-built rental rebate applies to 4+ unit purpose-built rental in BC as elsewhere. BC has its own considerations (PST on materials but not most labour). Confirm structure with a BC tax advisor.",
+      "figures_hedged": true
+    },
+    {
+      "id": "cmhc_mli_select_bc",
+      "name": "CMHC MLI Select (national, applies in BC)",
+      "level": "Federal",
+      "gate": {
+        "min_rental_units": 5
+      },
+      "scope_note": "FEDERAL - applies nationwide including BC. Gate on units only.",
+      "source": "CMHC",
+      "detail": "5+ rental units. Same national program already in config; noted here for BC completeness."
     }
   ],
   "scope_map": {
