@@ -262,9 +262,13 @@ def _fetch(src: Source, x: float, y: float, half_m: float, px: int,
             raise RuntimeError("Mapbox monthly cap reached or counter "
                                "unavailable - skipping paid fallback (fail-closed)")
         token = os.environ["MAPBOX_TOKEN"]
+        # Mapbox web-mercator zoom that puts (2*half_m) metres across `px`
+        # logical pixels: metres/pixel = 156543.03*cos(lat)/2**zoom must equal
+        # (2*half_m)/px. (A stray "-8" here — metres-per-256px-tile vs
+        # metres-per-pixel — used to force whole-city zoom on every fetch.)
         zoom = max(1.0, min(20.0,
                    math.log2(156543.03392 * math.cos(math.radians(lat))
-                             * px / (2 * half_m)) - 8))
+                             * px / (2 * half_m))))
         return _get(f"{src.url}/{lon},{lat},{zoom:.2f}/{px}x{px}@2x"
                     f"?access_token={token}")
 
