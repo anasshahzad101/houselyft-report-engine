@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face{font-family:'Oswald';src:url('fonts/Oswald.ttf') format('truetype');font-weight:200 700;}
+@font-face{font-family:'Lato';src:url('fonts/Lato-Regular.ttf') format('truetype');font-weight:400;}
+@font-face{font-family:'Lato';src:url('fonts/Lato-Bold.ttf') format('truetype');font-weight:700;}
+body{zoom:0.94;}
+</style>
+<style>
+  :root{--navy:#1b2a4a;--navy2:#26365c;--green:#3f7d33;--row:#f5f6f9;--line:#e4e7ee;--ink:#2a2f3a;--mut:#7a818f;--disc:#aeb6c4;}
+  *{box-sizing:border-box;}
+  body{font-family:'Lato',Arial,sans-serif;color:var(--ink);font-size:9.8pt;line-height:1.55;margin:0;}
+  h1,h2,h3,.os{font-family:'Oswald',Arial,sans-serif;}
+  p{margin:7px 0;} ul{margin:7px 0;padding-left:18px;} li{margin:4px 0;} small{color:var(--mut);}
+    .co-green{border-left:4px solid #2f7d46;background:#edf4ed;padding:12px 16px;margin:14px 0 18px;font-size:9.4pt;}
+  .co-green .ct2{font-family:'Oswald';font-weight:600;color:#2f7d46;font-size:11pt;margin-bottom:4px;}
+  .co-amber{border-left:4px solid #e0a23d;background:#fff6e8;padding:11px 16px;margin:16px 0 0;font-size:9pt;color:#5a4a1f;}
+  .co-amber .sub{color:#a4761c;}
+  .cmp{width:100%;border-collapse:collapse;margin:6px 0 18px;font-size:9pt;}
+  .cmp th{text-align:left;padding:8px 10px;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);background:#f4f6f9;}
+  .cmp td{padding:8px 10px;border-bottom:1px solid var(--line);background:#fff;}
+  .cmp td.g{color:#2f7d46;font-weight:700;}
+  .cmp td.n{color:#9aa2b2;}
+  .twocard{display:flex;gap:14px;margin:8px 0 18px;}
+  .card2{flex:1;border:1px solid var(--line);background:#fafbfc;padding:12px 14px;font-size:9.2pt;}
+  .section{page-break-before:always;} .section.first{page-break-before:auto;} .section.flow{page-break-before:auto;}
+  h2.sec{font-family:'Oswald';font-weight:700;color:var(--navy);font-size:19pt;letter-spacing:.3px;margin:0 0 12px;}
+  h3{font-family:'Oswald';font-weight:600;color:var(--navy2);font-size:11.5pt;margin:15px 0 5px;}
+  .cover{height:238mm;display:flex;flex-direction:column;align-items:center;text-align:center;page-break-after:always;}
+  .wm{font-family:'Oswald';font-weight:700;font-size:20pt;letter-spacing:7px;margin-top:58mm;display:flex;align-items:center;gap:10px;}
+  .wm .a{color:var(--navy);} .wm .b{color:#8b93a3;}
+  .wm .emblem{width:26px;height:26px;border:3px solid var(--navy);border-radius:50%;display:inline-block;position:relative;}
+  .wm .emblem:after{content:"";position:absolute;left:4px;right:4px;bottom:6px;height:7px;background:var(--navy);clip-path:polygon(0 100%,28% 30%,50% 70%,72% 10%,100% 100%);}
+  .cover h1{font-family:'Oswald';font-weight:700;font-size:40pt;color:var(--navy);letter-spacing:1px;margin:50mm 0 14px;}
+  .cover .addr{font-family:'Oswald';font-weight:600;font-size:19pt;color:var(--navy);}
+  .cover .addr span{display:block;font-family:'Lato';font-weight:400;font-size:12pt;color:#55607a;margin-top:6px;}
+  .cover .foot{margin-top:auto;font-size:7.6pt;color:var(--disc);}
+  table{width:100%;border-collapse:collapse;margin:9px 0;font-size:9pt;}
+  td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--row);}
+  table.kv td:first-child{background:var(--navy);color:#fff;font-weight:600;width:34%;border-bottom:2px solid #fff;}
+  table.kv tr:nth-child(even) td:first-child{background:var(--navy);}
+  table.kv td:last-child{background:var(--row);}
+  table.g th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:600;font-size:8.7pt;}
+  .barhead{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:11pt;padding:8px 12px;text-align:center;}
+  .imgrow{display:flex;gap:10px;margin:0 0 10px;}
+  .imgbox{flex:1;height:150px;background:#eef0f4;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9aa2b2;font-size:8pt;}
+  .imgbox.tall{height:148px;} .imgbox .ic{font-size:20pt;line-height:1;margin-bottom:6px;color:#c2c8d4;}
+  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  .grid4 .imgbox{height:120px;}
+  .steps{display:flex;gap:12px;margin:16px 0;}
+  .step{flex:1;border:1px solid var(--line);border-radius:3px;overflow:hidden;}
+  .step .sh{background:var(--green);color:#fff;text-align:center;padding:10px 6px;font-family:'Oswald';}
+  .step .sh .n{font-size:8pt;letter-spacing:2px;opacity:.9;display:block;}
+  .step .sh .t{font-size:11pt;font-weight:700;}
+  .step ul{padding:11px 10px 13px 24px;margin:0;font-size:8.3pt;} .step li{margin:5px 0;}
+  .cell{break-inside:avoid;page-break-inside:avoid;border:1px solid var(--line);background:var(--row);padding:11px 13px;margin:9px 0;}
+  .cell .ct{font-family:'Oswald';font-weight:600;color:var(--navy);margin-bottom:5px;font-size:10.5pt;}
+  .opt{margin:13px 0;border:1px solid var(--line);}
+  .opt .oh{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:10.5pt;padding:7px 12px;}
+  .opt .ob{display:flex;gap:14px;padding:12px;align-items:center;}
+  .opt .massing{width:215px;flex:0 0 215px;}
+  .opt .massing img{width:100%;height:auto;display:block;}
+  .photorow{display:flex;gap:10px;margin-top:10px;}
+  .photorow img{width:50%;height:auto;object-fit:cover;border:1px solid var(--line);display:block;}
+  .opt .od{flex:1;font-size:8.9pt;}
+  .ts{border:1px solid var(--line);margin:10px 0;}
+  .ts .d{display:flex;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line);} .ts .d:last-child{border-bottom:none;}
+  .ts .dt{flex:0 0 150px;font-family:'Oswald';font-weight:600;color:#b5611f;font-size:9pt;} .ts .dx{flex:1;font-size:8.8pt;}
+  .cta{background:var(--navy);color:#fff;padding:15px 17px;border-radius:4px;margin-top:12px;}
+  .cta .fee{font-family:'Oswald';font-weight:700;font-size:16pt;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="wm"><span class="emblem"></span><span class="a">HOUSE</span><span class="b">LYFT</span></div>
+  <h1>PROPERTY REPORT</h1>
+  <div class="addr">400 Ioco Road<span>Port Moody, BC</span></div>
+  <div class="foot">Preliminary analysis only. This report is not a planning opinion, legal advice, or development permit.<br>Verify all information before making any investment decision.</div>
+</div>
+
+<!-- WHY -->
+<div class="section first">
+  <h2 class="sec">Why this report matters…</h2>
+  <p>According to Federal Data, Canadian property owners are currently sitting on an unprecedented $5.22 Trillion in untapped real estate equity.</p>
+  <p>It is the largest concentrated pile of unused wealth in our country's history!</p>
+  <p>The information inside this report has been compiled to give you a data-backed opinion on the development viability of your property before you expose your hard-earned capital to risk.</p>
+  <p>It is designed to help you identify opportunities, unlock trapped equity, generate cashflow, and build wealth by optimizing your property's usage and potential.</p>
+  <p>This Initial Report:</p>
+  <ul>
+    <li><strong>Examines Your Local Zoning Bylaw:</strong> Find out what your lot bylaws legally allow you to build.</li>
+    <li><strong>Identifies Government Grants and Subsidies:</strong> Map out your property against active municipal, provincial, and federal grant programs.</li>
+    <li><strong>Highlights Specialized Financing Frameworks:</strong> Show you possible ways to structure your project's economics to qualify for low-interest, government-backed financing, whenever possible.</li>
+  </ul>
+  <p>This is the first part of a multi-step plan to help you transform your property and reach your development goals.</p>
+</div>
+
+<!-- HOW TO USE -->
+<div class="section">
+  <h2 class="sec">How to use this report…</h2>
+  <p>Think of this report as a high-level zoning compass. It tells you what the current regulations allow you to build on your property and the possible ways you can use that to your advantage.</p>
+  <p>It's the first step in a process that takes your property from its current state to maximizing its full potential.</p>
+  <div class="steps">
+    <div class="step"><div class="sh"><span class="n">STEP 1</span><span class="t">FREE PROPERTY REPORT</span></div>
+      <ul><li>What you're allowed to build under current zoning</li><li>Grants &amp; incentives that may be available</li><li>Financing options available</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 2</span><span class="t">BUILDER READY PACKAGE™</span></div>
+      <ul><li>Design Feasibility Report</li><li>Financial Feasibility Report</li><li>Grants &amp; Incentives Report</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 3</span><span class="t">BUILDER MATCHING™</span></div>
+      <ul><li>Matched with a trusted Builder Partner suited to your project &amp; market</li><li>They lead detailed design &amp; permitting</li><li>Through construction &amp; final occupancy</li></ul></div>
+  </div>
+  <p>Once your Builder Ready Package™ is complete, we will match you with one of our trusted Builder Partners who is best suited for your project and market. Your builder will then lead the project through detailed design, permitting, construction, and final occupancy.</p>
+  <p>It's important to remember that this report is compiled using publicly available information. Physical site inspections, full architectural and engineering drawings, and other studies have yet to be completed and will come during Phase 3.</p>
+</div>
+
+<!-- ADVANTAGE -->
+<div class="section">
+  <h2 class="sec">The House Lyft Advantage</h2>
+  <p>House Lyft helps Canadian homeowners unlock the equity trapped in their property and turn it into lasting income — without navigating the development maze alone.</p>
+  <p>We are the orchestrator of one coordinated path. We confirm what your property can become, build your <strong>Builder Ready Package™</strong> — the design, financial, and incentive feasibility that turns an idea into an executable plan — and then match you with one of our trusted, vetted <strong>Builder Partners</strong>, who leads detailed design, permitting, and construction through to completion.</p>
+  <p>Instead of stitching together a dozen disconnected vendors — surveyors, designers, brokers, planners, builders — each with their own timeline and their own bill, you get a single guided route from "what can I build?" to keys in hand. One relationship, one plan, one team accountable for getting you there.</p>
+  <div class="photorow">
+    <img src="static_photo1.png" alt="Completed multi-unit development">
+    <img src="static_photo2.png" alt="Completed projects">
+  </div>
+</div>
+
+<!-- 1 PROPERTY DETAILS -->
+<div class="section">
+  <h2 class="sec">1. Property Details</h2>
+  <div class="barhead">400 Ioco Road, Port Moody, BC&nbsp;&nbsp;V3H 2V7</div>
+  <div class="imglicense" style="font-size:7.6pt;color:#7a818f;margin:8px 0 10px;">Aerial and street-level photography pending a licensed imagery source for this municipality.</div>
+  <table class="kv">
+    <tr><td>Property Address</td><td>400 Ioco Road, Port Moody, BC&nbsp;&nbsp;V3H 2V7</td></tr>
+    <tr><td>Name</td><td>Terry Hughes</td></tr>
+    <tr><td>Phone Number</td><td>(604) 671-3611</td></tr>
+    <tr><td>Email</td><td>askterryhughes@gmail.com</td></tr>
+    <tr><td>Development Goals</td><td>Multiplex Development — maximize as-of-right unit count</td></tr>
+  </table>
+  <table class="kv">
+    <tr><td>Municipality</td><td>City of Port Moody</td></tr>
+    <tr><td>Regional District</td><td>Metro Vancouver Regional District</td></tr>
+    <tr><td>Neighbourhood</td><td>Ioco / Pleasantside corridor, Burrard Inlet</td></tr>
+    <tr><td>Current Bylaw</td><td>City of Port Moody Zoning Bylaw, 2018, No. 2937 — as amended to permit Small-Scale Multi-Unit Housing (SSMUH) under provincial Bill 44</td></tr>
+    <tr><td>Base Zone</td><td>To be confirmed during the feasibility phase (single-family / residential base zone; SSMUH provisions now apply)</td></tr>
+    <tr><td>Legal Description</td><td>To be confirmed</td></tr>
+    <tr><td>Year Built</td><td>To be confirmed</td></tr>
+    <tr><td>Lot size</td><td>To be confirmed during the feasibility phase (the SSMUH unit ceiling depends on confirmed lot area)</td></tr>
+    <tr><td>Development Goals</td><td>Multiplex Development (primary); tiered across the SSMUH as-of-right range</td></tr>
+  </table>
+  <div class="cell" style="break-inside:avoid;page-break-inside:avoid;">
+    <div class="ct">Neighbourhood Spotlight</div>
+    400 Ioco Road sits along the Ioco Road corridor on the north side of Port Moody, a quiet, scenic residential pocket close to the shore of Burrard Inlet:
+    <ul>
+      <li>Historic Ioco / Pleasantside area — long established, primarily single-family in character, with some homes enjoying Burrard Inlet views</li>
+      <li>Close to Old Orchard Park, Rocky Point Park, and the Shoreline Trail — Rocky Point is Port Moody's best-known waterfront park, with a recreational pier</li>
+      <li>Part of the Metro Vancouver Regional District; Moody Centre and Inlet Centre SkyTrain stations (Millennium Line / Evergreen Extension) serve the wider city</li>
+      <li>Local bus routes connect the Ioco / Murray Street area toward Coquitlam, Heritage Mountain, and Moody Centre</li>
+      <li>Whether this specific lot falls within 400 m of a frequent-transit stop — the trigger for the six-unit SSMUH tier — is to be confirmed during the feasibility phase</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 2 ZONING -->
+<div class="section">
+  <h2 class="sec">2. Current Zoning</h2>
+  <table class="kv">
+    <tr><td>Current Zoning</td><td>Residential base zone under City of Port Moody Zoning Bylaw No. 2937 (2018). Small-Scale Multi-Unit Housing (SSMUH) is now permitted as-of-right on eligible residential lots following the City's Bill 44 zoning updates (completed June 25, 2024). The exact base zone is to be confirmed.</td></tr>
+    <tr><td>Provincial Framework</td><td>British Columbia's <em>Housing Statutes (Residential Development) Amendment Act, 2023</em> (Bill 44) requires municipalities to permit small-scale multi-unit housing as-of-right on most single-family and duplex lots. Port Moody has implemented this through amendments to Zoning Bylaw No. 2937, with further amendments in 2025 (Bylaw No. 3506) extending SSMUH into the City's CD zones.</td></tr>
+    <tr><td>As-of-Right Unit Range</td><td><strong>Up to 3 units</strong> on lots under 280 m² (3,014 sq ft); <strong>up to 4 units</strong> on lots between 280 m² and 4,050 m² (1 acre); and <strong>up to 6 units</strong> where the lot is within 400 m of a frequent-transit stop (service every 15 minutes or better), with minimum parking eliminated. Lots over 1 acre are exempt from the SSMUH requirement — confirm this lot's area.</td></tr>
+    <tr><td>Permitted Uses</td><td>Multi-unit housing forms — the SSMUH provisions allow multiple self-contained dwelling units on an eligible residential lot without rezoning, subject to technical review of site conditions and Port Moody's SSMUH design guidelines.</td></tr>
+    <tr><td>Development Goals Achievable?</td><td><strong>YES</strong> — a multiplex is enabled as-of-right (at minimum 3–4 units, up to 6 near frequent transit); proceed to Step 2 — <strong>Builder Ready Package™</strong></td></tr>
+  </table>
+  <div class="cell">
+    <div class="ct">What this means for you…</div>
+    <ul style="margin-top:0;">
+      <li><strong>Multiplex (3–6 self-contained units):</strong> Small-scale multi-unit housing on a single residential lot, now permitted as-of-right under Port Moody's SSMUH rules</li>
+      <li><strong>Duplex, Triplex &amp; Fourplex:</strong> Attached or stacked units within one building form, scaled to your confirmed lot area</li>
+      <li><strong>Up to Six Units near Transit:</strong> Lots within 400 m of a frequent-transit stop unlock the six-unit tier and lose their minimum-parking requirement</li>
+      <li><strong>Secondary &amp; Accessory Suites:</strong> Internal or accessory suites can form part of the permitted unit count on an eligible lot</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TIME SENSITIVE -->
+<div class="section">
+  <h2 class="sec">⚠️ Time-Sensitive Information</h2>
+  <div class="ts">
+    <div class="d"><div class="dt">Enhanced GST Rental Rebate — Federal Window<br><small>construction must begin by Dec 31, 2030</small></div><div class="dx">The Government of Canada's Enhanced GST Rental Rebate provides a 100% rebate of the 5% federal GST on new purpose-built rental housing, for projects with at least four self-contained rental units. It applies to projects that begin construction on or before December 31, 2030 and complete by December 31, 2035. Structuring the project as qualifying purpose-built rental from Day 1 is essential to capture it. (Government of Canada — Department of Finance / Canada Revenue Agency.)</div></div>
+    <div class="d"><div class="dt">SSMUH As-of-Right — Already in Effect<br><small>in force since 2024</small></div><div class="dx">Port Moody's SSMUH zoning is already in force. On an eligible lot, three to four units (up to six near frequent transit) can proceed without a rezoning, public hearing, or Council approval. Where the six-unit near-transit tier applies, minimum parking requirements are eliminated. This is a zoning entitlement, not a grant — confirm the lot's area and transit proximity to fix the exact ceiling.</div></div>
+    <div class="d"><div class="dt">CMHC</div><div class="dx">Canada Mortgage and Housing Corporation (CMHC) policy changes can occur at any time, potentially affecting financing options. It is recommended to submit your application as early as possible to reduce any risk.</div></div>
+  </div>
+</div>
+
+<!-- 3 REZONING -->
+<div class="section">
+  <h2 class="sec">3. Rezoning (If Applicable)</h2>
+  <p>Rezoning is when the city changes the local planning rules to legally allow more housing units, taller buildings, or different types of properties to be built on a specific piece of land than what was originally allowed. Think of it as the city giving a property a "regulatory upgrade".</p>
+  <div class="co-green"><div class="ct2">Not Required for a Small-Scale Multiplex</div>Small-scale multi-unit housing (3–6 units, depending on lot area and transit proximity) is permitted as-of-right under Port Moody's SSMUH provisions — no rezoning is contemplated for a multiplex within that envelope.</div>
+  <div class="barhead" style="text-align:left;">As-of-Right vs. The Rezoning Path</div>
+  <table class="cmp">
+    <tr><th></th><th>Your Path — As-of-Right SSMUH</th><th>If Rezoning Were Needed</th></tr>
+    <tr><td>Change to the zoning bylaw</td><td class="g">None required</td><td class="n">Required</td></tr>
+    <tr><td>Public hearing</td><td class="g">Not held (prohibited for SSMUH-compliance amendments, Local Government Act s.464)</td><td class="n">Required</td></tr>
+    <tr><td>City Council rezoning decision</td><td class="g">Not required</td><td class="n">Required</td></tr>
+    <tr><td>Discretionary approval risk</td><td class="g">Not applicable</td><td class="n">Possible</td></tr>
+    <tr><td>What governs your build</td><td class="g">Zoning Bylaw No. 2937 (SSMUH provisions)</td><td class="n">A new site-specific bylaw</td></tr>
+  </table>
+  <div class="barhead" style="text-align:left;">Also enabled as-of-right on an eligible lot</div>
+  <div class="twocard">
+    <div class="card2"><div class="ct">Small-scale multiplex</div>Three to four units are permitted as-of-right under the SSMUH provisions on most residential lots, without rezoning.</div>
+    <div class="card2"><div class="ct">Six units near frequent transit</div>Where the lot is within 400 m of a frequent-transit stop, up to six units are permitted and minimum parking is eliminated — proximity to be confirmed.</div>
+  </div>
+  <div class="barhead" style="text-align:left;">What this means for 400 Ioco Road</div>
+  <p>Because a small-scale multiplex is enabled under existing zoning, no rezoning application is contemplated in this analysis. Your project can advance directly to design and permitting once the lot area and transit proximity are confirmed. The comparison above shows what that avoids. This assessment reflects the bylaws in force at the date of this report and is subject to technical review of site conditions.</p>
+  <div class="co-amber"><b>Two items to confirm:</b><br><span class="sub">the lot's confirmed area (which sets the 3-vs-4-unit ceiling) and whether the lot lies within 400 m of a frequent-transit stop (which unlocks the six-unit tier). Both are finalized during the feasibility phase.</span></div>
+</div>
+
+<!-- 4 DEVELOPMENT OPTIONS -->
+<div class="section">
+  <h2 class="sec">4. Development Options</h2>
+  <div class="opt"><div class="oh">Option A — 3–4 Unit Multiplex (As-of-Right SSMUH)</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_a.png" alt="Massing illustration"></div>
+      <div class="od">A small-scale multiplex of three units (on lots under 280 m²) or four units (on lots between 280 m² and 1 acre), permitted as-of-right under Port Moody's SSMUH provisions. No rezoning or public hearing is required. The exact unit count is set by the confirmed lot area. Building form, setbacks, height, and site coverage follow the SSMUH standards in Zoning Bylaw No. 2937 and the City's SSMUH design guidelines. This tier is the reliable floor for the multiplex goal regardless of transit proximity.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option B — Up to 6-Unit Multiplex (Near Frequent Transit) — Primary Recommendation if Eligible</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_b.png" alt="Massing illustration"></div>
+      <div class="od">Where the lot is within 400 m of a frequent-transit stop (service every 15 minutes or better), the SSMUH rules permit up to six units and eliminate the minimum-parking requirement. This is the configuration that best matches the goal of maximizing unit count. Eligibility hinges on the confirmed transit distance — a defined, checkable input. If it clears, six units proceed as-of-right on the same no-rezoning path as Option A.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option C — Confirming the Two Inputs That Set the Ceiling</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_c.png" alt="Massing illustration"></div>
+      <div class="od">Two site facts determine the maximum unit count: the confirmed lot area (3 units under 280 m²; 4 units from 280 m² to 1 acre; lots over 1 acre are exempt from SSMUH) and whether the lot is within 400 m of a frequent-transit stop (which unlocks the six-unit tier and removes parking minimums). Confirming both — via a survey / BC Assessment lot record and the City's transit-proximity mapping — is the essential first step, and is completed during the Builder Ready Package™ feasibility phase.</div>
+    </div></div>
+</div>
+
+<!-- 5 DEVELOPMENT GOAL SUMMARY -->
+<div class="section flow">
+  <h2 class="sec">5. Development Goal Summary</h2>
+  <div class="barhead" style="text-align:left;">Multiplex — Tiered Across the SSMUH Range</div>
+  <p>400 Ioco Road is enabled for small-scale multi-unit housing as-of-right under British Columbia's Bill 44 and Port Moody's SSMUH zoning. <strong>The multiplex goal is achievable</strong> — a minimum of three to four units on the lot without rezoning, and up to six units if the lot is within 400 m of a frequent-transit stop. The exact ceiling is fixed by two confirmable inputs (lot area and transit proximity), which the feasibility phase resolves.</p>
+</div>
+
+<!-- 6 FINANCING -->
+<div class="section">
+  <h2 class="sec">6. Financing Pathways</h2>
+  <p>How you finance the development of your property can significantly impact your overall ROI, as well as your cashflow and stability.</p>
+  <p>Many property owners destroy their project margins by trying to use expensive personal cash lines or basic retail bank loans.</p>
+  <p>A successful project requires institutional underwriting before you ever pull a permit. We partner with national commercial lending desks to bypass conventional retail hurdles, allowing our qualified files to access specialized programs, rates, and terms completely unavailable to the general public.</p>
+  <table class="kv">
+    <tr><td>Mortgage Refinance</td><td>If a property has appreciated in value or the mortgage has been significantly paid down, owners can typically access up to 80% of the property's newly appraised value.</td></tr>
+    <tr><td>Home Equity Line of Credit (HELOC)</td><td>Is a flexible, revolving line of credit secured against the equity of an existing property. Unlike a refinance that issues a lump sum, a HELOC functions more like a high-limit credit card tied to your real estate.</td></tr>
+    <tr><td>Construction Financing</td><td>Also known as a progress-draw mortgage, construction financing is a short-term loan specifically designed to fund a new build from the ground up (or fund a massive structural overhaul).</td></tr>
+    <tr><td>CMHC MLI Select <small>(available at 5+ rental units)</small></td><td>CMHC's flagship multi-unit insured-financing product offers preferred terms — higher loan-to-value and longer amortization — for qualifying purpose-built rental projects. It requires a minimum of five rental units, so it attaches to the six-unit near-transit tier. (Source: CMHC MLI Select.)</td></tr>
+    <tr><td>CMHC Apartment Construction Loan Program <small>(minimum $1M loan)</small></td><td>Low-cost construction financing for purpose-built rental. It is gated on loan size — a minimum $1M loan — rather than unit count, so eligibility depends on the confirmed Phase 2 project budget. (Source: CMHC ACLP.)</td></tr>
+  </table>
+</div>
+
+<!-- 7 GRANTS -->
+<div class="section">
+  <h2 class="sec">7. Available Grants &amp; Incentives</h2>
+  <p>Most property owners don't realize how much government assistance is available to help them complete their project.</p>
+  <p>Creating housing is a key mandate of government at all levels: federal, provincial, and municipal. The work you are considering undertaking with your property is the exact kind of work the government wants to support!</p>
+  <p>It's important to note that the timing, criteria, and application processes change regularly. Working with clients across the country, we are intimately familiar with available grants, incentives and programs that may be available for your project. Because your goal is a multiplex, the table below shows each program beside the unit tier at which it becomes available — government-backed financing options, not guaranteed grants.</p>
+  <table class="g">
+    <tr><th style="width:70px">Level</th><th style="width:200px">Program</th><th>Notes &amp; unit tier</th></tr>
+    <tr><td>Provincial</td><td>BC SSMUH as-of-right density (Bill 44)</td><td>Not a grant — the zoning entitlement itself. Permits 3–6 units on an eligible residential lot without rezoning, and removes minimum parking on the six-unit near-transit tier. (Source: BC <em>Housing Statutes (Residential Development) Amendment Act, 2023</em>.)</td></tr>
+    <tr><td>Federal</td><td>Enhanced GST Rental Rebate (Purpose-Built Rental Housing)</td><td>100% rebate of the 5% federal GST on new purpose-built rental. Requires 4+ self-contained rental units — attaches at the four-unit tier and above. Construction must begin on or before Dec 31, 2030 and complete by Dec 31, 2035. (Source: Government of Canada — Department of Finance / CRA.)</td></tr>
+    <tr><td>Provincial</td><td>BC PST treatment on purpose-built rental</td><td>British Columbia has committed to removing PST on the same purpose-built rental buildings covered by the federal rebate; PST generally applies to materials but not most labour. Figures and structure to be confirmed with a BC tax advisor. (Source: BC tax framework.)</td></tr>
+    <tr><td>Federal</td><td>CMHC MLI Select</td><td>Preferred insured financing for qualifying rental projects. Requires a minimum of five rental units — attaches at the six-unit near-transit tier. (Source: CMHC.)</td></tr>
+    <tr><td>Federal</td><td>CMHC Apartment Construction Loan Program (ACLP)</td><td>Low-cost construction financing; gated on a minimum $1M loan (confirmed against the Phase 2 project budget), not unit count. (Source: CMHC.)</td></tr>
+    </table>
+  <p style="font-size:8.4pt;color:#7a818f;margin-top:6px;">Programs are shown against the unit tier that unlocks them. None is stated as guaranteed — each is available at a scale, and eligibility is confirmed during the Builder Ready Package™ feasibility phase. Development cost charges and municipal fees payable to the City of Port Moody are confirmed in Phase 2.</p>
+</div>
+
+<!-- 8 SUMMARY -->
+<div class="section">
+  <h2 class="sec">8. Summary</h2>
+  <h3>Current Zoning Review</h3>
+  <p>400 Ioco Road confirms a workable development option. The property sits on an eligible residential lot in Port Moody, where <strong>small-scale multi-unit housing is now permitted as-of-right</strong> under British Columbia's Bill 44 and the City's SSMUH amendments to Zoning Bylaw No. 2937. A multiplex of three to four units can proceed without rezoning, and up to six units where the lot is within 400 m of a frequent-transit stop.</p>
+  <ul>
+    <li><strong>The As-of-Right Multiplex Advantage:</strong> No rezoning, no public hearing, and no Council approval are required for a small-scale multiplex within the SSMUH envelope — the unit ceiling is set by the confirmed lot area and transit proximity.</li>
+  </ul>
+  <h3>Grants &amp; Incentives Review</h3>
+  <p>Governments at the federal, provincial, and municipal levels continue to prioritize housing development by offering grants, rebates, and other incentives to help reduce project costs. Because these programs and their eligibility criteria change frequently, we help identify and navigate the opportunities that may apply to your project, maximizing available funding and improving overall project feasibility.</p>
+  <h3>Financing Options Review</h3>
+  <p>Choosing the right financing strategy is essential to maximizing project returns, maintaining healthy cash flow, and reducing financial risk. We work with trusted lending partners to identify financing solutions that align with your development goals, including mortgage refinancing, home equity lines of credit (HELOCs), and construction financing, alongside CMHC programs that become available as the unit count and project budget are confirmed. By securing the right financing early in the process, we help position your project for long-term success.</p>
+</div>
+
+<!-- NEXT STEPS / ROADBLOCKS / CTA -->
+<div class="section">
+  <h2 class="sec">Next Steps</h2>
+  <p>Before you can submit for permits, lock in specialized financing, or secure municipal grants, external consultants require site-specific documentation. We break these down into 3 Steps:</p>
+  <h3>Step 1: Zoning — Development Rights and Requirements</h3>
+  <p>In order to ensure that your project plans meet local setbacks, site coverage caps, and height restrictions, you will need the following:</p>
+  <ul><li>Site Plan</li><li>Massing Diagram Options</li><li>Unit Mix, Unit Count and Unit Sizes</li></ul>
+  <h3>Step 2: Grants &amp; Incentives</h3>
+  <p>While your project may be eligible for various government rebates and incentives, most programs require documentation that is generated throughout the development and construction process. Applications are generally completed once all required information has been collected.</p>
+  <p>In order to start the application process you will need a detailed breakdown of the necessary documentation and supporting forms required for each program.</p>
+  <h3>Step 3: Financing Options</h3>
+  <p>This report identifies financing programs that may be suitable for your proposed development. Final financing approval cannot be obtained until the project has progressed through the planning stage and the required financial information, construction budgets, and supporting documentation have been prepared.</p>
+  <p>The Builder Ready Package™ provides much of the information required by lenders to begin the financing process. Additional lender-specific documentation may also be required depending on the financing program selected.</p>
+  <h3>Roadblocks</h3>
+  <p>Most property owners attempt to gather these documents piecemeal and haphazardly. They spend months going back and forth hiring a private surveyor, then waiting weeks for an independent designer, then shopping around blindly for a commercial mortgage broker, and then trying to negotiate independently with city planners. This uncoordinated approach creates massive friction. By the time they get a single piece of the puzzle solved, their other data is outdated, municipal deadlines have passed, grant pools are fully depleted, and they have burned through thousands of dollars in dead carrying costs.</p>
+  <h3>The House Lyft Advantage</h3>
+  <p>We designed our Phase 2 where over the next 30 days, our lending partners, planning and grants and incentives consultants will compile everything simultaneously into a single next step option for you. This gives you everything required to accurately plan and build your roadmap.</p>
+  <p>In addition, if you decide to move forward with the project and use one of our approved and vetted builder partners, they will credit you the full cost of your Phase 2 work right back to your construction balance on Day 1.</p>
+  <div class="cta" style="page-break-before:always;">
+    Your total investment for the Phase 2 blueprint is a single flat fee of<br><span class="fee">$5,000.00</span>
+    <div style="margin-top:10px;font-size:8.8pt;">Getting started is simple:</div>
+    <ol style="margin:6px 0 0;font-size:8.8pt;padding-left:18px;">
+      <li><strong>Authorize the Phase 2 Work Order:</strong> Review and sign our Builder Ready Package Agreement.</li>
+      <li><strong>Submit the Phase 2 Payment:</strong> to activate our trusted team of consultants.</li>
+      <li><strong>Submit the Financial Intake Forms:</strong> as provided by our lender partner.</li>
+      <li><strong>Book Your Initial Planning Session:</strong> set up your initial meeting with our planner and Senior Relationship Manager to finalize your development objectives and plan next steps.</li>
+    </ol>
+  </div>
+</div>
+
+</body>
+</html>
