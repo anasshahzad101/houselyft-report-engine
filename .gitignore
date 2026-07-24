@@ -8,3 +8,4 @@ outputs/
 # report engine
 *.pdf
 zoning_area.geojson
+templates/report_salazar.html
