@@ -296,6 +296,69 @@ class AerialResult:
     caption: str
 
 
+# ---- province-wide Ontario fallback (OIWMS, #44) --------------------------
+# ontario_provincial.py added the OIWMS tile provider but it was never wired
+# into get_aerial's resolver, so Ontario cities without a city-specific
+# municipal source (Barrie, Guelph, Kingston, ...) resolved to nothing and
+# shipped the "imagery pending" line. OIWMS is Open Government Licence -
+# Ontario (commercial use with attribution) and covers the whole province at
+# lot scale, so it is a valid last resort for any Ontario lot.
+OIWMS_ONTARIO = Source(
+    name="Ontario Imagery Web Map Service (OIWMS)",
+    url="",                       # served by ontario_provincial.fetch_ontario_provincial
+    kind="oiwms",
+    attribution="Ontario Imagery Web Map Service, © King's Printer for Ontario "
+                "(Open Government Licence – Ontario).",
+)
+
+# Rough Ontario bounding box (lat/lon). Used only to decide whether the OIWMS
+# fallback is geographically valid - it must never render on a non-Ontario lot.
+_ON_BBOX = (41.6, 56.9, -95.2, -74.3)   # lat_min, lat_max, lon_min, lon_max
+
+
+def _in_ontario(lat: float, lon: float) -> bool:
+    return (_ON_BBOX[0] <= lat <= _ON_BBOX[1]) and (_ON_BBOX[2] <= lon <= _ON_BBOX[3])
+
+
+def get_ontario_aerial(lat: float, lon: float, target_half_m: float = 80.0,
+                       verbose: bool = True) -> Optional[AerialResult]:
+    """Validated OIWMS crop for any Ontario lot, or None.
+
+    OIWMS is a quantized tile service, so the realized ground coverage snaps to
+    a zoom level. The caption states the REALIZED coverage (not the requested
+    one) so it never overstates what the picture shows. z20 tiles 404 for this
+    service, so 19 is the tightest reliable zoom.
+    """
+    from ontario_provincial import fetch_ontario_provincial   # lazy: optional dep
+    grid = 3
+    span_px = grid * 256
+    mpp_equator = 156543.03392 * math.cos(math.radians(lat))
+    z = round(math.log2(mpp_equator * span_px / (2.0 * target_half_m)))
+    z = max(15, min(19, int(z)))
+    across_m = mpp_equator / (2 ** z) * span_px
+    try:
+        got = fetch_ontario_provincial(lat, lon, zoom=z, grid=grid)
+    except Exception as exc:
+        if verbose:
+            print(f"  [skip] OIWMS: fetch failed ({type(exc).__name__})")
+        return None
+    if not got:
+        if verbose:
+            print("  [skip] OIWMS: no tiles / blank")
+        return None
+    raw, label = got
+    ok, metrics = validate(raw)
+    if not ok:
+        if verbose:
+            print(f"  [skip] OIWMS: failed validation {metrics}")
+        return None
+    metrics = {**metrics, "zoom": z, "half_m": round(across_m / 2)}
+    caption = (f"Approx. {int(round(across_m))} m across. Source: {label}.")
+    if verbose:
+        print(f"  [ok]   OIWMS z{z} {metrics}")
+    return AerialResult(raw, OIWMS_ONTARIO, metrics, lat, lon, caption)
+
+
 def get_aerial(address: str, city: str, half_m: float = 45.0, px: int = 1200,
                lat: Optional[float] = None, lon: Optional[float] = None,
                verbose: bool = True) -> Optional[AerialResult]:
@@ -329,6 +392,13 @@ def get_aerial(address: str, city: str, half_m: float = 45.0, px: int = 1200,
         if verbose:
             print(f"  [ok]   {src.name} {metrics}")
         return AerialResult(raw, src, metrics, lat, lon, caption)
+
+    # Province-wide Ontario last resort (#44): only when the coordinate is in
+    # Ontario, so it can never render on an out-of-province lot.
+    if _in_ontario(lat, lon):
+        res = get_ontario_aerial(lat, lon, target_half_m=half_m, verbose=verbose)
+        if res is not None:
+            return res
 
     if verbose:
         print(f"  [FAIL] no validated lot-scale imagery for '{city}'")
