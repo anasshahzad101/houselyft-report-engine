@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face{font-family:'Oswald';src:url('fonts/Oswald.ttf') format('truetype');font-weight:200 700;}
+@font-face{font-family:'Lato';src:url('fonts/Lato-Regular.ttf') format('truetype');font-weight:400;}
+@font-face{font-family:'Lato';src:url('fonts/Lato-Bold.ttf') format('truetype');font-weight:700;}
+body{zoom:0.94;}
+</style>
+<style>
+  :root{--navy:#1b2a4a;--navy2:#26365c;--green:#3f7d33;--row:#f5f6f9;--line:#e4e7ee;--ink:#2a2f3a;--mut:#7a818f;--disc:#aeb6c4;}
+  *{box-sizing:border-box;}
+  body{font-family:'Lato',Arial,sans-serif;color:var(--ink);font-size:9.8pt;line-height:1.55;margin:0;}
+  h1,h2,h3,.os{font-family:'Oswald',Arial,sans-serif;}
+  p{margin:7px 0;} ul{margin:7px 0;padding-left:18px;} li{margin:4px 0;} small{color:var(--mut);}
+    .co-green{border-left:4px solid #2f7d46;background:#edf4ed;padding:12px 16px;margin:14px 0 18px;font-size:9.4pt;}
+  .co-green .ct2{font-family:'Oswald';font-weight:600;color:#2f7d46;font-size:11pt;margin-bottom:4px;}
+  .co-amber{border-left:4px solid #e0a23d;background:#fff6e8;padding:11px 16px;margin:16px 0 0;font-size:9pt;color:#5a4a1f;}
+  .co-amber .sub{color:#a4761c;}
+  .cmp{width:100%;border-collapse:collapse;margin:6px 0 18px;font-size:9pt;}
+  .cmp th{text-align:left;padding:8px 10px;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);background:#f4f6f9;}
+  .cmp td{padding:8px 10px;border-bottom:1px solid var(--line);background:#fff;}
+  .cmp td.g{color:#2f7d46;font-weight:700;}
+  .cmp td.n{color:#9aa2b2;}
+  .twocard{display:flex;gap:14px;margin:8px 0 18px;}
+  .card2{flex:1;border:1px solid var(--line);background:#fafbfc;padding:12px 14px;font-size:9.2pt;}
+  .section{page-break-before:always;} .section.first{page-break-before:auto;} .section.flow{page-break-before:auto;}
+  h2.sec{font-family:'Oswald';font-weight:700;color:var(--navy);font-size:19pt;letter-spacing:.3px;margin:0 0 12px;}
+  h3{font-family:'Oswald';font-weight:600;color:var(--navy2);font-size:11.5pt;margin:15px 0 5px;}
+  .cover{height:238mm;display:flex;flex-direction:column;align-items:center;text-align:center;page-break-after:always;}
+  .wm{font-family:'Oswald';font-weight:700;font-size:20pt;letter-spacing:7px;margin-top:58mm;display:flex;align-items:center;gap:10px;}
+  .wm .a{color:var(--navy);} .wm .b{color:#8b93a3;}
+  .wm .emblem{width:26px;height:26px;border:3px solid var(--navy);border-radius:50%;display:inline-block;position:relative;}
+  .wm .emblem:after{content:"";position:absolute;left:4px;right:4px;bottom:6px;height:7px;background:var(--navy);clip-path:polygon(0 100%,28% 30%,50% 70%,72% 10%,100% 100%);}
+  .cover h1{font-family:'Oswald';font-weight:700;font-size:40pt;color:var(--navy);letter-spacing:1px;margin:50mm 0 14px;}
+  .cover .addr{font-family:'Oswald';font-weight:600;font-size:19pt;color:var(--navy);}
+  .cover .addr span{display:block;font-family:'Lato';font-weight:400;font-size:12pt;color:#55607a;margin-top:6px;}
+  .cover .foot{margin-top:auto;font-size:7.6pt;color:var(--disc);}
+  table{width:100%;border-collapse:collapse;margin:9px 0;font-size:9pt;}
+  td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--row);}
+  table.kv td:first-child{background:var(--navy);color:#fff;font-weight:600;width:34%;border-bottom:2px solid #fff;}
+  table.kv tr:nth-child(even) td:first-child{background:var(--navy);}
+  table.kv td:last-child{background:var(--row);}
+  table.g th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:600;font-size:8.7pt;}
+  .barhead{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:11pt;padding:8px 12px;text-align:center;}
+  .imgrow{display:flex;gap:10px;margin:0 0 10px;}
+  .imgbox{flex:1;height:150px;background:#eef0f4;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9aa2b2;font-size:8pt;}
+  .imgbox.tall{height:148px;} .imgbox .ic{font-size:20pt;line-height:1;margin-bottom:6px;color:#c2c8d4;}
+  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  .grid4 .imgbox{height:120px;}
+  .steps{display:flex;gap:12px;margin:16px 0;}
+  .step{flex:1;border:1px solid var(--line);border-radius:3px;overflow:hidden;}
+  .step .sh{background:var(--green);color:#fff;text-align:center;padding:10px 6px;font-family:'Oswald';}
+  .step .sh .n{font-size:8pt;letter-spacing:2px;opacity:.9;display:block;}
+  .step .sh .t{font-size:11pt;font-weight:700;}
+  .step ul{padding:11px 10px 13px 24px;margin:0;font-size:8.3pt;} .step li{margin:5px 0;}
+  .cell{break-inside:avoid;page-break-inside:avoid;border:1px solid var(--line);background:var(--row);padding:11px 13px;margin:9px 0;}
+  .cell .ct{font-family:'Oswald';font-weight:600;color:var(--navy);margin-bottom:5px;font-size:10.5pt;}
+  .opt{margin:13px 0;border:1px solid var(--line);}
+  .opt .oh{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:10.5pt;padding:7px 12px;}
+  .opt .ob{display:flex;gap:14px;padding:12px;align-items:center;}
+  .opt .massing{width:215px;flex:0 0 215px;}
+  .opt .massing img{width:100%;height:auto;display:block;}
+  .photorow{display:flex;gap:10px;margin-top:10px;}
+  .photorow img{width:50%;height:auto;object-fit:cover;border:1px solid var(--line);display:block;}
+  .opt .od{flex:1;font-size:8.9pt;}
+  .ts{border:1px solid var(--line);margin:10px 0;}
+  .ts .d{display:flex;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line);} .ts .d:last-child{border-bottom:none;}
+  .ts .dt{flex:0 0 150px;font-family:'Oswald';font-weight:600;color:#b5611f;font-size:9pt;} .ts .dx{flex:1;font-size:8.8pt;}
+  .cta{background:var(--navy);color:#fff;padding:15px 17px;border-radius:4px;margin-top:12px;}
+  .cta .fee{font-family:'Oswald';font-weight:700;font-size:16pt;}
+  .pending-img{font-size:8.5pt;color:#7a818f;font-style:italic;margin:0 0 12px;padding:10px 12px;border:1px dashed var(--line);background:#fafbfc;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="wm"><span class="emblem"></span><span class="a">HOUSE</span><span class="b">LYFT</span></div>
+  <h1>PROPERTY REPORT</h1>
+  <div class="addr">337 Gage Avenue North<span>Hamilton, ON</span></div>
+  <div class="foot">Preliminary analysis only. This report is not a planning opinion, legal advice, or development permit.<br>Verify all information before making any investment decision.</div>
+</div>
+
+<!-- WHY -->
+<div class="section first">
+  <h2 class="sec">Why this report matters…</h2>
+  <p>According to Federal Data, Canadian property owners are currently sitting on an unprecedented $5.22 Trillion in untapped real estate equity.</p>
+  <p>It is the largest concentrated pile of unused wealth in our country's history!</p>
+  <p>The information inside this report has been compiled to give you a data-backed opinion on the development viability of your property before you expose your hard-earned capital to risk.</p>
+  <p>It is designed to help you identify opportunities, unlock trapped equity, generate cashflow, and build wealth by optimizing your property's usage and potential.</p>
+  <p>This Initial Report:</p>
+  <ul>
+    <li><strong>Examines Your Local Zoning Bylaw:</strong> Find out what your lot bylaws legally allow you to build.</li>
+    <li><strong>Identifies Government Grants and Subsidies:</strong> Map out your property against active municipal, provincial, and federal grant programs.</li>
+    <li><strong>Highlights Specialized Financing Frameworks:</strong> Show you possible ways to structure your project's economics to qualify for low-interest, government-backed financing, whenever possible.</li>
+  </ul>
+  <p>This is the first part of a multi-step plan to help you transform your property and reach your development goals.</p>
+</div>
+
+<!-- HOW TO USE -->
+<div class="section">
+  <h2 class="sec">How to use this report…</h2>
+  <p>Think of this report as a high-level zoning compass. It tells you what the current regulations allow you to build on your property and the possible ways you can use that to your advantage.</p>
+  <p>It's the first step in a process that takes your property from its current state to maximizing its full potential.</p>
+  <div class="steps">
+    <div class="step"><div class="sh"><span class="n">STEP 1</span><span class="t">FREE PROPERTY REPORT</span></div>
+      <ul><li>What you're allowed to build under current zoning</li><li>Grants &amp; incentives that may be available</li><li>Financing options available</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 2</span><span class="t">BUILDER READY PACKAGE™</span></div>
+      <ul><li>Design Feasibility Report</li><li>Financial Feasibility Report</li><li>Grants &amp; Incentives Report</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 3</span><span class="t">BUILDER MATCHING™</span></div>
+      <ul><li>Matched with a trusted Builder Partner suited to your project &amp; market</li><li>They lead detailed design &amp; permitting</li><li>Through construction &amp; final occupancy</li></ul></div>
+  </div>
+  <p>Once your Builder Ready Package™ is complete, we will match you with one of our trusted Builder Partners who is best suited for your project and market. Your builder will then lead the project through detailed design, permitting, construction, and final occupancy.</p>
+  <p>It's important to remember that this report is compiled using publicly available information. Physical site inspections, full architectural and engineering drawings, and other studies have yet to be completed and will come during Phase 3.</p>
+</div>
+
+<!-- ADVANTAGE -->
+<div class="section">
+  <h2 class="sec">The House Lyft Advantage</h2>
+  <p>House Lyft helps Canadian homeowners unlock the equity trapped in their property and turn it into lasting income — without navigating the development maze alone.</p>
+  <p>We are the orchestrator of one coordinated path. We confirm what your property can become, build your <strong>Builder Ready Package™</strong> — the design, financial, and incentive feasibility that turns an idea into an executable plan — and then match you with one of our trusted, vetted <strong>Builder Partners</strong>, who leads detailed design, permitting, and construction through to completion.</p>
+  <p>Instead of stitching together a dozen disconnected vendors — surveyors, designers, brokers, planners, builders — each with their own timeline and their own bill, you get a single guided route from "what can I build?" to keys in hand. One relationship, one plan, one team accountable for getting you there.</p>
+  <div class="photorow">
+    <img src="static_photo1.png" alt="Completed multi-unit development">
+    <img src="static_photo2.png" alt="Completed projects">
+  </div>
+</div>
+
+<!-- 1 PROPERTY DETAILS -->
+<div class="section">
+  <h2 class="sec">1. Property Details</h2>
+  <div class="barhead">337 Gage Avenue North, Hamilton, ON&nbsp;&nbsp;L8L 7A8</div>
+  <div class="pending-img">Aerial and street-level photography pending a licensed imagery source for Hamilton.</div>
+  <table class="kv">
+    <tr><td>Property Address</td><td>337 Gage Avenue North, Hamilton, ON&nbsp;&nbsp;L8L 7A8</td></tr>
+    <tr><td>Name</td><td>Moe Sheikh</td></tr>
+    <tr><td>Phone Number</td><td>Provided at intake</td></tr>
+    <tr><td>Email</td><td>Provided at intake</td></tr>
+    <tr><td>Development Goals</td><td>Additional-unit / multiplex feasibility — to be confirmed at intake</td></tr>
+  </table>
+  <table class="kv">
+    <tr><td>Municipality</td><td>City of Hamilton</td></tr>
+    <tr><td>Neighbourhood</td><td>Lower-city Hamilton (residential grid east of downtown)</td></tr>
+    <tr><td>Current Bylaw</td><td>City of Hamilton Zoning By-law No. 05-200</td></tr>
+    <tr><td>Property Type</td><td>To be confirmed (residential low-rise assumed — confirmed in Phase 2)</td></tr>
+    <tr><td>Waste Collection</td><td>City of Hamilton curbside schedule</td></tr>
+    <tr><td>Legal Description</td><td>To be confirmed</td></tr>
+    <tr><td>Year Built</td><td>To be confirmed</td></tr>
+    <tr><td>Lot size</td><td>To be confirmed</td></tr>
+    <tr><td>Development Goals</td><td>Add rental units on the lot (fourplex and/or additional dwelling units) — exact goal confirmed at intake</td></tr>
+  </table>
+  <div class="cell" style="break-inside:avoid;page-break-inside:avoid;">
+    <div class="ct">Neighbourhood Spotlight</div>
+    337 Gage Avenue North sits in Hamilton's lower city — the established residential street grid east of downtown, below the escarpment. The following is illustrative context, not a valuation:
+    <ul>
+      <li>Established, walkable residential streets — the kind of character stock that rents well and holds value</li>
+      <li>Close to the Barton Street East commercial corridor and everyday amenities</li>
+      <li>Served by Hamilton Street Railway (HSR) transit routes through the lower city</li>
+      <li>Steady rental demand from area employers, the hospital district, and post-secondary students</li>
+      <li>Note: parts of the lower city fall within Community Improvement Plan areas and some streets carry heritage or floodplain considerations; any such status for this lot is confirmed in Phase 2</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 2 ZONING -->
+<div class="section">
+  <h2 class="sec">2. Current Zoning</h2>
+  <table class="kv">
+    <tr><td>Current Zoning</td><td>Residential (City of Hamilton Zoning By-law No. 05-200) — exact zone designation confirmed in Phase 2</td></tr>
+    <tr><td>Minimum Site Requirements</td><td>The lot must be a serviced residential lot (municipal water &amp; sewer) within the urban area — the provincial criteria for as-of-right additional residential units.</td></tr>
+    <tr><td>Recent Changes</td><td>Under Ontario's Bill 23 (More Homes Built Faster Act, 2022), up to <strong>3 residential units</strong> are permitted as-of-right on a serviced residential lot — no rezoning. Separately, Hamilton's Residential Zones Project amendments to By-law 05-200 (in effect 2024) expanded Low Density Residential zones to permit <strong>fourplexes and multiple dwellings of up to six units</strong>, subject to locational criteria.</td></tr>
+    <tr><td>Permitted Uses</td><td>In a Low Density Residential zone, a fourplex is a permitted use, and multiple dwellings of up to six units are permitted subject to locational criteria — as well as an interior additional dwelling unit and a detached additional dwelling unit (garden suite), subject to Hamilton's site standards. Exact permissions for this lot confirmed in Phase 2.</td></tr>
+    <tr><td>Development Goals Achievable?</td><td><strong>LIKELY — YES</strong>, subject to confirming the parcel's residential zone; proceed to Step 2 — <strong>Builder Ready Package™</strong></td></tr>
+  </table>
+  <div class="cell">
+    <div class="ct">What this means for you…</div>
+    <ul style="margin-top:0;">
+      <li><strong>Fourplex:</strong> a four-unit low-rise building — a permitted use in Hamilton's Low Density Residential zones</li>
+      <li><strong>Multiple Dwelling (up to 6 units):</strong> a small multi-unit building, permitted subject to Hamilton's locational criteria — confirmed in Phase 2</li>
+      <li><strong>Additional Dwelling Units:</strong> an interior suite (e.g. a basement apartment) and/or a detached garden suite in the rear yard; Hamilton permits no more than four units total on a lot using the ADU route</li>
+      <li><strong>Up to 3 units as-of-right:</strong> under Bill 23 the property may support the main dwelling plus two additional units with no rezoning, subject to site standards</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TIME SENSITIVE -->
+<div class="section">
+  <h2 class="sec">⚠️ Time-Sensitive Information</h2>
+  <div class="ts">
+    <div class="d"><div class="dt">Development Charges — Unit Exemption</div><div class="dx">Under Ontario's Bill 23, the creation of up to three residential units on an existing residential lot is exempt from development charges and parkland dedication fees — a meaningful per-unit saving. The exact treatment of a fourth unit and the figures for your project are confirmed in Phase 2.</div></div>
+    <div class="d"><div class="dt">GST/HST Purpose-Built Rental Rebate<br><small>federal — 4+ units</small></div><div class="dx">The federal enhanced GST rebate on new purpose-built rental housing targets projects of four or more self-contained rental units — a threshold a fourplex can meet. An Ontario provincial rebate component mirrors the federal measure. Applicability and amounts confirmed in Phase 2.</div></div>
+    <div class="d"><div class="dt">CMHC</div><div class="dx">Canada Mortgage Housing Corporation (CMHC) policy changes can occur at any time, potentially affecting financing options. It is recommended to submit your application as early as possible to reduce any risk.</div></div>
+  </div>
+</div>
+
+<!-- 3 REZONING -->
+<div class="section">
+  <h2 class="sec">3. Rezoning (If Applicable)</h2>
+  <p>Rezoning is when the city changes the local planning rules to legally allow more housing units, taller buildings, or different types of properties to be built on a specific piece of land than what was originally allowed. Think of it as the city giving a property a "regulatory upgrade".</p>
+  <div class="co-green"><div class="ct2">Likely Not Required for This Property</div>A fourplex and up to three units are permitted as-of-right in Hamilton's Low Density Residential zones and under Bill 23 — no rezoning is contemplated, subject to confirming the parcel's residential zone in Phase 2.</div>
+  <div class="barhead" style="text-align:left;">As-of-Right vs. The Rezoning Path</div>
+  <table class="cmp">
+    <tr><th></th><th>Your Path — As-of-Right</th><th>If Rezoning Were Needed</th></tr>
+    <tr><td>Change to the zoning by-law</td><td class="g">None required</td><td class="n">Required</td></tr>
+    <tr><td>Public consultation meeting</td><td class="g">Not required</td><td class="n">Required</td></tr>
+    <tr><td>City Council decision</td><td class="g">Not required</td><td class="n">Required</td></tr>
+    <tr><td>Appeal exposure (OLT)</td><td class="g">Not applicable</td><td class="n">Possible</td></tr>
+    <tr><td>What governs your build</td><td class="g">By-law 05-200 (as amended)</td><td class="n">A new site-specific by-law</td></tr>
+  </table>
+  <div class="barhead" style="text-align:left;">Also permitted on this lot</div>
+  <div class="twocard">
+    <div class="card2"><div class="ct">Fourplex</div>Hamilton's Residential Zones Project amendments to By-law 05-200 permit a fourplex as a use in Low Density Residential zones — with multiple dwellings up to six units possible subject to locational criteria.</div>
+    <div class="card2"><div class="ct">Detached garden suite</div>Hamilton permits a detached additional dwelling unit (garden suite) in the rear yard, subject to site standards — a maximum height of 6.0 m and a lot coverage cap of 45% apply to the detached suite.</div>
+  </div>
+  <div class="barhead" style="text-align:left;">What this means for 337 Gage Avenue North</div>
+  <p>Because a fourplex and up to three units appear to be permitted under existing zoning, no rezoning application is contemplated in this analysis. Your project would advance directly to design and permitting. This assessment reflects the by-laws in force at the date of this report and is subject to technical review of site conditions.</p>
+  <div class="co-amber"><b>One item to confirm first: the exact zoning designation for this parcel and that it sits in a residential zone.</b><br><span class="sub">Hamilton's zoning was researched from live municipal and provincial sources for this report; the specific zone for this address was not pulled from the City's parcel map. Confirming the zone — and that the lot is not in an employment/commercial designation — is the essential first step in Phase 2. If the parcel is in a non-residential zone, the multiplex path would be reassessed.</span></div>
+</div>
+
+<!-- 4 DEVELOPMENT OPTIONS -->
+<div class="section">
+  <h2 class="sec">4. Development Options</h2>
+  <div class="opt"><div class="oh">Option A — 4-Unit Multiplex (Fourplex)</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_a.png" alt="Massing illustration"></div>
+      <div class="od">A four-unit low-rise building, a permitted use in Hamilton's Low Density Residential zones under the Residential Zones Project amendments to By-law 05-200. The first three units are exempt from development charges under Bill 23. A fourplex also reaches the four-unit threshold for the federal GST/HST purpose-built rental rebate. Built-form standards — setbacks, height, coverage — and any locational criteria are confirmed in Phase 2. Parking requirements have been reduced or eliminated in Hamilton's lower-city wards; the requirement for this lot is confirmed in Phase 2.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option B — Multiple Dwelling, Up to 6 Units</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_b.png" alt="Massing illustration"></div>
+      <div class="od">Hamilton's Low Density Residential zones permit multiple dwellings of up to six units, subject to locational criteria (for example, proximity to transit and lot dimensions). Where this lot qualifies, a five- or six-unit building also opens the door to CMHC's MLI Select program, which requires a minimum of five rental units. A minor variance may be required depending on the final design footprint. Whether the locational criteria are met for this address is confirmed in Phase 2.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option C — Additional Dwelling Units (Interior + Garden Suite)</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_c.png" alt="Massing illustration"></div>
+      <div class="od">Keep the existing home and add income: an interior additional dwelling unit (such as a basement apartment) and/or a detached additional dwelling unit (a garden suite) in the rear yard. Under Bill 23 up to three units are permitted as-of-right; Hamilton caps a lot using the ADU route at four units total. The detached suite is limited to 6.0 m in height and 45% lot coverage. This route keeps construction lighter than a full rebuild while adding one to three rental units. Rear-yard fit and servicing are confirmed in Phase 2.</div>
+    </div></div>
+</div>
+
+<!-- 5 DEVELOPMENT GOAL SUMMARY -->
+<div class="section flow">
+  <h2 class="sec">5. Development Goal Summary</h2>
+  <div class="barhead" style="text-align:left;">Fourplex (Primary) with an Additional-Unit Alternative</div>
+  <p>337 Gage Avenue North appears to be a serviced residential lot in Hamilton's lower city where, under the Residential Zones Project amendments to By-law 05-200, a fourplex is a permitted use — with a five- or six-unit multiple dwelling possible subject to locational criteria. <strong>A fourplex is the clear primary path</strong>, with a detached garden suite plus interior suite as a lighter-construction alternative that adds income while you keep the property. The first three units are exempt from development charges under Bill 23. All figures and permissions are confirmed in Phase 2.</p>
+</div>
+
+<!-- 6 FINANCING -->
+<div class="section">
+  <h2 class="sec">6. Financing Pathways</h2>
+  <p>How you finance the development of your property can significantly impact your overall ROI, as well as your cashflow and stability.</p>
+  <p>Many property owners destroy their project margins by trying to use expensive personal cash lines or basic retail bank loans.</p>
+  <p>A successful project requires institutional underwriting before you ever pull a permit. We partner with national commercial lending desks to bypass conventional retail hurdles, allowing our qualified files to access specialized programs, rates, and terms completely unavailable to the general public.</p>
+  <table class="kv">
+    <tr><td>Mortgage Refinance</td><td>If a property has appreciated in value or the mortgage has been significantly paid down, owners can typically access up to 80% of the property's newly appraised value.</td></tr>
+    <tr><td>Home Equity Line of Credit (HELOC)</td><td>Is a flexible, revolving line of credit secured against the equity of an existing property. Unlike a refinance that issues a lump sum, a HELOC functions more like a high-limit credit card tied to your real estate.</td></tr>
+    <tr><td>Construction Financing</td><td>Also known as a progress-draw mortgage, construction financing is a short-term loan specifically designed to fund a new build from the ground up (or fund a massive structural overhaul).</td></tr>
+    <tr><td>CMHC MLI Select</td><td>Government-backed multi-unit mortgage insurance. Requires a minimum of five rental units — relevant only to the five- or six-unit path. It does not act as a direct grant, but can heavily subsidize project costs: it cuts insurance premiums and extends amortizations based on a point system rewarding affordability, energy efficiency, and accessibility. Eligibility confirmed in Phase 2.</td></tr>
+  </table>
+</div>
+
+<!-- 7 GRANTS -->
+<div class="section">
+  <h2 class="sec">7. Available Grants &amp; Incentives</h2>
+  <p>Most property owners don't realize how much government assistance is available to help them complete their project.</p>
+  <p>Creating housing is a key mandate of government at all levels: federal, provincial, and municipal. The work you are considering undertaking with your property is the exact kind of work the government wants to support!</p>
+  <p>It's important to note that the timing, criteria, and application processes change regularly. Working with clients across the country, we are intimately familiar with available grants, incentives and programs that may be available for your project.</p>
+  <table class="g">
+    <tr><th style="width:70px">Level</th><th style="width:190px">Program</th><th>Notes</th></tr>
+    <tr><td>Provincial</td><td>Development Charge Exemption (Bill 23)</td><td>The creation of up to three residential units on an existing residential lot is exempt from development charges and parkland dedication fees under provincial legislation — a meaningful per-unit saving. Confirmed in Phase 2.</td></tr>
+    <tr><td>Federal</td><td>GST/HST Purpose-Built Rental Rebate</td><td>The enhanced federal rebate targets new purpose-built rental projects of four or more self-contained rental units — a threshold a fourplex can meet; an Ontario provincial component mirrors it. Applicability confirmed in Phase 2.</td></tr>
+    <tr><td>Federal</td><td>Multigenerational Home Renovation Tax Credit</td><td>May provide 15% back on up to $50,000 of eligible cost where the suite houses an eligible relative. Confirmed in Phase 2.</td></tr>
+    <tr><td>Fed / Utility</td><td>Energy-Efficiency Rebates</td><td>Programs such as Canada Greener Homes may offset efficient design and equipment on a new unit. Confirmed in Phase 2.</td></tr>
+    <tr><td>Municipal</td><td>Hamilton Community Improvement Plan (CIP) programs</td><td>Parts of the lower city and specific corridors fall within Community Improvement Plan areas that may offer grants or loans for residential intensification. Whether this lot falls within an eligible CIP area, and any figures, are confirmed in Phase 2.</td></tr>
+  </table>
+</div>
+
+<!-- 8 SUMMARY -->
+<div class="section">
+  <h2 class="sec">8. Summary</h2>
+  <h3>Current Zoning Review</h3>
+  <p>337 Gage Avenue North appears to be a serviced residential lot in Hamilton's lower city. Under Ontario's Bill 23, up to <strong>three residential units are permitted as-of-right</strong>, and under Hamilton's Residential Zones Project amendments to By-law 05-200, a <strong>fourplex is a permitted use in Low Density Residential zones</strong> — with a multiple dwelling of up to six units possible subject to locational criteria — with no rezoning required, subject to the City's site standards and confirmation of the parcel's zone.</p>
+  <ul>
+    <li><strong>The Fourplex Advantage:</strong> a four-unit building is a permitted use, the first three units are exempt from development charges under Bill 23, and four units meet the threshold for the federal purpose-built rental rebate — the exact envelope is confirmed in Phase 2.</li>
+  </ul>
+  <h3>Grants &amp; Incentives Review</h3>
+  <p>Governments at the federal, provincial, and municipal levels continue to prioritize housing development by offering grants, rebates, and other incentives to help reduce project costs. Because these programs and their eligibility criteria change frequently, we help identify and navigate the opportunities that may apply to your project, maximizing available funding and improving overall project feasibility.</p>
+  <h3>Financing Options Review</h3>
+  <p>Choosing the right financing strategy is essential to maximizing project returns, maintaining healthy cash flow, and reducing financial risk. We work with trusted lending partners to identify financing solutions that align with your development goals, including mortgage refinancing, home equity lines of credit (HELOCs), construction financing, and — for a five- or six-unit build — specialized programs such as CMHC MLI Select. By securing the right financing early in the process, we help position your project for long-term success.</p>
+</div>
+
+<!-- NEXT STEPS / ROADBLOCKS / CTA -->
+<div class="section">
+  <h2 class="sec">Next Steps</h2>
+  <p>Before you can submit for permits, lock in specialized financing, or secure municipal grants, external consultants require site-specific documentation. We break these down into 3 Steps:</p>
+  <h3>Step 1: Zoning — Development Rights and Requirements</h3>
+  <p>In order to ensure that your project plans meet local setbacks, site coverage caps, and height restrictions, you will need the following:</p>
+  <ul><li>Site Plan</li><li>Massing Diagram Options</li><li>Unit Mix, Unit Count and Unit Sizes</li></ul>
+  <h3>Step 2: Grants &amp; Incentives</h3>
+  <p>While your project may be eligible for various government rebates and incentives, most programs require documentation that is generated throughout the development and construction process. Applications are generally completed once all required information has been collected.</p>
+  <p>In order to start the application process you will need a detailed breakdown of the necessary documentation and supporting forms required for each program.</p>
+  <h3>Step 3: Financing Options</h3>
+  <p>This report identifies financing programs that may be suitable for your proposed development. Final financing approval cannot be obtained until the project has progressed through the planning stage and the required financial information, construction budgets, and supporting documentation have been prepared.</p>
+  <p>The Builder Ready Package™ provides much of the information required by lenders to begin the financing process. Additional lender-specific documentation may also be required depending on the financing program selected.</p>
+  <h3>Roadblocks</h3>
+  <p>Most property owners attempt to gather these documents piecemeal and haphazardly. They spend months going back and forth hiring a private surveyor, then waiting weeks for an independent designer, then shopping around blindly for a commercial mortgage broker, and then trying to negotiate independently with city planners. This uncoordinated approach creates massive friction. By the time they get a single piece of the puzzle solved, their other data is outdated, municipal deadlines have passed, grant pools are fully depleted, and they have burned through thousands of dollars in dead carrying costs.</p>
+  <h3>The House Lyft Advantage</h3>
+  <p>We designed our Phase 2 where over the next 30 days, our lending partners, planning and grants and incentives consultants will compile everything simultaneously into a single next step option for you. This gives you everything required to accurately plan and build your roadmap.</p>
+  <p>In addition, if you decide to move forward with the project and use one of our approved and vetted builder partners, they will credit you the full cost of your Phase 2 work right back to your construction balance on Day 1.</p>
+  <div class="cta" style="page-break-before:always;">
+    Your total investment for the Phase 2 blueprint is a single flat fee of<br><span class="fee">$5,000.00</span>
+    <div style="margin-top:10px;font-size:8.8pt;">Getting started is simple:</div>
+    <ol style="margin:6px 0 0;font-size:8.8pt;padding-left:18px;">
+      <li><strong>Authorize the Phase 2 Work Order:</strong> Review and sign our Builder Ready Package Agreement.</li>
+      <li><strong>Submit the Phase 2 Payment:</strong> to activate our trusted team of consultants.</li>
+      <li><strong>Submit the Financial Intake Forms:</strong> as provided by our lender partner.</li>
+      <li><strong>Book Your Initial Planning Session:</strong> set up your initial meeting with our planner and Senior Relationship Manager to finalize your development objectives and plan next steps.</li>
+    </ol>
+  </div>
+</div>
+
+</body>
+</html>
