@@ -8,3 +8,6 @@ outputs/
 # report engine
 *.pdf
 zoning_area.geojson
+
+# per-run working dir (aerials, screenshots, rendered PDFs)
+scratch/
