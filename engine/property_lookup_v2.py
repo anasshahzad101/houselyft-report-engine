@@ -429,19 +429,28 @@ def toronto_rules(zoning, ward):
 
 # ---------------------------------------------------------------- Edmonton
 # Zoning Bylaw 20001 (in force Jan 1, 2024; replaced ZBL 12800).
-# Rules verified 2026-07-11:
+# Rules re-verified live 2026-07-28 (corrects an earlier encoding error):
 #   - RS (Small Scale Residential) consolidates RF1-RF4; row/multi-unit
 #     housing permitted by default (edmonton.ca ZBL 20001 guide).
-#   - Mid-block maximum reduced 8 -> 6 dwellings in the one-year-review
-#     amendments (mid-2025); developments of MORE than 8 dwellings are
-#     limited to corner sites (Residential Land Use Matrix note).
+#   - Dwelling maximum: up to 8 dwellings as-of-right on a sufficiently large
+#     RS lot. A mid-block lot must be 600 m² or larger to reach 8; a minimum
+#     site area per dwelling governs the count on any lot (corner sites use an
+#     80 m²/dwelling minimum). The One-Year-Review motion to LOWER this maximum
+#     from 8 to 6 was DEFEATED at the June 30, 2025 public hearing — the
+#     8-dwelling maximum REMAINS. (An earlier version of this adapter wrongly
+#     encoded "6 mid-block, down from 8"; that amendment never passed.)
 #   - Backyard housing permitted; counts toward total dwellings on site.
-#   - Height: 10.5 m now; drops to 9.5 m for applications from Aug 1, 2026
-#     (approved Apr 27, 2026) — TIME-SENSITIVE for anything in design now.
+#   - Height: 10.5 m now; drops to 9.5 m for development-permit applications on
+#     or after Aug 1, 2026 (approved Apr 27, 2026) — TIME-SENSITIVE.
 #   - Since Jul 8, 2025: max two dwelling entrances facing an interior side
 #     lot line; a side-facing entrance triggers a 1.9 m setback on that side.
 EDMONTON_FS = ("https://gis.edmonton.ca/site1/rest/services/"
                "ZoningWebApp/Zoning_Map/FeatureServer")
+# City of Edmonton authoritative address locator. OSM/Nominatim cannot resolve
+# Edmonton house numbers (it silently snaps "11942 37 St NW" to an arbitrary
+# point on 37 St, often kilometres away in the wrong neighbourhood and zone).
+EDMONTON_GEOCODER = ("https://gis.edmonton.ca/site1/rest/services/Geocoder/"
+                     "CoE_Address_Locator/GeocodeServer/findAddressCandidates")
 EDMONTON_RES_ZONES = ("RS", "RSF", "RSM", "RM", "RL", "RR")
 
 def _edm_point(layer, lat, lon, fields="*"):
@@ -455,6 +464,26 @@ def _edm_point(layer, lat, lon, fields="*"):
         out = json.load(r)
     f = out.get("features", [])
     return f[0]["attributes"] if f else None
+
+def edmonton_geocode(address):
+    """Resolve an Edmonton address to (lat, lon) via the City's own locator.
+    Returns None on any failure so the caller can fall back to OSM."""
+    try:
+        params = urllib.parse.urlencode({
+            "SingleLine": address, "f": "json", "outSR": "4326",
+            "maxLocations": "1", "outFields": "*"})
+        req = urllib.request.Request(f"{EDMONTON_GEOCODER}?{params}",
+                                     headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            out = json.load(r)
+        c = (out.get("candidates") or [None])[0]
+        if not c or c.get("score", 0) < 80:
+            return None
+        loc = c.get("location") or {}
+        return loc.get("y"), loc.get("x")   # lat, lon
+    except Exception:
+        return None
+
 
 def edmonton_zoning(lat, lon):
     z = _edm_point(5, lat, lon, "ZONING,ZONING_STRING,BYLAW_NO,STATUS")
@@ -485,13 +514,14 @@ def edmonton_rules(z):
     rs = zone == "RS"
     return {
         "gate_pass": gate,
-        "main_units_max": 6 if rs else (None if gate else 0),
+        "main_units_max": 8 if rs else (None if gate else 0),
         "corner_units_max": 8 if rs else None,
-        "unit_combo": ("RS: up to 6 dwellings mid-block as-of-right "
-                       "(one-year-review amendment, 2025; down from 8); up to 8 on "
-                       "corner sites, and developments of more than 8 dwellings are "
-                       "limited to corner sites per the Residential Matrix. Backyard "
-                       "housing permitted and counts toward the total.") if rs else
+        "unit_combo": ("RS: up to 8 dwellings as-of-right on a sufficiently large "
+                       "lot (a mid-block lot must be 600 m² or larger to reach 8), "
+                       "subject to the minimum site area per dwelling (corner sites "
+                       "use an 80 m²/dwelling minimum). The June 30, 2025 motion to "
+                       "lower this maximum from 8 to 6 was DEFEATED — 8 stands. "
+                       "Backyard housing permitted and counts toward the total.") if rs else
                       (f"{zone}: residential zone under ZBL 20001 — detailed unit "
                        "rulebook not yet encoded; treat as needs-review." if gate else
                        "Not a small-scale residential zone."),
@@ -795,10 +825,17 @@ def lookup(address):
         out["engine"] = oshawa_rules(z)
         out["source"] = "Zoning: City of Oshawa Open Data ArcGIS (ZBL 60-94, live). Geocode: OSM."
     elif city == "Edmonton":
-        z = edmonton_zoning(geo["lat"], geo["lon"])
+        # OSM mislocates Edmonton house numbers — resolve the parcel with the
+        # City's own locator, falling back to the OSM point only if it fails.
+        edm = edmonton_geocode(address)
+        lat, lon = edm if edm else (geo["lat"], geo["lon"])
+        out["coordinates"] = {"lat": lat, "lon": lon}
+        out["geocoder"] = "City of Edmonton CoE_Address_Locator" if edm else "OSM (Edmonton locator unavailable — verify coordinates)"
+        z = edmonton_zoning(lat, lon)
         out["zoning"] = z
         out["engine"] = edmonton_rules(z)
-        out["source"] = "gis.edmonton.ca ZoningWebApp FeatureServer (live)"
+        out["source"] = ("Zoning: gis.edmonton.ca ZoningWebApp FeatureServer (live). "
+                         "Geocode: " + out["geocoder"] + ".")
     elif city == "Calgary":
         z = calgary_zoning(address, geo["lat"], geo["lon"])
         out["zoning"] = z
