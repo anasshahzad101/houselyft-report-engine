@@ -131,6 +131,10 @@ WORKFLOW
 4b. IMAGERY (mandatory step, never skip): run
    engine/aerial_imagery.get_aerial(address, city) for the lot view and a wider
    context view (the module enforces the licensing doctrine).
+   - When deriving `city`, pass the municipality that ISSUES PERMITS, not the
+     neighbourhood or postal name. Toronto properties addressed as Scarborough,
+     Etobicoke, North York, East York or York are all `toronto` - so zoning,
+     programs and imagery all resolve to the right municipality.
    - If it returns validated images: inject BOTH into the Property Details
      image row exactly per the master's pattern (two side-by-side photos,
      height 148px, overlay captions "Aerial view - approx. X m across" /

@@ -155,8 +155,30 @@ SOURCES: dict[str, list[Source]] = {
 }
 
 
+# Amalgamation aliases. A property in the City of Toronto is frequently
+# addressed by the pre-1998 municipality (Scarborough, Etobicoke, North York,
+# East York, York) or as "City of Toronto". All of them are served by the same
+# Toronto orthophoto - without this mapping they miss SOURCES, fall through to
+# the province-wide LIO context entry, and ship with no lot-scale aerial.
+CITY_ALIASES: dict[str, str] = {
+    "scarborough":    "toronto",
+    "etobicoke":      "toronto",
+    "north york":     "toronto",
+    "east york":      "toronto",
+    "york":           "toronto",
+    "city of toronto": "toronto",
+}
+
+
+def normalize_city(city: str) -> str:
+    """Lowercase, collapse internal whitespace, then resolve amalgamation
+    aliases. 'North  York' / 'NORTH YORK' -> 'toronto'."""
+    key = " ".join(city.lower().split())
+    return CITY_ALIASES.get(key, key)
+
+
 def sources_for(city: str) -> list[Source]:
-    return SOURCES.get(city.strip().lower(), _chain(LIO_ONTARIO_CONTEXT))
+    return SOURCES.get(normalize_city(city), _chain(LIO_ONTARIO_CONTEXT))
 
 
 # ---------------------------------------------------------------- geometry
