@@ -192,8 +192,13 @@ def _get(url: str) -> bytes:
 # cloud runs). FAIL-CLOSED: any error checking or bumping the counter means we
 # skip Mapbox entirely rather than risk an uncounted paid call.
 MAPBOX_MONTHLY_CAP = int(os.environ.get("MAPBOX_MONTHLY_CAP", "10000"))
-_DROPBOX_URL = os.environ.get("HL_DROPBOX_URL", "")
-_DROPBOX_KEY = os.environ.get("HL_DROPBOX_KEY", "")
+# Same Apps Script dropbox credentials the rest of the engine uses (ghl/client.py)
+# and that the runtime provides: DROPBOX_URL / DROPBOX_KEY. The HL_-prefixed names
+# are still honoured as a fallback, but they were never set anywhere - so the
+# counter was unreachable and _mapbox_budget_ok() always returned False, silently
+# disabling the paid Mapbox fallback (fail-closed) even with a valid MAPBOX_TOKEN.
+_DROPBOX_URL = os.environ.get("DROPBOX_URL") or os.environ.get("HL_DROPBOX_URL", "")
+_DROPBOX_KEY = os.environ.get("DROPBOX_KEY") or os.environ.get("HL_DROPBOX_KEY", "")
 
 
 def _mapbox_budget_ok(n: int = 1) -> bool:
