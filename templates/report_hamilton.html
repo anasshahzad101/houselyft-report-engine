@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face{font-family:'Oswald';src:url('fonts/Oswald.ttf') format('truetype');font-weight:200 700;}
+@font-face{font-family:'Lato';src:url('fonts/Lato-Regular.ttf') format('truetype');font-weight:400;}
+@font-face{font-family:'Lato';src:url('fonts/Lato-Bold.ttf') format('truetype');font-weight:700;}
+body{zoom:0.94;}
+</style>
+<style>
+  :root{--navy:#1b2a4a;--navy2:#26365c;--green:#3f7d33;--row:#f5f6f9;--line:#e4e7ee;--ink:#2a2f3a;--mut:#7a818f;--disc:#aeb6c4;}
+  *{box-sizing:border-box;}
+  body{font-family:'Lato',Arial,sans-serif;color:var(--ink);font-size:9.8pt;line-height:1.55;margin:0;}
+  h1,h2,h3,.os{font-family:'Oswald',Arial,sans-serif;}
+  p{margin:7px 0;} ul{margin:7px 0;padding-left:18px;} li{margin:4px 0;} small{color:var(--mut);}
+    .co-green{border-left:4px solid #2f7d46;background:#edf4ed;padding:12px 16px;margin:14px 0 18px;font-size:9.4pt;}
+  .co-green .ct2{font-family:'Oswald';font-weight:600;color:#2f7d46;font-size:11pt;margin-bottom:4px;}
+  .co-amber{border-left:4px solid #e0a23d;background:#fff6e8;padding:11px 16px;margin:16px 0 0;font-size:9pt;color:#5a4a1f;}
+  .co-amber .sub{color:#a4761c;}
+  .cmp{width:100%;border-collapse:collapse;margin:6px 0 18px;font-size:9pt;}
+  .cmp th{text-align:left;padding:8px 10px;font-weight:700;color:var(--navy);border-bottom:1px solid var(--line);background:#f4f6f9;}
+  .cmp td{padding:8px 10px;border-bottom:1px solid var(--line);background:#fff;}
+  .cmp td.g{color:#2f7d46;font-weight:700;}
+  .cmp td.n{color:#9aa2b2;}
+  .twocard{display:flex;gap:14px;margin:8px 0 18px;}
+  .card2{flex:1;border:1px solid var(--line);background:#fafbfc;padding:12px 14px;font-size:9.2pt;}
+  .section{page-break-before:always;} .section.first{page-break-before:auto;} .section.flow{page-break-before:auto;}
+  h2.sec{font-family:'Oswald';font-weight:700;color:var(--navy);font-size:19pt;letter-spacing:.3px;margin:0 0 12px;}
+  h3{font-family:'Oswald';font-weight:600;color:var(--navy2);font-size:11.5pt;margin:15px 0 5px;}
+  .cover{height:238mm;display:flex;flex-direction:column;align-items:center;text-align:center;page-break-after:always;}
+  .wm{margin-top:58mm;display:flex;align-items:center;justify-content:center;}
+  .wm .a{color:var(--navy);} .wm .b{color:#8b93a3;}
+  .wm .emblem{width:26px;height:26px;border:3px solid var(--navy);border-radius:50%;display:inline-block;position:relative;}
+  .wm .emblem:after{content:"";position:absolute;left:4px;right:4px;bottom:6px;height:7px;background:var(--navy);clip-path:polygon(0 100%,28% 30%,50% 70%,72% 10%,100% 100%);}
+  .cover h1{font-family:'Oswald';font-weight:700;font-size:40pt;color:var(--navy);letter-spacing:1px;margin:50mm 0 14px;}
+  .cover .addr{font-family:'Oswald';font-weight:600;font-size:19pt;color:var(--navy);}
+  .cover .addr span{display:block;font-family:'Lato';font-weight:400;font-size:12pt;color:#55607a;margin-top:6px;}
+  .cover .foot{margin-top:auto;font-size:7.6pt;color:var(--disc);}
+  table{width:100%;border-collapse:collapse;margin:9px 0;font-size:9pt;}
+  td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--row);}
+  table.kv td:first-child{background:var(--navy);color:#fff;font-weight:600;width:34%;border-bottom:2px solid #fff;}
+  table.kv tr:nth-child(even) td:first-child{background:var(--navy);}
+  table.kv td:last-child{background:var(--row);}
+  table.g th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;font-weight:600;font-size:8.7pt;}
+  .barhead{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:11pt;padding:8px 12px;text-align:center;}
+  .imgrow{display:flex;gap:10px;margin:0 0 10px;}
+  .imgbox{flex:1;height:150px;background:#eef0f4;border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9aa2b2;font-size:8pt;}
+  .imgbox.tall{height:148px;} .imgbox .ic{font-size:20pt;line-height:1;margin-bottom:6px;color:#c2c8d4;}
+  .grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
+  .grid4 .imgbox{height:120px;}
+  .steps{display:flex;gap:12px;margin:16px 0;}
+  .step{flex:1;border:1px solid var(--line);border-radius:3px;overflow:hidden;}
+  .step .sh{background:var(--green);color:#fff;text-align:center;padding:10px 6px;font-family:'Oswald';}
+  .step .sh .n{font-size:8pt;letter-spacing:2px;opacity:.9;display:block;}
+  .step .sh .t{font-size:11pt;font-weight:700;}
+  .step ul{padding:11px 10px 13px 24px;margin:0;font-size:8.3pt;} .step li{margin:5px 0;}
+  .cell{break-inside:avoid;page-break-inside:avoid;border:1px solid var(--line);background:var(--row);padding:11px 13px;margin:9px 0;}
+  .cell .ct{font-family:'Oswald';font-weight:600;color:var(--navy);margin-bottom:5px;font-size:10.5pt;}
+  .opt{margin:13px 0;border:1px solid var(--line);}
+  .opt .oh{background:var(--navy);color:#fff;font-family:'Oswald';font-weight:600;font-size:10.5pt;padding:7px 12px;}
+  .opt .ob{display:flex;gap:14px;padding:12px;align-items:center;}
+  .opt .massing{width:215px;flex:0 0 215px;}
+  .opt .massing img{width:100%;height:auto;display:block;}
+  .photorow{display:flex;gap:10px;margin-top:10px;}
+  .photorow img{width:50%;height:auto;object-fit:cover;border:1px solid var(--line);display:block;}
+  .opt .od{flex:1;font-size:8.9pt;}
+  .ts{border:1px solid var(--line);margin:10px 0;}
+  .ts .d{display:flex;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line);} .ts .d:last-child{border-bottom:none;}
+  .ts .dt{flex:0 0 150px;font-family:'Oswald';font-weight:600;color:#b5611f;font-size:9pt;} .ts .dx{flex:1;font-size:8.8pt;}
+  .cta{background:var(--navy);color:#fff;padding:15px 17px;border-radius:4px;margin-top:12px;}
+  .cta .fee{font-family:'Oswald';font-weight:700;font-size:16pt;}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="wm"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIxNzIuNDYgMTI0Ljk3IDUzOS45NCAxNTguMTYiPjx0aXRsZT5Ib3VzZUx5ZnQ8L3RpdGxlPjxkZWZzPjxwYXRoIGlkPSJmb250XzJfOTAiIGQ9Ik0uMDgyMDAwNzMgMFYuNzQ0OTk1MUguMTgwOTk5NzZWLjQxMjk5NDM5SC41NTQwMDA4OFYuNzQ0OTk1MUguNjUyOTk5OVYwSC41NTQwMDA4OFYuMzIyOTk4MDZILjE4MDk5OTc2VjBILjA4MjAwMDczWiIvPjxwYXRoIGlkPSJmb250XzJfNjExIiBkPSJNLjMyNjk5NTg2LS4wMTE5OTM0MDhDLjI3NTY2NTI5LS4wMTE5OTM0MDggLjIyODk5ODgzIC4wMDAxNzI5MzI5NCAuMTg2OTk2NDYgLjAyNDUwNTYxNiAuMTQ0OTk0MSAuMDQ4ODM4MyAuMTExNDkwODggLjA4MjMzNjQyOSAuMDg2NDg2ODIgLjEyNSAuMDYxNDkyOTIgLjE2NzY2MzU4IC4wNDg5OTU5NyAuMjE1OTk4MzQgLjA0ODk5NTk3IC4yNzAwMDQyOCAuMDQ4OTk1OTcgLjMyNDAwMDA0IC4wNjEzMzAxNiAuMzcxOTk5MSAuMDg1OTk4NTM4IC40MTQwMDE0NyAuMTEwNjY2OTEgLjQ1NjAwMzgyIC4xNDM5OTcxOSAuNDg5MzM0MSAuMTg1OTg5MzggLjUxMzk5MjMgLjIyNzk5MTc1IC41Mzg2NjA3IC4yNzQ5OTM5IC41NTA5OTQ5IC4zMjY5OTU4NiAuNTUwOTk0OSAuMzc5NjY5MiAuNTUwOTk0OSAuNDI3MDAxOTYgLjUzODgyODU4IC40Njg5OTQxNSAuNTE0NDk1ODcgLjUxMDk5NjUgLjQ5MDE2MzE5IC41NDQxNjQgLjQ1Njk5NTY1IC41Njg0OTY3IC40MTQ5OTMzIC41OTI4Mjk0IC4zNzMwMDExIC42MDQ5OTU3IC4zMjQ2NzE0MyAuNjA0OTk1NyAuMjcwMDA0MjggLjYwNDk5NTcgLjIxNTMzNzExIC41OTIzMzA5NiAuMTY2ODM0NTIgLjU2NzAwMTM3IC4xMjQ0OTY0NiAuNTQxNjcxNzggLjA4MjE2ODU4IC41MDgxNzM2NyAuMDQ4ODM4MyAuNDY2NTA2OTcgLjAyNDUwNTYxNiAuNDI0ODQwMyAuMDAwMTcyOTMyOTQgLjM3ODMzNjU5LS4wMTE5OTM0MDggLjMyNjk5NTg2LS4wMTE5OTM0MDhNLjMyNjk5NTg2IC4wNzgwMDI5M0MuMzYxMDAyNiAuMDc4MDAyOTMgLjM5MTUwNDkgLjA4NjMzNDIzIC40MTg1MDI4IC4xMDI5OTY4MjkgLjQ0NTUwMDcgLjExOTY2OTU5NyAuNDY2ODMyNSAuMTQyNjY5NjggLjQ4MjQ5ODE4IC4xNzE5OTcwNyAuNDk4MTYzODYgLjIwMTMzNDY0IC41MDU5OTY3IC4yMzQwMDM3MSAuNTA1OTk2NyAuMjcwMDA0MjggLjUwNTk5NjcgLjMwNjAwNDg2IC40OTgxNjM4NiAuMzM4MzM4MjQgLjQ4MjQ5ODE4IC4zNjcwMDQ0IC40NjY4MzI1IC4zOTU2NzA1NyAuNDQ1NTAwNyAuNDE4MzM0OTcgLjQxODUwMjggLjQzNDk5NzU3IC4zOTE1MDQ5IC40NTE2NzAzMyAuMzYxMDAyNiAuNDYwMDA2NyAuMzI2OTk1ODYgLjQ2MDAwNjcgLjI5MzY2MDUgLjQ2MDAwNjcgLjI2MzQ5Mzg4IC40NTE2NzAzMyAuMjM2NDk1OTcgLjQzNDk5NzU3IC4yMDk0OTgwOSAuNDE4MzM0OTcgLjE4Nzk5ODQ2IC4zOTU2NzA1NyAuMTcxOTk3MDcgLjM2NzAwNDQgLjE1NTk5NTY4IC4zMzgzMzgyNCAuMTQ3OTk1IC4zMDYwMDQ4NiAuMTQ3OTk1IC4yNzAwMDQyOCAuMTQ3OTk1IC4yMzQwMDM3MSAuMTU1OTk1NjggLjIwMTMzNDY0IC4xNzE5OTcwNyAuMTcxOTk3MDcgLjE4Nzk5ODQ2IC4xNDI2Njk2OCAuMjA5NDk4MDkgLjExOTY2OTU5NyAuMjM2NDk1OTcgLjEwMjk5NjgyOSAuMjYzNDkzODggLjA4NjMzNDIzIC4yOTM2NjA1IC4wNzgwMDI5MyAuMzI2OTk1ODYgLjA3ODAwMjkzWiIvPjxwYXRoIGlkPSJmb250XzJfNzAzIiBkPSJNLjI2MzAwMDUtLjAxMTk5MzQwOEMuMjIzNjYzMzMtLjAxMTk5MzQwOCAuMTg4NjU5NjctLjAwMjk5NTgwODkgLjE1Nzk4OTUgLjAxNDk5OTM5IC4xMjczMjk1MiAuMDMzMDA0NzYgLjEwMzMzMjUyIC4wNTgxNzE1OSAuMDg1OTk4NTM4IC4wOTA0OTk4OCAuMDY4NjY0NTUgLjEyMjgzODM0IC4wNTk5OTc1NiAuMTYwMDAzNjYgLjA1OTk5NzU2IC4yMDE5OTU4NVYuNTM5MDAxNDlILjE1NDAwNjk2Vi4yMTIwMDU2MkMuMTU0MDA2OTYgLjE4NTMzMzI1IC4xNTk1MDUyIC4xNjE5OTc0OCAuMTcwNTAxNzEgLjE0MTk5ODI5IC4xODE0OTgyMiAuMTIxOTk5MTEgLjE5NjgyODIgLjEwNjMzMzQxIC4yMTY0OTE3IC4wOTUwMDEyMiAuMjM2MTY1MzYgLjA4MzY2OTAzIC4yNTg2NjcgLjA3ODAwMjkzIC4yODM5OTY1OSAuMDc4MDAyOTMgLjMwOTMzNjM0IC4wNzgwMDI5MyAuMzMxODM3OTkgLjA4MzY2OTAzIC4zNTE1MDE0NyAuMDk1MDAxMjIgLjM3MTE2NDk2IC4xMDYzMzM0MSAuMzg2NDk0OTcgLjEyMjY2NTQwOCAuMzk3NDkxNDYgLjE0Mzk5NzE5IC40MDg0OTgxNSAuMTY1MzI4OTggLjQxNDAwMTQ3IC4xOTA2NjM2NSAuNDE0MDAxNDcgLjIyMDAwMTIyVi41MzkwMDE0OUguNTA3OTk1NlYwSC40MTcwMDc0NlYuMTA0OTk1NzNMLjQzMDk5OTc3IC4wOTU5OTMwNEMuNDE4MzM0OTcgLjA2MTk5NjQ2IC4zOTcwMDMxOCAuMDM1NDk3MDMgLjM2NzAwNDQgLjAxNjQ5NDc1MSAuMzM3MDA1NjMtLjAwMjQ5NzM1NTMgLjMwMjMzNzY2LS4wMTE5OTM0MDggLjI2MzAwMDUtLjAxMTk5MzQwOFoiLz48cGF0aCBpZD0iZm9udF8yXzY3NSIgZD0iTS4yNjQ5OTk0LS4wMTE5OTM0MDhDLjIxMTAwMzYyLS4wMTE5OTM0MDggLjE2NDAwMTQ3IC4wMDEzMzc2ODcxIC4xMjM5OTI5MiAuMDI3OTk5ODc4IC4wODM5OTQ1NDggLjA1NDY2MjA2OSAuMDU1MzI4MzcgLjA5MDY2MjYzOSAuMDM3OTk0Mzg2IC4xMzYwMDE1OUwuMTEzMDA2NTkgLjE3MTk5NzA3Qy4xMjgzMzY2IC4xMzk5OTQzMSAuMTQ5MzMyNjkgLjExNDY1OTYzIC4xNzU5OTQ4OCAuMDk1OTkzMDQgLjIwMjY2NzI0IC4wNzczMjY0NTcgLjIzMjMzNTQgLjA2Nzk5MzE2NyAuMjY0OTk5NCAuMDY3OTkzMTY3IC4yOTM2NjU1NyAuMDY3OTkzMTY3IC4zMTc2NjI1OCAuMDc0OTkxODYgLjMzNjk5MDM3IC4wODg5ODkyNiAuMzU2MzI4MzUgLjEwMjk5NjgyOSAuMzY1OTk3MyAuMTIxMzMyOCAuMzY1OTk3MyAuMTQzOTk3MTkgLjM2NTk5NzMgLjE1OTk5ODU4IC4zNjE0OTU5OCAuMTcyODMxMjIgLjM1MjQ5MzMgLjE4MjQ5NTEyIC4zNDM1MDA3NyAuMTkyMTY5MTkgLjMzMjgzNDg4IC4xOTk4MzkyOCAuMzIwNDk1NiAuMjA1NTA1MzcgLjMwODE2NjUgLjIxMTE3MTQ3IC4yOTYzMzU4NiAuMjE1MzM3MTEgLjI4NTAwMzY3IC4yMTgwMDIzMkwuMjAzOTk0NzUgLjI0MDk5NzMyQy4xNTYwMDA3OCAuMjU0MzMzNSAuMTIwODM0MzUgLjI3NDE2NDg0IC4wOTg0OTU0OCAuMzAwNDkxMzQgLjA3NjE2Njc4OSAuMzI2ODI4IC4wNjUwMDI0NCAuMzU3MzMwMzMgLjA2NTAwMjQ0IC4zOTE5OTgzIC4wNjUwMDI0NCAuNDI0MDAxMDggLjA3MzE2NTg5IC40NTE4MzMxIC4wODk0OTI4IC40NzU0OTQzOSAuMTA1ODI5ODcgLjQ5OTE2NTg3IC4xMjgxNjM2NSAuNTE3NjY0NiAuMTU2NDk0MTQgLjUzMDk5MDYgLjE4NDgzNDggLjU0NDMyNjggLjIxNjY2OTczIC41NTA5OTQ5IC4yNTE5OTg5IC41NTA5OTQ5IC4yOTkzMzE2NyAuNTUwOTk0OSAuMzQxODMyNSAuNTM4OTk2NCAuMzc5NTAxMzUgLjUxNDk5OTQgLjQxNzE3MDIgLjQ5MTAwMjQgLjQ0NDAwNTM1IC40NTczMzY0NCAuNDYwMDA2NyAuNDE0MDAxNDdMLjM4NDAwMjcgLjM3ODk5NzhDLjM3MTk5OTEgLjQwNzAwMjc5IC4zNTM5OTg4IC40MjkwMDA4NiAuMzMwMDAxODQgLjQ0NDk5MjA4IC4zMDYwMDQ4NiAuNDYwOTkzNDUgLjI3OTAwMTg3IC40Njg5OTQxNSAuMjQ4OTkyOTIgLjQ2ODk5NDE1IC4yMjE2NTkzNSAuNDY4OTk0MTUgLjE5OTk5MTg3IC40NjIzMjYwNiAuMTgzOTkwNDggLjQ0ODk4OTg4IC4xNjc5OTkyNyAuNDM1NjYzODYgLjE2MDAwMzY2IC40MTgzMzQ5NyAuMTYwMDAzNjYgLjM5NzAwMzE4IC4xNjAwMDM2NiAuMzgyMzM0MzkgLjE2NDAwMTQ3IC4zNzAxNjI5NyAuMTcxOTk3MDcgLjM2MDQ4ODkgLjE4MDAwMjg2IC4zNTA4MjQ5OSAuMTg5NjcxODMgLjM0MzQ5MDYgLjIwMTAwNDAzIC4zMzg0ODU3MyAuMjEyMzM2MjMgLjMzMzQ5MSAuMjIzMzMyNzIgLjMyOTMzMDQ1IC4yMzM5OTM1MyAuMzI2MDA0MDRMLjMyMjAwNjI0IC4zMDAwMDMwNkMuMzY2MDAyNCAuMjg3MzM4MjcgLjQwMDE2Njg1IC4yNjc2Njk2OSAuNDI0NDk5NSAuMjQwOTk3MzIgLjQ0ODgzMjE5IC4yMTQzMzUxMyAuNDYwOTk4NTUgLjE4MjMzNzQ1IC40NjA5OTg1NSAuMTQ1MDA0MjcgLjQ2MDk5ODU1IC4xMTUwMDU0OSAuNDUyNjYyMTUgLjA4ODAwMjUyOCAuNDM1OTg5MzkgLjA2Mzk5NTM2IC40MTkzMjY3OSAuMDM5OTk4MzcgLjM5NjMyNjcgLjAyMTMzMTc4OCAuMzY2OTg5MTUgLjAwNzk5NTYwNTkgLjMzNzY2MTc1LS4wMDUzMzA0MDQgLjMwMzY2NTE3LS4wMTE5OTM0MDggLjI2NDk5OTQtLjAxMTk5MzQwOFoiLz48cGF0aCBpZD0iZm9udF8yXzQxOCIgZD0iTS4zMjAwMDczMy0uMDExOTkzNDA4Qy4yNjgwMDUzOC0uMDExOTkzNDA4IC4yMjE1MDE2NyAuMDAwMzM1NjkzMzcgLjE4MDQ5NjIyIC4wMjQ5OTM4OTcgLjEzOTUwMDkzIC4wNDk2NjIyNzUgLjEwNzMzNTQxIC4wODM0OTYwOTcgLjA4Mzk5OTYzNyAuMTI2NDk1MzYgLjA2MDY2Mzg2IC4xNjk0OTQ2MyAuMDQ4OTk1OTcgLjIxNzY2MTU1IC4wNDg5OTU5NyAuMjcwOTk2MSAuMDQ4OTk1OTcgLjMyNTAwMjA1IC4wNjA2NjM4NiAuMzczMDAxMSAuMDgzOTk5NjM3IC40MTQ5OTMzIC4xMDczMzU0MSAuNDU2OTk1NjUgLjEzODY2NjggLjQ5MDE2MzE5IC4xNzc5OTM3OCAuNTE0NDk1ODcgLjIxNzMzMDk0IC41Mzg4Mjg1OCAuMjYxOTk4NSAuNTUwOTk0OSAuMzExOTk2NDcgLjU1MDk5NDkgLjM1MTk5NDg1IC41NTA5OTQ5IC4zODc0OTE4NiAuNTQzODI4MyAuNDE4NDg3NTYgLjUyOTQ5NTI2IC40NDk0OTM0IC41MTUxNjIxOSAuNDc1ODMwMDkgLjQ5NTgyOTI2IC40OTc0OTc1NyAuNDcxNDk2NTkgLjUxOTE2NTA2IC40NDcxNjM5IC41MzU4MzI3IC40MTk0OTQ2NCAuNTQ3NTAwNiAuMzg4NDg4NzggLjU1OTE2ODUgLjM1NzQ5MzA4IC41NjUwMDI0NyAuMzI1MzMyNjUgLjU2NTAwMjQ3IC4yOTIwMDc0NiAuNTY1MDAyNDcgLjI4NDAwMTY5IC41NjQ0OTg5IC4yNzU2NjUyOSAuNTYzNDkxOCAuMjY2OTk4MyAuNTYyNDk0OTYgLjI1ODMzMTMgLjU2MTMzMDE2IC4yNDk2NjQzIC41NTk5OTc1OCAuMjQwOTk3MzJILjExNzk5NjIxOVYuMzIyMDA2MjRILjUwNTk5NjdMLjQ2MDk5ODU1IC4yODU5OTU0OUMuNDY3NjYxNTQgLjMyMDY2MzQ2IC40NjQ2NjA2NSAuMzUxNjY0MjMgLjQ1MTk5NTg2IC4zNzg5OTc4IC40MzkzMzEwNiAuNDA2MzMxNCAuNDIwNjY0NDcgLjQyNzk5ODg4IC4zOTU5OTYxIC40NDQwMDAyNSAuMzcxMzI3NzQgLjQ2MDAwMTYzIC4zNDMzMjc4NiAuNDY4MDAyMzMgLjMxMTk5NjQ3IC40NjgwMDIzMyAuMjgwNjY1MDggLjQ2ODAwMjMzIC4yNTE5OTg5IC40NTk4MzM3OCAuMjI1OTk3OTMgLjQ0MzQ5NjcgLjE5OTk5Njk1IC40MjcxNjk4IC4xNzk4Mjk5MSAuNDA0MzM3NTcgLjE2NTQ5NjgzIC4zNzUgLjE1MTE2Mzc0IC4zNDU2NjI0NSAuMTQ1MzI5NzkgLjMxMDY2Mzg2IC4xNDc5OTUgLjI3MDAwNDI4IC4xNDUzMjk3OSAuMjMwNjY3MTIgLjE1MTQ5NDM0IC4xOTYxNjE5MSAuMTY2NDg4NjUgLjE2NjQ4ODY1IC4xODE0OTMxMiAuMTM2ODI1NTYgLjIwMjgzIC4xMTM4MjU0OCAuMjMwNDk5MjcgLjA5NzQ4ODQgLjI1ODE2ODU2IC4wODExNjE1IC4yODgzMzUxOCAuMDcyOTk4MDUgLjMyMDk5OTE2IC4wNzI5OTgwNSAuMzU2OTk5NzQgLjA3Mjk5ODA1IC4zODczMzQyIC4wODEzMjkzNDkgLjQxMjAwMjU3IC4wOTc5OTE5NCAuNDM2NjcwOTQgLjExNDY2NDcxIC40NTY2NzAxNSAuMTM2MDAxNTkgLjQ3MjAwMDEzIC4xNjIwMDI1N0wuNTUwMDAzMDggLjEyMTk5NDAyQy41MzkzMzIxIC4wOTczMzU4MTkgLjUyMjgyNzE3IC4wNzQ4MzkyNyAuNTAwNDg4MyAuMDU0NTA0Mzk2IC40NzgxNTk1OSAuMDM0MTY5NTE1IC40NTE2NjAxNyAuMDE4MDAwMjg1IC40MjA5OSAuMDA1OTk2NzA0IC4zOTAzMy0uMDA1OTk2NzA0IC4zNTY2NjkxLS4wMTE5OTM0MDggLjMyMDAwNzMzLS4wMTE5OTM0MDhaIi8+PHBhdGggaWQ9ImZvbnRfMl8xMzYiIGQ9Ik0uMDgyMDAwNzMgMFYuNzQ0OTk1MUguMTgwOTk5NzZWLjA4OTk5NjM0SC41MDc5OTU2VjBILjA4MjAwMDczWiIvPjxwYXRoIGlkPSJmb250XzJfNzc5IiBkPSJNLjEwMDk5NzkyOC0uMjIwMDAxMjJDLjA4ODk5NDM1LS4yMjAwMDEyMiAuMDc2OTkwNzYtLjIxODk5OTIyIC4wNjQ5ODcxOC0uMjE2OTk1MjQgLjA1Mjk5Mzc3Ni0uMjE1MDAxNDIgLjA0MTY2NjY2OS0uMjExNjY5OTIgLjAzMTAwNTg2LS4yMDcwMDA3M1YtLjEyMzk5MjkyQy4wMzgzNDAyNTMtLjEyNTMzNTcgLjA0NzUwNTY5Ny0uMTI2ODM2MTQgLjA1ODUwMjE5OS0uMTI4NDk0MjcgLjA2OTQ5ODY5OS0uMTMwMTYyNTUgLjA4MDMzMjQzOS0uMTMwOTk2NyAuMDkxMDAzNDItLjEzMDk5NjcgLjEyMjMzNDgtLjEzMDk5NjcgLjE0NjE2Mzk0LS4xMjQxNjA3NyAuMTYyNDkwODUtLjExMDQ4ODg5IC4xNzg4Mjc5My0uMDk2ODI3MTkgLjE5NDMzMDg2LS4wNzMzMjg2NSAuMjA4OTk5NjQtLjAzOTk5MzI4N0wuMjQyOTk2MjIgLjA0MTAwMDM2OCAuMjQwOTk3MzItLjAzOTk5MzI4NyAuMDExMDAxNTg3IC41MzkwMDE0OUguMTExOTk5NTFMLjI5MTAwMDM4IC4wNzg5OTQ3NUguMjYxMDAxNkwuNDM4OTk1MzcgLjUzOTAwMTQ5SC41NDIwMDc0N0wuMjk4OTk1OTgtLjA2Mzk5NTM2Qy4yODc2NjM4LS4wOTI2NjE1NCAuMjczMTYyODUtLjExODk5MzEyOSAuMjU1NDkzMTctLjE0Mjk5MDExIC4yMzc4MzM2Ny0uMTY2OTk3MjcgLjIxNjMzNDAzLS4xODU4MzE3MSAuMTkwOTk0MjctLjE5OTQ5MzQxIC4xNjU2NjQ2OC0uMjEzMTY1MjkgLjEzNTY2NTktLjIyMDAwMTIyIC4xMDA5OTc5MjgtLjIyMDAwMTIyWiIvPjxwYXRoIGlkPSJmb250XzJfNDY1IiBkPSJNLjEyODk5NzggMFYuNDQ5OTk2OTZILjAyNjAwMDk3N1YuNTM5MDAxNDlILjEyODk5NzhWLjU3NjAwNEMuMTI4OTk3OCAuNjE1MzMxIC4xMzczMjkxIC42NDgzMjU2IC4xNTM5OTE3IC42NzQ5ODc4IC4xNzA2NjQ0OCAuNzAxNjYwMTggLjE5MzMzMzk0IC43MjE5OTUwOCAuMjIyMDAwMTIgLjczNTk5MjQ2IC4yNTA2NjYzIC43NSAuMjgyMzMzMzggLjc1NzAwMzggLjMxNzAwMTM1IC43NTcwMDM4IC4zMjQzMzU3MyAuNzU3MDAzOCAuMzMyNDk5MTkgLjc1NjUwMDI3IC4zNDE0OTE3IC43NTU0OTMxOSAuMzUwNDk0MzkgLjc1NDQ5NjMgLjM1Nzk5NjYgLjc1MzMzMTUgLjM2Mzk5ODQgLjc1MTk5ODlWLjY2OTAwNjM3Qy4zNTg2NjggLjY3MDMzODkgLjM1MjMzNTYgLjY3MTE2OCAuMzQ1MDAxMjMgLjY3MTQ5MzU2IC4zMzc2NjY4NSAuNjcxODI5MiAuMzMyMDAwNzQgLjY3MTk5NzEgLjMyODAwMjk0IC42NzE5OTcxIC4yOTczMzI3NyAuNjcxOTk3MSAuMjcyMTY1OTMgLjY2NDY2MjY4IC4yNTI1MDI0NSAuNjQ5OTkzOSAuMjMyODM4OTUgLjYzNTMzNTI5IC4yMjMwMDcyIC42MTA2NzIgLjIyMzAwNzIgLjU3NjAwNFYuNTM5MDAxNDlILjM1MDk5NzkzVi40NDk5OTY5NkguMjIzMDA3MlYwSC4xMjg5OTc4WiIvPjxwYXRoIGlkPSJmb250XzJfNjg3IiBkPSJNLjI5MTAwMDM4LS4wMDU5OTY3MDRDLjIzODMzNzItLjAwNTk5NjcwNCAuMTk3NjcyNTMgLjAwOTAwMjY4NiAuMTY5MDA2MzUgLjAzOTAwMTQ2NiAuMTQwMzQwMTcgLjA2OTAwMDI0NyAuMTI2MDA3MDggLjExMTMzMzIxNyAuMTI2MDA3MDggLjE2NjAwMDM3Vi40NDk5OTY5NkguMDI5MDA2OTU4Vi41MzkwMDE0OUguMDQ4OTk1OTdDLjA3MzAwMzEzOSAuNTM5MDAxNDkgLjA5MTgzNzU2IC41NDYzMzA3NyAuMTA1NDk5MjcgLjU2MDk4OTQgLjExOTE3MTE0IC41NzU2NTgxNyAuMTI2MDA3MDggLjU5NDk5NjE4IC4xMjYwMDcwOCAuNjE5MDAzM1YuNjYyOTk0NEguMjIwMDAxMjJWLjUzOTAwMTQ5SC4zNDEwMDM0M1YuNDQ5OTk2OTZILjIyMDAwMTIyVi4xNjkwMDYzNUMuMjIwMDAxMjIgLjE1MTAwMDk4IC4yMjI4MzQyOCAuMTM1MzMwMiAuMjI4NTAwMzcgLjEyMTk5NDAyIC4yMzQxNjY0NiAuMTA4NjY4MDEgLjI0MzY2MjUyIC4wOTgxNjk5NiAuMjU2OTg4NTQgLjA5MDQ5OTg4IC4yNzAzMjQ3IC4wODI4Mjk3OTkgLjI4Nzk5NDM5IC4wNzg5OTQ3NSAuMzA5OTk3NTcgLjA3ODk5NDc1IC4zMTQ2NjY3NiAuMDc4OTk0NzUgLjMyMDUwMDcgLjA3OTMyNTM1OSAuMzI3NDk5NCAuMDc5OTg2NTcgLjMzNDQ5ODA5IC4wODA2NTc5NiAuMzQwOTk4MzMgLjA4MTMyOTM0OSAuMzQ3MDAwMTMgLjA4MjAwMDczVjBDLjMzODMzMzE0LS4wMDIwMDM5ODc2IC4zMjg2NjQxNi0uMDAzNTA0NDM1NCAuMzE3OTkzMTctLjAwNDUwMTM0MyAuMzA3MzMyMzgtLjAwNTQ5ODI1MDcgLjI5ODMzNDc2LS4wMDU5OTY3MDQgLjI5MTAwMDM4LS4wMDU5OTY3MDRaIi8+PC9kZWZzPjxwYXRoIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLC0xLDIyMS43MzYsMTgzLjgyMikiIGQ9Ik0wIDBDLTEuMTQyLS41ODgtMi4xMDMtMS4wMDUtMi45ODQtMS41NS0xMC42LTYuMjU4LTE4LjE3NC0xMS4wMzItMjUuODE1LTE1LjY5Ny0zMC40NjUtMTguNTM2LTM0Ljk4Mi0yMS41OTUtMzkuODEtMjQuMTM5LTQyLjMwMi0yNS40NTItNDQuMzQyLTI3LjAyOC00My41MzEtMzAuMzI4LTQzLjQ1OC0zMC42MjItNDMuNTI1LTMwLjk1LTQzLjUyNS0zMS4yNjItNDMuNTI3LTUxLjU2Mi00My41MjctNzEuODYyLTQzLjUzOC05Mi4xNjItNDMuNTM5LTkzLjE4OC00My43MDUtOTQuMDE2LTQyLjA4NS05NC4wMDctMjguNTA2LTkzLjkyNy0xNC45MjctOTMuOTM0LTEuMzQ5LTkzLjk2Ni0uMjU0LTkzLjk2OSAuMDMxLTkzLjY2IC4wMTMtOTIuNjA3LS4wNDQtODkuMzYgMC04Ni4xMTEgMC04Mi44NjQgMC01NS4zMTkgMC0yNy43NzUgMCAwTTIzLjI4Ni05OS4xNTVDLS4yNDItOTkuMTc1LTIzLjc3LTk5LjE4MS00Ny4yOTctOTkuMjQ2LTQ4Ljg4OC05OS4yNS00OS4yNzYtOTguNzI3LTQ5LjI3My05Ny4yMDctNDkuMjI2LTczLjIyNC00OS4yMjUtNDkuMjM5LTQ5LjI1MS0yNS4yNTUtNDkuMjUyLTI0LjE5MS00OC45MjUtMjMuNTg1LTQ4LjAyNC0yMy4wMjctNDAuMDQyLTE4LjA4My0zMi4xMTEtMTMuMDU3LTI0LjEwNi04LjE1MS0yMi42NzctNy4yNzUtMjEuMzEtNi4yNjYtMTkuODA2LTUuNTQzLTE4LjA3Mi00LjcwOS0xNy41OTUtMy41NTQtMTcuNjIzLTEuNjM5LTE3Ljc0NyA2Ljc5Mi0xNy42NDMgMTUuMjI1LTE3LjY4NyAyMy42NTYtMTcuNjk0IDI0LjkyLTE3LjMyNiAyNS42NzUtMTYuMjE4IDI2LjM2My02LjU0NyAzMi4zNjYgMy4wNzEgMzguNDU1IDEyLjcyOSA0NC40NzkgMTcuNzk3IDQ3LjY0MSAyMi45MDggNTAuNzM0IDI4LjAwOSA1My44NDIgMzAuMzk0IDU1LjI5NSAzMi44MjEgNTYuNjggMzUuMTkgNTguMTU3IDM2LjMxMyA1OC44NTcgMzYuNjM4IDU4LjQ0IDM2LjY0OSA1Ny4zMzIgMzYuNjU2IDU2LjY0NSAzNi42NjMgNTUuOTU4IDM2LjY2MiA1NS4yNzEgMzYuNjQ5IDQ1LjgzOSAzNi42MjMgMzYuNDA4IDM2LjYyMyAyNi45NzcgMzYuNjIzIDcuNzU1IDM2LjYxNS0xMS40NjYgMzYuNjc3LTMwLjY4NyAzNi42ODMtMzIuNjUxIDM2LjI5OC0zNC4xMTUgMzQuMjY2LTM0Ljc1NCAzNC4wOTgtMzQuODA3IDMzLjk3NS0zNC45OSAzMy44MTYtMzUuMDg2IDMyLjgzOC0zNS42NzEgMzIuMjE0LTM2LjgwNyAzMC45MzYtMzYuOTE5IDMwLjg5Mi0zNS43NSAzMC44MS0zNC41ODIgMzAuODEtMzMuNDEzIDMwLjgwOS02Ljc0MiAzMC44MTcgMTkuOTI4IDMwLjgyMyA0Ni41OTggMzAuODI0IDQ3LjI3NyAzMC44MjMgNDcuOTU2IDMwLjgyMyA0OC43NiAyOC45MzMgNDguMjAzIDI3LjQ5MiA0Ny4xOTYgMjUuOTk4IDQ2LjE1NSAyMy4xODYgNDQuMTk2IDIwLjE3MiA0Mi41MjggMTcuMjc2IDQwLjY4NiAxMi43MiAzNy43ODcgNy45ODkgMzUuMTg2IDMuNTM3IDMyLjA5OC0uOTQ1IDI4Ljk4OS01Ljc0NyAyNi4zMzQtMTAuNDQxIDIzLjUzNy0xMS41MjQgMjIuODkyLTExLjk2NSAyMi4xNi0xMS45NDkgMjAuODUxLTExLjg3MSAxNC4zNTYtMTEuOTE1IDcuODYtMTEuODk5IDEuMzY0LTExLjg5NyAuODItMTIuMTM4IC4wODktMTEuNjU3LS4yMjYtMTEuMDk3LS41OTMtMTAuNjY5IC4xMTEtMTAuMjE3IC4zODQtNS41NDIgMy4yMTctLjg4NyA2LjA4NCAzLjc5IDguOTE2IDUuNjA0IDEwLjAxNCA1LjgwOCA5Ljg4NiA1LjgwOSA3LjczMiA1LjgxNS0xMi40NDEgNS44MTMtMzIuNjE1IDUuODE2LTUyLjc4OSA1LjgxOC02NS45MDUgNS44NTUtNzkuMDIxIDUuNzktOTIuMTM4IDUuNzgyLTkzLjY1NyA2LjI0Ny05NC4wMjEgNy42NTgtOTQuMDAxIDEyLjg1MS05My45MjYgMTguMDQ0LTkzLjk0NyAyMy4yMzctOTMuOTMyIDIzLjQ5Ni05NS42NzEgMjMuNDMyLTk3LjQxMiAyMy4yODYtOTkuMTU1IiBmaWxsPSIjMWIyYTRhIi8+PHBhdGggdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsLTEsMzIyLjQ4OCwyNTYuMjk0KSIgZD0iTTAgMEgtLjAxMkMtLjAxMiA2LjQ5NC0uMDYyIDEyLjk4OCAuMDI4IDE5LjQ4IC4wNDcgMjAuODUxLS40MjQgMjEuNzEyLTEuNDczIDIyLjQxNS00Ljk4MiAyNC43NjctOC4zMTMgMjcuMzU2LTExLjYzOSAyOS45NTYtMTMuNzM1IDMxLjU5NC0xNi4wMTggMzIuOTk3LTE4LjEzNyAzNC42MDktMjAuMTA0IDM2LjEwNC0yMi4zMjMgMzcuMzU0LTI0LjExNyAzOC45MjgtMjcuMDU5IDQxLjUwOS0zMC4zODEgNDMuNTUzLTMzLjMxMyA0Ni4xMTItMzMuOTE1IDQ2LjYzOS0zNC42NzkgNDYuOTM1LTM1LjQ4NCA0Ni4xOTQtMzYuNzIxIDQ1LjA1OC0zOC4yMjggNDQuMjYzLTM5LjU1NCA0My4yNjQtNDQuODU4IDM5LjI3MS01MC4zNTQgMzUuNTQ0LTU1LjY5IDMxLjYwNS01OS44MzMgMjguNTQ4LTY0LjEwMiAyNS42NzEtNjguMjI3IDIyLjU5MS02OS40MjcgMjEuNjk1LTcwLjA2MyAyMC43NDMtNzAuMDU4IDE5LjE5NC03MC4wMTIgNi4yNzEtNzAuMDA1LTYuNjUyLTcwLjA0Ni0xOS41NzUtNzAuMDUtMjEuMDI1LTY5LjY2LTIxLjUyNC02OC4xMzktMjEuNTEtNjEuNDQ2LTIxLjQ0LTU0Ljc1Mi0yMS40NDEtNDguMDYtMjEuNTQyLTQ2LjIxNi0yMS41NjktNDUuNzU4LTIwLjk1Ni00NS43NzYtMTkuMTY1LTQ1Ljg1OC0xMS4xNzYtNDUuNzU4LTMuMTg2LTQ1Ljc5NSA0LjgwNS00NS44MDIgNi4yMzEtNDUuMjc1IDYuNjI0LTQzLjkyMyA2LjYxNC0zNy40ODEgNi41NjgtMzEuMDM4IDYuNTQ5LTI0LjU5OCA2LjYzNi0yMy4wMzUgNi42NTgtMjIuNTYyIDYuMjI2LTIyLjU3NCA0LjY1LTIyLjY0Mi0zLjQ2Ni0yMi42MDMtMTEuNTgzLTIyLjU4OS0xOS43LTIyLjU4OC0yMC41ODctMjIuODcyLTIxLjUyMy0yMS4yNzctMjEuNTA1LTE0LjgzNS0yMS40MjktOC4zOTItMjEuNDctMS45NDktMjEuNTI2LS40NS0yMS41MzkgLjA2MS0yMS4wNTIgLjAzOC0xOS40NzktLjA1NC0xMi45ODcgMC02LjQ5MyAwIDBNLTc2LjI2NC0yNi42ODRDLTc2LjExOC0yNC45NC03Ni4wNTQtMjMuMTk5LTc2LjMxMy0yMS40Ni03NS44ODEtOC4wOC03NS45NjEgNS4zMDYtNzYuMTE4IDE4LjY4Ny03Ni4xNTUgMjEuOTI4LTc1Ljc2NiAyNC4zMTEtNzIuNzMyIDI2LjIyMS02Ni4yODQgMzAuMjg0LTYwLjM0OCAzNS4xMDUtNTQuMDYzIDM5LjQyOS01MS41MjQgNDEuMTc1LTQ4Ljk5MyA0Mi45NzUtNDYuNTE3IDQ0LjgzMy00Mi44NSA0Ny41ODQtMzkuMDg1IDUwLjIwNy0zNS4zNzYgNTIuOTA0LTM0LjIxNCA1My43NDktMzMuMzAxIDUyLjk2Ni0zMi41MTYgNTIuMzgtMjcuODQgNDguODg5LTIzLjI0MSA0NS4yOTUtMTguNTc3IDQxLjc5LTExLjUzMSAzNi40OTUtNC41NjggMzEuMDc5IDIuNjc1IDI2LjA2NyA1LjE1NCAyNC4zNTIgNS43NjQgMjIuNTk1IDUuNzQgMTkuODAxIDUuNjE3IDUuMTg4IDUuNjg3LTkuNDI3IDUuNzE5LTI0LjA0IDUuNzI1LTI2Ljc3OCA1Ljc4Mi0yNi43NzEgMi45Ni0yNi43NzEtNi44NjMtMjYuNzctMTYuNjg3LTI2LjcyOC0yNi41MTEtMjYuODE2LTI4LjI5Ny0yNi44MzMtMjguNjg2LTI2LjIyNS0yOC42NjktMjQuNTg1LTI4LjU4Ni0xNi41MjktMjguNjQ0LTguNDcyLTI4LjU1OS0uNDE2LTI4LjU0MiAxLjA5MS0yOC44NzUgMS42OS0zMC40OTYgMS41OTQtMzIuODY1IDEuNDUxLTM1LjI0OCAxLjUzNy0zNy42MjUgMS41NDEtNDAuMTQ4IDEuNTQ0LTQwLjE1OCAxLjU1Mi00MC4xNTQtMS4wMjEtNDAuMTQ2LTcuNDU0LTQwLjEyMS0xMy44ODgtNDAuMTE3LTIwLjMyLTQwLjExNi0yMS44ODEtNDAuMTk5LTIzLjQ0MS00MC4xODgtMjUuMDAyLTQwLjE3OS0yNi4yMDYtNDAuNTQ4LTI2Ljc4Ny00MS45MjItMjYuNzc4LTUzLjM2OS0yNi43MDktNjQuODE2LTI2LjcwNi03Ni4yNjQtMjYuNjg0IiBmaWxsPSIjMWIyYTRhIi8+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjg0LjI2LC05MS4yMCkiPjx1c2UgZGF0YS10ZXh0PSJIIiB4bGluazpocmVmPSIjZm9udF8yXzkwIiB0cmFuc2Zvcm09Im1hdHJpeCg3MCwwLDAsLTcwLDY4LjI2OSwzNDcuNjQpIiBmaWxsPSIjMWIyYTRhIi8+PHVzZSBkYXRhLXRleHQ9Im8iIHhsaW5rOmhyZWY9IiNmb250XzJfNjExIiB0cmFuc2Zvcm09Im1hdHJpeCg3MCwwLDAsLTcwLDEyMS44MTksMzQ3LjY0KSIgZmlsbD0iIzFiMmE0YSIvPjx1c2UgZGF0YS10ZXh0PSJ1IiB4bGluazpocmVmPSIjZm9udF8yXzcwMyIgdHJhbnNmb3JtPSJtYXRyaXgoNzAsMCwwLC03MCwxNjkuNjk5LDM0Ny42NCkiIGZpbGw9IiMxYjJhNGEiLz48dXNlIGRhdGEtdGV4dD0icyIgeGxpbms6aHJlZj0iI2ZvbnRfMl82NzUiIHRyYW5zZm9ybT0ibWF0cml4KDcwLDAsMCwtNzAsMjEyLjM5OSwzNDcuNjQpIiBmaWxsPSIjMWIyYTRhIi8+PHVzZSBkYXRhLXRleHQ9ImUiIHhsaW5rOmhyZWY9IiNmb250XzJfNDE4IiB0cmFuc2Zvcm09Im1hdHJpeCg3MCwwLDAsLTcwLDI1MC4yNjksMzQ3LjY0KSIgZmlsbD0iIzFiMmE0YSIvPjx1c2UgZGF0YS10ZXh0PSJMIiB4bGluazpocmVmPSIjZm9udF8yXzEzNiIgdHJhbnNmb3JtPSJtYXRyaXgoNzAsMCwwLC03MCwyOTUuMzQ5LDM0Ny42NCkiIGZpbGw9IiMxYjJhNGEiLz48dXNlIGRhdGEtdGV4dD0ieSIgeGxpbms6aHJlZj0iI2ZvbnRfMl83NzkiIHRyYW5zZm9ybT0ibWF0cml4KDcwLDAsMCwtNzAsMzMyLjA5OSwzNDcuNjQpIiBmaWxsPSIjMWIyYTRhIi8+PHVzZSBkYXRhLXRleHQ9ImYiIHhsaW5rOmhyZWY9IiNmb250XzJfNDY1IiB0cmFuc2Zvcm09Im1hdHJpeCg3MCwwLDAsLTcwLDM3Mi45MDksMzQ3LjY0KSIgZmlsbD0iIzFiMmE0YSIvPjx1c2UgZGF0YS10ZXh0PSJ0IiB4bGluazpocmVmPSIjZm9udF8yXzY4NyIgdHJhbnNmb3JtPSJtYXRyaXgoNzAsMCwwLC03MCw0MDMuODQ5LDM0Ny42NCkiIGZpbGw9IiMxYjJhNGEiLz48L2c+PC9zdmc+" alt="HouseLyft" style="height:54px;width:auto;"></div>
+  <h1>PROPERTY REPORT</h1>
+  <div class="addr">456 East 42nd Street<span>Hamilton, ON</span></div>
+  <div class="foot">Preliminary analysis only. This report is not a planning opinion, legal advice, or development permit.<br>Verify all information before making any investment decision.</div>
+</div>
+
+<!-- WHY -->
+<div class="section first">
+  <h2 class="sec">Why this report matters…</h2>
+  <p>According to Federal Data, Canadian property owners are currently sitting on an unprecedented $5.22 Trillion in untapped real estate equity.</p>
+  <p>It is the largest concentrated pile of unused wealth in our country's history!</p>
+  <p>The information inside this report has been compiled to give you a data-backed opinion on the development viability of your property before you expose your hard-earned capital to risk.</p>
+  <p>It is designed to help you identify opportunities, unlock trapped equity, generate cashflow, and build wealth by optimizing your property's usage and potential.</p>
+  <p>This Initial Report:</p>
+  <ul>
+    <li><strong>Examines Your Local Zoning Bylaw:</strong> Find out what your lot bylaws legally allow you to build.</li>
+    <li><strong>Identifies Government Grants and Subsidies:</strong> Map out your property against active municipal, provincial, and federal grant programs.</li>
+    <li><strong>Highlights Specialized Financing Frameworks:</strong> Show you possible ways to structure your project's economics to qualify for low-interest, government-backed financing, whenever possible.</li>
+  </ul>
+  <p>This is the first part of a multi-step plan to help you transform your property and reach your development goals.</p>
+</div>
+
+<!-- HOW TO USE -->
+<div class="section">
+  <h2 class="sec">How to use this report…</h2>
+  <p>Think of this report as a high-level zoning compass. It tells you what the current regulations allow you to build on your property and the possible ways you can use that to your advantage.</p>
+  <p>It's the first step in a process that takes your property from its current state to maximizing its full potential.</p>
+  <div class="steps">
+    <div class="step"><div class="sh"><span class="n">STEP 1</span><span class="t">FREE PROPERTY REPORT</span></div>
+      <ul><li>What you're allowed to build under current zoning</li><li>Grants &amp; incentives that may be available</li><li>Financing options available</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 2</span><span class="t">BUILDER READY PACKAGE™</span></div>
+      <ul><li>Design Feasibility Report</li><li>Financial Feasibility Report</li><li>Grants &amp; Incentives Report</li></ul></div>
+    <div class="step"><div class="sh"><span class="n">STEP 3</span><span class="t">BUILDER MATCHING™</span></div>
+      <ul><li>Matched with a trusted Builder Partner suited to your project &amp; market</li><li>They lead detailed design &amp; permitting</li><li>Through construction &amp; final occupancy</li></ul></div>
+  </div>
+  <p>Once your Builder Ready Package™ is complete, we will match you with one of our trusted Builder Partners who is best suited for your project and market. Your builder will then lead the project through detailed design, permitting, construction, and final occupancy.</p>
+  <p>It's important to remember that this report is compiled using publicly available information. Physical site inspections, full architectural and engineering drawings, and other studies have yet to be completed and will come during Phase 3.</p>
+</div>
+
+<!-- ADVANTAGE -->
+<div class="section">
+  <h2 class="sec">The House Lyft Advantage</h2>
+  <p>House Lyft helps Canadian homeowners unlock the equity trapped in their property and turn it into lasting income — without navigating the development maze alone.</p>
+  <p>We are the orchestrator of one coordinated path. We confirm what your property can become, build your <strong>Builder Ready Package™</strong> — the design, financial, and incentive feasibility that turns an idea into an executable plan — and then match you with one of our trusted, vetted <strong>Builder Partners</strong>, who leads detailed design, permitting, and construction through to completion.</p>
+  <p>Instead of stitching together a dozen disconnected vendors — surveyors, designers, brokers, planners, builders — each with their own timeline and their own bill, you get a single guided route from "what can I build?" to keys in hand. One relationship, one plan, one team accountable for getting you there.</p>
+  <div class="photorow">
+    <img src="static_photo1.png" alt="Completed multi-unit development">
+    <img src="static_photo2.png" alt="Completed projects">
+  </div>
+</div>
+
+<!-- 1 PROPERTY DETAILS -->
+<div class="section">
+  <h2 class="sec">1. Property Details</h2>
+  <div class="barhead">456 East 42nd Street, Hamilton, ON&nbsp;&nbsp;L8T 3B3</div>
+  <div class="imgnote" style="font-size:8.5pt;color:#7a818f;font-style:italic;margin:2px 0 12px;">Aerial and street-level photography pending a licensed imagery source.</div>
+  <table class="kv">
+    <tr><td>Property Address</td><td>456 East 42nd Street, Hamilton, ON&nbsp;&nbsp;L8T 3B3</td></tr>
+    <tr><td>Name</td><td>Zilal Afzali</td></tr>
+    <tr><td>Phone Number</td><td>Provided at intake</td></tr>
+    <tr><td>Email</td><td>Provided at intake</td></tr>
+    <tr><td>Development Goals</td><td>Interior secondary suite (additional dwelling unit) for rental income; intends to keep the property</td></tr>
+  </table>
+  <table class="kv">
+    <tr><td>Municipality</td><td>City of Hamilton</td></tr>
+    <tr><td>Neighbourhood</td><td>Hamilton Mountain (per intake address)</td></tr>
+    <tr><td>Property Type</td><td>Low-density residential context — confirmed in Phase 2</td></tr>
+    <tr><td>Waste Collection</td><td>City of Hamilton curbside schedule</td></tr>
+    <tr><td>Current Bylaw</td><td>City of Hamilton Zoning By-law No. 05-200</td></tr>
+    <tr><td>Legal Description</td><td>To be confirmed</td></tr>
+    <tr><td>Year Built</td><td>To be confirmed</td></tr>
+    <tr><td>Lot size</td><td>To be confirmed in Phase 2</td></tr>
+    <tr><td>Development Goals</td><td>Interior secondary suite (primary); optional detached additional dwelling unit</td></tr>
+  </table>
+  <div class="cell" style="break-inside:avoid;page-break-inside:avoid;">
+    <div class="ct">Neighbourhood Spotlight</div>
+    456 East 42nd Street sits in an established residential area on the Hamilton Mountain — the kind of mature, family-oriented neighbourhood where an added rental suite tends to find steady demand:
+    <ul>
+      <li>Central Mountain location with quick access to Fennell Avenue and the Lincoln Alexander Parkway</li>
+      <li>Close to Mohawk College — a consistent source of rental demand</li>
+      <li>Served by HSR transit routes along the main Mountain corridors</li>
+      <li>Everyday shopping, schools, and parks within the surrounding community</li>
+      <li>Note: specific amenities, distances, and any site constraints are confirmed in Phase 2. (Illustrative context, not a valuation.)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- 2 ZONING -->
+<div class="section">
+  <h2 class="sec">2. Current Zoning</h2>
+  <table class="kv">
+    <tr><td>Current Zoning</td><td>Low Density Residential under City of Hamilton By-law No. 05-200 — exact zone code confirmed in Phase 2</td></tr>
+    <tr><td>Minimum Site Requirements</td><td>The lot must be a serviced residential lot (municipal water &amp; sewer) within the urban area — the provincial criteria for as-of-right additional residential units. Site-specific standards (setbacks, height, floor area) confirmed in Phase 2.</td></tr>
+    <tr><td>Recent Changes</td><td>Under Ontario's Bill 23 (More Homes Built Faster Act), up to <strong>3 residential units</strong> are permitted as-of-right on a serviced residential lot — no rezoning required. Hamilton's Low Density Residential zones go further, permitting existing dwellings to convert to up to <strong>4 units</strong>, with as-of-right triplex and fourplex forms added to By-law 05-200 (February 2024).</td></tr>
+    <tr><td>Permitted Uses</td><td>An interior secondary suite (additional dwelling unit) is permitted as-of-right on a serviced residential lot, and a detached additional dwelling unit is also permitted, subject to Hamilton's site standards. Confirmed in Phase 2.</td></tr>
+    <tr><td>Development Goals Achievable?</td><td><strong>YES</strong>; proceed to Step 2 — <strong>Builder Ready Package™</strong></td></tr>
+  </table>
+  <div class="cell">
+    <div class="ct">What this means for you…</div>
+    <ul style="margin-top:0;">
+      <li><strong>Interior Secondary Suite:</strong> a self-contained additional dwelling unit within the existing home (for example, a basement apartment) — your stated goal</li>
+      <li><strong>Detached Additional Dwelling Unit:</strong> a separate suite in the rear yard (garden suite), permitted subject to Hamilton's size, height, and setback standards</li>
+      <li><strong>Up to Three Units As-of-Right:</strong> under Bill 23 the property may support the main dwelling plus two additional units on a serviced lot</li>
+      <li><strong>Up to Four Units in Hamilton's Low Density Residential Zones:</strong> Hamilton permits conversion of an existing dwelling to as many as four units, subject to site standards — confirmed in Phase 2</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TIME SENSITIVE -->
+<div class="section">
+  <h2 class="sec">⚠️ Time-Sensitive Information</h2>
+  <div class="ts">
+    <div class="d"><div class="dt">ADU Development Charge Exemption<br><small>already in effect</small></div><div class="dx">Under provincial legislation (Bill 23), the second and third residential units on a lot are exempt from municipal development charges, and a detached additional dwelling unit under 100 m² is exempt under O. Reg. 332/12 — a meaningful per-unit saving on a new suite. Applicability to your project is confirmed in Phase 2.</div></div>
+    <div class="d"><div class="dt">Programs Open and Close<br><small>budget-limited</small></div><div class="dx">Grant, rebate, and financing programs are budget-limited and periodically open and close, and their criteria change regularly. Positioning your project early keeps the widest set of options available. Current availability is confirmed in Phase 2.</div></div>
+    <div class="d"><div class="dt">CMHC</div><div class="dx">Canada Mortgage Housing Corporation (CMHC) policy changes can occur at any time, potentially affecting financing options. It is recommended to submit your application as early as possible to reduce any risk.</div></div>
+  </div>
+</div>
+
+<!-- 3 REZONING -->
+<div class="section">
+  <h2 class="sec">3. Rezoning (If Applicable)</h2>
+  <p>Rezoning is when the city changes the local planning rules to legally allow more housing units, taller buildings, or different types of properties to be built on a specific piece of land than what was originally allowed. Think of it as the city giving a property a "regulatory upgrade".</p>
+  <div class="co-green"><div class="ct2">Not Required for This Property</div>An interior secondary suite (additional dwelling unit) is permitted as-of-right under Ontario's Bill 23 and City of Hamilton By-law 05-200 on a serviced residential lot. No rezoning is contemplated.</div>
+  <div class="barhead" style="text-align:left;">As-of-Right vs. The Rezoning Path</div>
+  <table class="cmp">
+    <tr><th></th><th>Your Path — As-of-Right</th><th>If Rezoning Were Needed</th></tr>
+    <tr><td>Change to the zoning by-law</td><td class="g">None required</td><td class="n">Required</td></tr>
+    <tr><td>Public consultation meeting</td><td class="g">Not required</td><td class="n">Required</td></tr>
+    <tr><td>City Council decision</td><td class="g">Not required</td><td class="n">Required</td></tr>
+    <tr><td>Appeal exposure (OLT)</td><td class="g">Not applicable</td><td class="n">Possible</td></tr>
+    <tr><td>What governs your build</td><td class="g">By-law 05-200 (as amended)</td><td class="n">A new site-specific by-law</td></tr>
+  </table>
+  <div class="barhead" style="text-align:left;">Also permitted as-of-right on this lot</div>
+  <div class="twocard">
+    <div class="card2"><div class="ct">Up to four units</div>Hamilton's Low Density Residential zones permit an existing dwelling to convert to as many as four units, with as-of-right triplex and fourplex forms added to By-law 05-200 (February 2024), subject to site standards.</div>
+    <div class="card2"><div class="ct">Detached additional dwelling unit</div>A separate suite in the rear yard (garden suite) is permitted subject to Hamilton's size, height, and setback standards — with no additional parking required for the added unit.</div>
+  </div>
+  <div class="barhead" style="text-align:left;">What this means for 456 East 42nd Street</div>
+  <p>Because a secondary suite is permitted as-of-right on this serviced residential lot, no rezoning application is contemplated in this analysis. Your project advances directly to design and permitting. The comparison above shows what that avoids. This assessment reflects the by-laws in force at the date of this report and is subject to technical review of site conditions.</p>
+  <div class="co-amber"><b>Two items to confirm in Phase 2: the exact zone code and any site-specific exceptions for this parcel, and the required registration and building permit for a second unit.</b><br><span class="sub">Hamilton's rules were researched from live official sources for this report; the parcel-specific zone and permit path are verified against the City before the build proceeds.</span></div>
+</div>
+
+<!-- 4 DEVELOPMENT OPTIONS -->
+<div class="section">
+  <h2 class="sec">4. Development Options</h2>
+  <div class="opt"><div class="oh">Option A — Interior Secondary Suite (your goal)</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_a.png" alt="Massing illustration"></div>
+      <div class="od">A self-contained secondary suite within the existing home — for example, a basement apartment — rented for ongoing income while you keep the property, which is your stated goal. Permitted as-of-right under Bill 23 on a serviced residential lot; no rezoning. The unit must meet the Ontario Building Code and Hamilton's standards, and the second unit is registered with the City. No additional parking is required for the added unit. The exact layout and size are confirmed in Phase 2.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option B — Secondary Suite + Detached Additional Dwelling Unit</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_b.png" alt="Massing illustration"></div>
+      <div class="od">Pair the interior secondary suite with a detached additional dwelling unit (garden suite) in the rear yard — a route to as many as three income units on the lot under Bill 23, where the property allows. Hamilton's Low Density Residential zones can support up to four units through conversion of the existing dwelling, subject to site standards. This maximizes cash flow while keeping the property in your hands. Eligibility, unit sizes, and the detached-suite envelope are confirmed in Phase 2.</div>
+    </div></div>
+  <div class="opt"><div class="oh">Option C — Hamilton Low Density Residential Advantage</div>
+    <div class="ob">
+      <div class="massing"><img src="opt_c.png" alt="Massing illustration"></div>
+      <div class="od">Hamilton has moved ahead of the provincial floor: its Low Density Residential zones permit an existing dwelling to convert to as many as four units, with as-of-right triplex and fourplex forms added to By-law 05-200 in February 2024. For a homeowner starting with a single secondary suite, that headroom means the property can grow in stages without a rezoning — starting with your suite today and leaving the door open to additional units later, subject to the City's site standards. The exact zone code and per-lot limits for this parcel are confirmed in Phase 2.</div>
+    </div></div>
+</div>
+
+<!-- 5 DEVELOPMENT GOAL SUMMARY -->
+<div class="section flow">
+  <h2 class="sec">5. Development Goal Summary</h2>
+  <div class="barhead" style="text-align:left;">Interior Secondary Suite</div>
+  <p>456 East 42nd Street is a serviced residential lot on the Hamilton Mountain where, under Bill 23 and City of Hamilton By-law 05-200, an interior secondary suite is permitted as-of-right — matching your goal of adding rental income while keeping the property. <strong>The interior secondary suite is the clear primary recommendation</strong>, with a detached additional dwelling unit as an optional path to a further income unit.</p>
+</div>
+
+<!-- 6 FINANCING -->
+<div class="section">
+  <h2 class="sec">6. Financing Pathways</h2>
+  <p>How you finance the development of your property can significantly impact your overall ROI, as well as your cashflow and stability.</p>
+  <p>Many property owners destroy their project margins by trying to use expensive personal cash lines or basic retail bank loans.</p>
+  <p>A successful project requires institutional underwriting before you ever pull a permit. We partner with national commercial lending desks to bypass conventional retail hurdles, allowing our qualified files to access specialized programs, rates, and terms completely unavailable to the general public.</p>
+  <table class="kv">
+    <tr><td>Mortgage Refinance</td><td>If a property has appreciated in value or the mortgage has been significantly paid down, owners can typically access up to 80% of the property's newly appraised value.</td></tr>
+    <tr><td>Home Equity Line of Credit (HELOC)</td><td>Is a flexible, revolving line of credit secured against the equity of an existing property. Unlike a refinance that issues a lump sum, a HELOC functions more like a high-limit credit card tied to your real estate.</td></tr>
+    <tr><td>Construction Financing</td><td>Also known as a progress-draw mortgage, construction financing is a short-term loan specifically designed to fund a new build from the ground up (or fund a massive structural overhaul).</td></tr>
+    <!-- GATED_FINANCING_ROWS
+     Injected by the builder from config/programs.json AFTER apply_gates().
+     Do NOT hardcode a program here. Anything above this marker is any_scale
+     (refinance / HELOC / construction) and always renders.
+     See docs/PROGRAM_GATING_v1.md -->
+  </table>
+</div>
+
+<!-- 7 GRANTS -->
+<div class="section">
+  <h2 class="sec">7. Available Grants &amp; Incentives</h2>
+  <p>Most property owners don't realize how much government assistance is available to help them complete their project.</p>
+  <p>Creating housing is a key mandate of government at all levels: federal, provincial, and municipal. The work you are considering undertaking with your property is the exact kind of work the government wants to support!</p>
+  <p>It's important to note that the timing, criteria, and application processes change regularly. Working with clients across the country, we are intimately familiar with available grants, incentives and programs that may be available for your project.</p>
+  <table class="g">
+    <tr><th style="width:70px">Level</th><th style="width:190px">Program</th><th>Notes</th></tr>
+    <tr><td>Provincial</td><td>Additional Dwelling Unit — Development Charge Exemption</td><td>The second and third residential units on a lot are exempt from municipal development charges under provincial legislation (Bill 23); a detached additional dwelling unit under 100 m² is exempt under O. Reg. 332/12. Confirmed for your project in Phase 2.</td></tr>
+    <tr><td>Federal</td><td>GST/HST New Residential Rental Property Rebate</td><td>May apply to a newly built, self-contained rental suite. Eligibility and amount depend on the unit's fair market value and long-term rental use. Applicability confirmed in Phase 2.</td></tr>
+    <tr><td>Federal</td><td>Multigenerational Home Renovation Tax Credit</td><td>A refundable credit of up to 15% on as much as $50,000 of eligible cost where the new suite houses an eligible senior or an adult with a disability. Confirmed in Phase 2.</td></tr>
+    <tr><td>Fed / Utility</td><td>Energy-Efficiency Rebates</td><td>Programs such as Canada Greener Homes and utility incentives may offset efficient design and equipment on a new suite. Confirmed in Phase 2.</td></tr>
+    <!-- GATED_GRANTS_ROWS
+         Injected by the builder from config/programs.json AFTER apply_gates().
+         EVERY grant/incentive is gated - none may be hardcoded here.
+         Previously hardcoded (the defect this fixes): GST/HST PBRH (4+ units),
+         CMHC ACLP ($1M+ loan), CMHC Prefab Plus (inherits MLI), Toronto DC Waiver
+         (Toronto only - was appearing on Mississauga reports).
+         scoped mode -> only programs clearing the stated scope.
+         tiered mode -> each program attached to the smallest tier that clears it.
+         See docs/PROGRAM_GATING_v1.md -->
+    </table>
+</div>
+
+<!-- 8 SUMMARY -->
+<div class="section">
+  <h2 class="sec">8. Summary</h2>
+  <h3>Current Zoning Review</h3>
+  <p>456 East 42nd Street is a serviced residential lot on the Hamilton Mountain. Under Ontario's Bill 23 and City of Hamilton By-law 05-200, an interior secondary suite — your stated goal — is permitted as-of-right, with no rezoning required, subject to the City's site standards. Hamilton's Low Density Residential zones provide additional headroom of up to four units.</p>
+  <ul>
+    <li><strong>The Secondary-Suite Advantage:</strong> an interior suite adds a rental income stream while you keep the property, using space you already own — the exact layout, size, and registration path are confirmed in Phase 2.</li>
+  </ul>
+  <h3>Grants &amp; Incentives Review</h3>
+  <p>Governments at the federal, provincial, and municipal levels continue to prioritize housing development by offering grants, rebates, and other incentives to help reduce project costs. Because these programs and their eligibility criteria change frequently, we help identify and navigate the opportunities that may apply to your project, maximizing available funding and improving overall project feasibility.</p>
+  <h3>Financing Options Review</h3>
+  <p>Choosing the right financing strategy is essential to maximizing project returns, maintaining healthy cash flow, and reducing financial risk. We work with trusted lending partners to identify financing solutions that align with your development goals, including mortgage refinancing, home equity lines of credit (HELOCs), and construction financing.<!-- GATED_FINANCING_PROSE: the builder may append gated programs here ONLY if they clear their gate. Never name a program that has not cleared. --> By securing the right financing early in the process, we help position your project for long-term success.</p>
+</div>
+
+<!-- NEXT STEPS / ROADBLOCKS / CTA -->
+<div class="section">
+  <h2 class="sec">Next Steps</h2>
+  <p>Before you can submit for permits, lock in specialized financing, or secure municipal grants, external consultants require site-specific documentation. We break these down into 3 Steps:</p>
+  <h3>Step 1: Zoning — Development Rights and Requirements</h3>
+  <p>In order to ensure that your project plans meet local setbacks, site coverage caps, and height restrictions, you will need the following:</p>
+  <ul><li>Site Plan</li><li>Massing Diagram Options</li><li>Unit Mix, Unit Count and Unit Sizes</li></ul>
+  <h3>Step 2: Grants &amp; Incentives</h3>
+  <p>While your project may be eligible for various government rebates and incentives, most programs require documentation that is generated throughout the development and construction process. Applications are generally completed once all required information has been collected.</p>
+  <p>In order to start the application process you will need a detailed breakdown of the necessary documentation and supporting forms required for each program.</p>
+  <h3>Step 3: Financing Options</h3>
+  <p>This report identifies financing programs that may be suitable for your proposed development. Final financing approval cannot be obtained until the project has progressed through the planning stage and the required financial information, construction budgets, and supporting documentation have been prepared.</p>
+  <p>The Builder Ready Package™ provides much of the information required by lenders to begin the financing process. Additional lender-specific documentation may also be required depending on the financing program selected.</p>
+  <h3>Roadblocks</h3>
+  <p>Most property owners attempt to gather these documents piecemeal and haphazardly. They spend months going back and forth hiring a private surveyor, then waiting weeks for an independent designer, then shopping around blindly for a commercial mortgage broker, and then trying to negotiate independently with city planners. This uncoordinated approach creates massive friction. By the time they get a single piece of the puzzle solved, their other data is outdated, municipal deadlines have passed, grant pools are fully depleted, and they have burned through thousands of dollars in dead carrying costs.</p>
+  <h3>The House Lyft Advantage</h3>
+  <p>We designed our Phase 2 where over the next 30 days, our lending partners, planning and grants and incentives consultants will compile everything simultaneously into a single next step option for you. This gives you everything required to accurately plan and build your roadmap.</p>
+  <p>In addition, if you decide to move forward with the project and use one of our approved and vetted builder partners, they will credit you the full cost of your Phase 2 work right back to your construction balance on Day 1.</p>
+  <div class="cta" style="page-break-before:always;">
+    Your total investment for the Phase 2 blueprint is a single flat fee of<br><span class="fee">$5,000.00</span>
+    <div style="margin-top:10px;font-size:8.8pt;">Getting started is simple:</div>
+    <ol style="margin:6px 0 0;font-size:8.8pt;padding-left:18px;">
+      <li><strong>Authorize the Phase 2 Work Order:</strong> Review and sign our Builder Ready Package Agreement.</li>
+      <li><strong>Submit the Phase 2 Payment:</strong> to activate our trusted team of consultants.</li>
+      <li><strong>Submit the Financial Intake Forms:</strong> as provided by our lender partner.</li>
+      <li><strong>Book Your Initial Planning Session:</strong> set up your initial meeting with our planner and Senior Relationship Manager to finalize your development objectives and plan next steps.</li>
+    </ol>
+  </div>
+</div>
+
+</body>
+</html>
