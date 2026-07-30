@@ -1,21 +1,55 @@
 """
 xform_london.py — build templates/report_london.html for
-241 Admiral Drive, London, ON  N5V 1H9.
+241 Admiral Drive, London, ON  N5V 1H9  (contact: Mursh Al).
 
 Reads the master (templates/report_houselyft_master.html), swaps the
-Coxwell/Toronto property, zoning, options and summary content for
-London-verified content, injects the gated financing/grant rows, and
-replaces the imagery placeholders with the two committed Mapbox aerials.
+Coxwell/Toronto property, zoning, options, financing and summary content
+for London-verified content.
 
-City coverage: London has no zoning-engine adapter, so its rules were
-researched live from official sources (london.ca Additional Residential
-Units page + Zoning By-law Z.-1; Ontario Bill 23; CRA PBRH rebate; CMHC;
-2026 Ontario Budget). Report is tagged report-needs-review.
+CITY COVERAGE
+    London has no zoning-engine adapter, so its rules were researched live
+    from official sources (2026-07-30) and the report is tagged
+    report-needs-review:
+      - City of London Zoning By-law Z.-1, as amended by OZ-9661 (in force
+        late 2024): up to 4 total dwelling units as-of-right on a serviced
+        residential lot (main dwelling + up to 3 additional residential
+        units), no additional parking required.
+        Source: london.ca ARU pages / OZ-9661; Ontario Construction News
+        "London adopts broader housing unit bylaw" (Oct 2024).
+      - Ontario Bill 23 (More Homes Built Faster Act, 2022): 3 units
+        as-of-right province-wide; DC exemption for the first two ARUs.
+      - Federal GST/HST Purpose-Built Rental Housing rebate: 4+ self-
+        contained rental units, construction on/after 14 Sep 2023 and
+        before 2031, complete before 2036 (canada.ca / CRA).
+      - Ontario 2026 Budget provincial HST rebate: announced / being
+        legislated — hedged, not asserted.
 
-Scope: no homeowner development goal was supplied, so the report renders
-in TIERED mode (needs-scope-review) across London's as-of-right range
-(up to 4 units under Z.-1), with programs attached to the tier that
-unlocks them.
+SCOPE  (docs/PROGRAM_GATING_v1.md + config/programs.json scope_map)
+    GHL project-type field EPzqHHy5AU2iIvHIAhKf = "Secondary Suite"
+    -> units_added = 1, confidence high -> render = SCOPED (1 unit).
+    Sentence field oPfN9unZ4y37M1g1NwTq = "additional suite with govt
+    approval + grant" confirms it.
+
+    Scoped-mode gating for 1 unit in Ontario / City of London:
+      CLEARS at 1 unit  : Bill 23 DC exemption (first ARU); City of London
+                          additional-unit / affordable-rental incentives;
+                          conventional financing (refinance/HELOC/const.).
+      Moves into 4-unit : GST/HST PBRH rebate (4+) and the announced
+        upside            Ontario provincial HST rebate (4+) -> shown ONLY
+                          in Option C (the 4-unit upside), conditionally.
+      DROPPED entirely  : CMHC MLI Select / ACLP / Prefab Plus (5+ units —
+                          above every as-of-right option here), MHRTC
+                          (occupant-gated, unconfirmable), Toronto DC waiver
+                          (Toronto only), Simcoe/Mississauga, all AB/BC/
+                          Edmonton programs. A 5+-unit program must never
+                          sit beside a one-suite recommendation
+                          (the "Ryan Ramsay" defect — PROGRAM_GATING_v1.md).
+
+IMAGERY
+    No MAPBOX_TOKEN and no verified municipal lot-scale source for London
+    (engine/aerial_imagery.py), so get_aerial() returns nothing. Per the
+    routine's imagery doctrine the grey placeholder boxes are removed and a
+    single honest line is kept. No unverified imagery is ever embedded.
 
 Run:  python3 scripts/xform_london.py
 """
@@ -38,26 +72,16 @@ R.append(('<div class="addr">303 Coxwell Avenue<span>Toronto, ON</span></div>',
 R.append(('<div class="barhead">303 Coxwell Avenue, Toronto, ON&nbsp;&nbsp;M4L 3B5</div>',
           '<div class="barhead">241 Admiral Drive, London, ON&nbsp;&nbsp;N5V 1H9</div>'))
 
-# ---- imagery: real Mapbox aerials (licensed, commercial print use OK) ----
+# ---- imagery: honest pending line, no unverified imagery (no licensed source for London) ----
 R.append((
 '''  <div class="imgrow" style="margin-top:0;">
     <div class="imgbox tall"><span class="ic">◎</span>Aerial view<br><small>(auto-generated)</small></div>
     <div class="imgbox tall"><span class="ic">▤</span>Street view<br><small>(auto-generated)</small></div>
   </div>
   <div class="imglicense" style="font-size:6pt;color:#9aa2b2;margin:-6px 0 8px;">Imagery: source and licence inserted at generation.</div>''',
-'''  <div class="imgrow" style="margin-top:0;">
-    <div class="imgbox tall" style="padding:0;position:relative;overflow:hidden;">
-      <img src="london_aerial.png" alt="Aerial view of 241 Admiral Drive, London, ON" style="width:100%;height:148px;object-fit:cover;display:block;">
-      <div style="position:absolute;left:0;right:0;bottom:0;background:rgba(27,42,74,.74);color:#fff;font-size:6.4pt;padding:2px 6px;">Aerial view — approx. 150 m across</div>
-    </div>
-    <div class="imgbox tall" style="padding:0;position:relative;overflow:hidden;">
-      <img src="london_context.png" alt="Neighbourhood context around 241 Admiral Drive" style="width:100%;height:148px;object-fit:cover;display:block;">
-      <div style="position:absolute;left:0;right:0;bottom:0;background:rgba(27,42,74,.74);color:#fff;font-size:6.4pt;padding:2px 6px;">Neighbourhood context — approx. 280 m across</div>
-    </div>
-  </div>
-  <div class="imglicense" style="font-size:6pt;color:#9aa2b2;margin:-6px 0 8px;">Imagery © Mapbox © OpenStreetMap © Maxar — Mapbox Satellite (commercial print use permitted). Lot boundaries are approximate; confirm on the City of London zoning map in Phase 2.</div>'''))
+'''  <div class="imglicense" style="font-size:8.4pt;color:#7a818f;margin:2px 0 12px;">Aerial and street-level photography pending a licensed imagery source for the City of London.</div>'''))
 
-# ---- property table 1 (contact + goals) ----
+# ---- property table 1 (contact + goal) ----
 R.append((
 '''    <tr><td>Property Address</td><td>303 Coxwell Avenue, Toronto, ON&nbsp;&nbsp;M4L 3B5</td></tr>
     <tr><td>Name</td><td>John Arockiaraj</td></tr>
@@ -65,10 +89,10 @@ R.append((
     <tr><td>Email</td><td>johneeraj@gmail.com</td></tr>
     <tr><td>Development Goals</td><td>4+1 or 6+1 Multiplex; Maximize unit count; To Be Decided</td></tr>''',
 '''    <tr><td>Property Address</td><td>241 Admiral Drive, London, ON&nbsp;&nbsp;N5V 1H9</td></tr>
-    <tr><td>Name</td><td>Provided at intake</td></tr>
+    <tr><td>Name</td><td>Mursh Al</td></tr>
     <tr><td>Phone Number</td><td>Provided at intake</td></tr>
     <tr><td>Email</td><td>Provided at intake</td></tr>
-    <tr><td>Development Goals</td><td>To be confirmed — a specific goal was not provided with this request, so this report presents London's full as-of-right range (up to 4 units). Share your target and we tailor the plan.</td></tr>'''))
+    <tr><td>Development Goals</td><td>Add a secondary suite (an additional residential unit) for rental income, with government approval and available funding support</td></tr>'''))
 
 # ---- property table 2 (municipality etc.) ----
 R.append((
@@ -83,15 +107,14 @@ R.append((
     <tr><td>Lot size</td><td>~315.9 m² (20 ft × 170 ft / approx. 3,400 sq ft)</td></tr>
     <tr><td>Development Goals</td><td>6+1 Multiplex (primary); 4+1 Multiplex (alternative)</td></tr>''',
 '''    <tr><td>Municipality</td><td>City of London (single-tier)</td></tr>
-    <tr><td>Neighbourhood</td><td>Northeast London (Huron Heights area)</td></tr>
-    <tr><td>Official Plan</td><td>The London Plan — likely "Neighbourhoods" place type (confirmed in Phase 2)</td></tr>
-    <tr><td>Governing body</td><td>City of London (London is a separated city; not administered by Middlesex County)</td></tr>
-    <tr><td>Waste Collection</td><td>City of London curbside — garbage, Green Bin (organics) and yard waste; recycling via Circular Materials</td></tr>
-    <tr><td>Current Bylaw</td><td>City of London Zoning By-law Z.-1</td></tr>
+    <tr><td>Neighbourhood</td><td>East London — Argyle / Nelson Park area (confirmed in Phase 2)</td></tr>
+    <tr><td>Official Plan</td><td>The London Plan — place type confirmed in Phase 2</td></tr>
+    <tr><td>Waste Collection</td><td>City of London curbside — garbage, Green Bin (organics) and yard waste; recycling via Circular Materials Ontario</td></tr>
+    <tr><td>Current Bylaw</td><td>City of London Zoning By-law Z.-1 (as amended by OZ-9661)</td></tr>
     <tr><td>Legal Description</td><td>To be confirmed</td></tr>
     <tr><td>Year Built</td><td>To be confirmed</td></tr>
     <tr><td>Lot size</td><td>To be confirmed in Phase 2 (established detached-home lot)</td></tr>
-    <tr><td>Development Goals</td><td>Scope not yet provided — see the tiered options below</td></tr>'''))
+    <tr><td>Development Goals</td><td>Secondary suite (additional residential unit) — primary goal</td></tr>'''))
 
 # ---- neighbourhood spotlight ----
 R.append((
@@ -105,13 +128,13 @@ R.append((
       <li>Greenwood Park approximately 9-minute walk; restaurants and retail along Gerrard Street East and Danforth Avenue</li>
     </ul>''',
 '''    <div class="ct">Neighbourhood Spotlight</div>
-    241 Admiral Drive is in northeast London, in the established Huron Heights area — a settled, tree-lined detached-home community with steady rental demand (illustrative context, not a valuation):
+    241 Admiral Drive is in the east end of the City of London, in an established detached-home area (the Argyle / Nelson Park area). The following is illustrative neighbourhood context, not a valuation — specifics are confirmed in Phase 2:
     <ul>
-      <li>Close to Fanshawe College — a large, consistent student-rental market in the northeast end</li>
-      <li>Served by London Transit (LTC) routes along the nearby corridors; confirm the closest stop for Admiral Drive in Phase 2</li>
-      <li>Thames Valley Parkway green space and the Kilally Meadows natural area lie in the northeast river valley nearby</li>
-      <li>Everyday shopping along the Huron Street / Highbury Avenue / Oxford Street East corridors</li>
-      <li>Established residential streets — the kind of character stock that rents well and holds value. Specific distances, school catchments and the exact neighbourhood boundary are confirmed in Phase 2.</li>
+      <li>A settled residential neighbourhood in London's east end — established stock of the kind that rents well and holds value</li>
+      <li>Served by London Transit Commission (LTC) bus routes on the surrounding arterials; the closest stop and route for Admiral Drive is confirmed in Phase 2</li>
+      <li>Everyday shopping, schools and services within London's east end</li>
+      <li>The Thames Valley Parkway trail network and river-valley green space run through the city's east end</li>
+      <li>Specific distances, transit routes, school catchments and the exact neighbourhood boundary are confirmed in Phase 2</li>
     </ul>'''))
 
 # ---- zoning table (section 2) ----
@@ -121,11 +144,11 @@ R.append((
     <tr><td>Recent Changes</td><td>Up to 4 units as-of-right city-wide (By-law 474-2023); up to 6 units as-of-right in Ward 19 — Toronto &amp; East York district (By-law 654-2025, June 2025). No rezoning required for either scenario.</td></tr>
     <tr><td>Permitted Uses</td><td>Multi-Unit Housing Types — the RD zone in Ward 19 (Toronto &amp; East York district) allows up to <strong>6 residential units</strong> as-of-right in a detached houseplex under By-law 654-2025, subject to technical review of site conditions.</td></tr>
     <tr><td>Development Goals Achievable?</td><td><strong>YES</strong>; proceed to Step 2 — <strong>Builder Ready Package™</strong></td></tr>''',
-'''    <tr><td>Current Zoning</td><td>Residential — City of London Zoning By-law Z.-1 (established detached-home area; likely a Residential R1 zone). Exact zone code confirmed in Phase 2.</td></tr>
-    <tr><td>Minimum Site Requirements</td><td>A serviced residential lot (full municipal water &amp; sewer) within a settlement area — the provincial criteria for as-of-right additional residential units.</td></tr>
-    <tr><td>Recent Changes</td><td>Under Ontario's Bill 23 (More Homes Built Faster Act, 2022), up to <strong>3 residential units</strong> are permitted as-of-right on a serviced residential lot province-wide. The <strong>City of London goes further</strong>, permitting up to <strong>4 total dwelling units</strong> as-of-right under By-law Z.-1 (only two of which may be in a detached building), with <strong>no additional parking required</strong> — no rezoning needed if the site standards are met.</td></tr>
-    <tr><td>Permitted Uses</td><td>An interior secondary suite (e.g. a basement apartment) and/or a detached rear-yard suite, up to <strong>4 units total</strong>, subject to London's Z.-1 site standards — setbacks, height, floor area and lot coverage. Confirmed in Phase 2.</td></tr>
-    <tr><td>Development Goals Achievable?</td><td><strong>YES</strong> — up to 4 units achievable as-of-right. Confirm your target unit count and we tailor the plan; proceed to Step 2 — <strong>Builder Ready Package™</strong></td></tr>'''))
+'''    <tr><td>Current Zoning</td><td>Residential — City of London Zoning By-law Z.-1 (established detached-home area). The exact lot-specific residential zone code is confirmed against the City of London zoning map in Phase 2.</td></tr>
+    <tr><td>Minimum Site Requirements</td><td>A serviced residential lot (full municipal water &amp; sewer) within a settlement area — the basis on which additional residential units are permitted as-of-right.</td></tr>
+    <tr><td>Recent Changes</td><td>Ontario's Bill 23 (More Homes Built Faster Act, 2022) permits up to <strong>3 residential units</strong> as-of-right on a serviced residential lot province-wide. The City of London goes further, permitting up to <strong>4 total dwelling units</strong> as-of-right under By-law Z.-1 (as amended by OZ-9661, in force late 2024) — the main dwelling plus up to three additional residential units — with no additional parking required. No rezoning is needed where the site standards are met.</td></tr>
+    <tr><td>Permitted Uses</td><td>An interior secondary suite (for example a basement apartment) and/or a detached rear-yard suite, up to <strong>4 units total</strong>, subject to London's Z.-1 site standards — setbacks, height, floor area and lot coverage. Your stated goal — a single secondary suite — is comfortably within this. Confirmed in Phase 2.</td></tr>
+    <tr><td>Development Goals Achievable?</td><td><strong>YES</strong> — a secondary suite is permitted as-of-right; up to 4 units total are available if you choose to go further. Proceed to Step 2 — <strong>Builder Ready Package™</strong></td></tr>'''))
 
 # ---- "what this means for you" list (section 2 cell) ----
 R.append((
@@ -133,23 +156,23 @@ R.append((
       <li><strong>Detached Houseplex / Semi-detached Houseplex:</strong> Standalone multi-unit homes</li>
       <li><strong>Low-Rise Apartment Building:</strong> Small-scale apartment buildings</li>
       <li><strong>Internal &amp; Backyard Suites:</strong> Secondary suites (like basement or garden suites) can be seamlessly paired with main dwellings to boost density</li>''',
-'''      <li><strong>Up to 4 units as-of-right:</strong> London permits up to four total dwelling units on a qualifying residential lot under By-law Z.-1 — no rezoning if the site standards are met</li>
-      <li><strong>Internal Secondary Suites:</strong> a basement apartment or a suite within the existing home</li>
-      <li><strong>Detached Rear-Yard Suite:</strong> a self-contained suite in an accessory building or a small detached home in the rear yard (up to two units may be in a detached building)</li>
-      <li><strong>No parking minimum:</strong> London does not require additional parking for additional residential units</li>'''))
+'''      <li><strong>Your secondary suite, as-of-right:</strong> a self-contained additional unit — such as a basement apartment — is permitted on a qualifying residential lot under By-law Z.-1, no rezoning required</li>
+      <li><strong>Room to go further:</strong> London permits up to four total dwelling units as-of-right — the main home plus up to three additional residential units</li>
+      <li><strong>Interior or detached:</strong> additional units can sit inside the existing home or in a detached rear-yard building; the mix and site standards are confirmed in Phase 2</li>
+      <li><strong>No parking minimum:</strong> London does not require additional parking for the additional residential units</li>'''))
 
-# ---- time-sensitive block ----
+# ---- time-sensitive block (scoped: municipal windows now; HST rebates are 4-unit upside) ----
 R.append((
 '''    <div class="d"><div class="dt">Ontario HST Rebate — Act Now<br><small>~ 6 weeks from now</small></div><div class="dx">Ontario's 2026 Budget (March 26, 2026) introduced a 100% rebate of the 8% provincial HST component on new purpose-built rental housing, stacking on top of the existing federal PBRH rebate. For units valued up to $1M, savings can reach $80,000 per unit in provincial relief alone. This is a temporary enhancement — applications require the agreement be signed between April 1, 2026 and March 31, 2027. Structuring the project correctly from Day 1 is essential to capture this.</div></div>
     <div class="d"><div class="dt">DC Waiver — Already in Effect<br><small>~ 3 weeks from now</small></div><div class="dx">Development charges are fully eliminated for multiplexes up to 6 units in Toronto (Bill 185, January 2025). This saves $200,000–$270,000 per project — approximately $45,000–$50,000 per unit — at no application required. This benefit is locked in as long as your project stays within the 6-unit as-of-right envelope.</div></div>
     <div class="d"><div class="dt">CMHC</div><div class="dx">Canada Mortgage Housing Corporation (CMHC) policy changes can occur at any time, potentially affecting financing options. It is recommended to submit your application as early as possible to reduce any risk.</div></div>''',
-'''    <div class="d"><div class="dt">Ontario HST Relief — Newly Announced</div><div class="dx">The 2026 Ontario Budget proposes rebating the full provincial (8%) portion of HST on new purpose-built rental housing, mirroring the federal rebate so qualifying projects can be relieved of the full 13% HST. A related enhanced rental rebate is reported to recover up to $80,000 of the provincial portion per unit for construction beginning between April 1, 2026 and March 31, 2027. This measure is being legislated — confirm final enactment, regulations and eligibility with the Ontario Ministry of Finance / CRA before relying on it.</div></div>
-    <div class="d"><div class="dt">City of London Incentives — Time-Limited</div><div class="dx">The City of London runs additional-unit and affordable-rental incentives funded in part by the federal Housing Accelerator Fund. Several are time-limited and tied to permit windows in 2026, and program amounts and eligibility change. Confirm the current programs and deadlines directly with the City of London before planning around them.</div></div>
-    <div class="d"><div class="dt">CMHC</div><div class="dx">Canada Mortgage Housing Corporation (CMHC) policy changes and program intake windows can change at any time, potentially affecting financing options. It is recommended to submit your application as early as possible to reduce any risk.</div></div>'''))
+'''    <div class="d"><div class="dt">City of London Incentives — Time-Limited</div><div class="dx">The City of London runs additional-residential-unit and affordable-rental incentives, funded in part by the federal Housing Accelerator Fund. Several are time-limited and tied to permit / application windows, and amounts and eligibility change. Confirm the current programs and deadlines directly with the City of London before planning around them.</div></div>
+    <div class="d"><div class="dt">If You Scale to Four Units</div><div class="dx">A single secondary suite does not trigger the purpose-built-rental rebates. If you later decide to build to four or more self-contained rental units held as long-term rental, the federal GST/HST Purpose-Built Rental Housing rebate opens up — for projects that begin construction on or after September 14, 2023 and before 2031, and complete before 2036. Ontario has announced a provincial HST rebate mirroring it (being legislated). Confirm eligibility with the CRA and the Ontario Ministry of Finance before relying on either.</div></div>
+    <div class="d"><div class="dt">CMHC</div><div class="dx">Canada Mortgage and Housing Corporation (CMHC) policy changes and program intake windows can change at any time, potentially affecting financing options. It is recommended to plan financing as early as possible to reduce any risk.</div></div>'''))
 
 # ---- rezoning: co-green box ----
 R.append(('<div class="co-green"><div class="ct2">Not Required for This Property</div>The recommended 6+1 configuration is permitted as-of-right under Toronto By-law 654-2025.</div>',
-          '<div class="co-green"><div class="ct2">Not Required for This Property</div>Up to 4 units are permitted as-of-right on a qualifying serviced residential lot under City of London By-law Z.-1 — no rezoning contemplated in this analysis.</div>'))
+          '<div class="co-green"><div class="ct2">Not Required for This Property</div>A secondary suite — and up to four total units — is permitted as-of-right on a qualifying serviced residential lot under City of London By-law Z.-1. No rezoning is contemplated in this analysis.</div>'))
 
 # ---- rezoning: "What governs your build" row ----
 R.append(('<tr><td>What governs your build</td><td class="g">By-law 654-2025</td><td class="n">A new site-specific by-law</td></tr>',
@@ -159,41 +182,41 @@ R.append(('<tr><td>What governs your build</td><td class="g">By-law 654-2025</td
 R.append((
 '''    <div class="card2"><div class="ct">Six-unit houseplex</div>Ward 19 sits in the Toronto &amp; East York district, one of nine wards where By-law 654-2025 permits up to six units in a residential zone without rezoning.</div>
     <div class="card2"><div class="ct">Rear garden suite</div>Toronto's Garden Suite By-law (February 2022) permits a rear ancillary suite on a non-laneway lot as-of-right in residential zones.</div>''',
-'''    <div class="card2"><div class="ct">Up to four units</div>City of London By-law Z.-1 permits up to four total dwelling units on a qualifying residential lot without rezoning, subject to the site standards.</div>
-    <div class="card2"><div class="ct">Detached rear-yard suite</div>Up to two of the four units may sit in a detached building — an accessory-building suite or a small detached home in the rear yard, as-of-right under Z.-1.</div>'''))
+'''    <div class="card2"><div class="ct">Secondary suite — as-of-right</div>City of London By-law Z.-1 permits an additional residential unit (such as a secondary suite) on a qualifying residential lot without rezoning, subject to the site standards.</div>
+    <div class="card2"><div class="ct">Room for up to four units</div>London permits up to four total dwelling units as-of-right — the main dwelling plus up to three additional residential units — if you decide to go beyond a single suite.</div>'''))
 
 # ---- rezoning: "What this means for ..." barhead + paragraph ----
 R.append(('<div class="barhead" style="text-align:left;">What this means for 303 Coxwell Avenue</div>',
           '<div class="barhead" style="text-align:left;">What this means for 241 Admiral Drive</div>'))
 R.append(('<p>Because 303 Coxwell Avenue already permits the recommended build under existing zoning, no rezoning application is contemplated in this analysis. Your project advances directly to design and permitting. The comparison below shows what that avoids. This assessment reflects the by-laws in force at the date of this report and is subject to technical review of site conditions.</p>',
-          '<p>Because up to four units are permitted as-of-right on a qualifying lot under existing City of London zoning, no rezoning application is contemplated in this analysis. Your project advances directly to design and permitting. The comparison below shows what that avoids. This assessment reflects the by-laws in force at the date of this report and is subject to technical review of site conditions and confirmation of the lot-specific zone.</p>'))
+          '<p>Because a secondary suite — and up to four total units — is permitted as-of-right on a qualifying lot under existing City of London zoning, no rezoning application is contemplated in this analysis. Your project advances directly to design and permitting. The comparison above shows what that avoids. This assessment reflects the by-laws in force at the date of this report and is subject to technical review of site conditions and confirmation of the lot-specific zone.</p>'))
 
 # ---- rezoning: amber box ----
 R.append(('<div class="co-amber"><b>One item to confirm: the permit status of the existing rear garage.</b><br><span class="sub">If it was converted without a permit, a retroactive application is needed before financing or development can proceed.</span></div>',
-          '<div class="co-amber"><b>One item to confirm: the lot-specific zone and site standards.</b><br><span class="sub">The exact Z.-1 zone code, setbacks, height and floor-area limits for this lot are confirmed against the City of London zoning map in Phase 2 before design proceeds.</span></div>'))
+          '<div class="co-amber"><b>One item to confirm: the lot-specific zone and site standards.</b><br><span class="sub">The exact Z.-1 residential zone code, setbacks, height and floor-area limits for this lot are confirmed against the City of London zoning map in Phase 2 before design proceeds.</span></div>'))
 
-# ---- options A / B / C (tiered ladder, all as-of-right) ----
+# ---- options: scoped mode — lead with the stated goal (secondary suite), larger options as upside ----
 R.append(('<div class="opt"><div class="oh">Option A — 4-Unit Multiplex + 1 Garden Suite (4+1)</div>',
-          '<div class="opt"><div class="oh">Option A — Add One Suite (2 units total)</div>'))
+          '<div class="opt"><div class="oh">Option A — Your Goal: Add a Secondary Suite (2 units total)</div>'))
 R.append(('''      <div class="od">A detached 4-unit houseplex on the main structure, plus one garden suite in the rear utilizing the existing ~750 sq ft converted garage. Total: 5 independent units. Fully as-of-right under By-law 474-2023. No rezoning, no variances likely required if designed within the standard envelope. The existing garage — with its 12 ft ceilings, heated floors, running water, and powder room — provides a strong head start on the ancillary suite. Lot: 20 ft x 170 ft (~315.9 m²). Corner lot configuration with street frontage on Coxwell Ave and a flanking side street. RD zone built-form standards apply. No parking minimums for multiplexes. Development charges fully waived for ≤6 units (Bill 185).</div>''',
-'''      <div class="od">Add a single self-contained suite — for example an interior basement apartment, or a detached suite in the rear yard — for ongoing rental income while you keep the property. Two units total. Permitted as-of-right under By-law Z.-1; no rezoning and no additional parking required. The first additional unit is exempt from municipal development charges under Ontario's Bill 23. Size and siting are set by London's Z.-1 standards, confirmed in Phase 2. This is the lowest-cost entry point into rental income.</div>'''))
+'''      <div class="od">Your stated goal. Add one self-contained secondary suite — for example a basement apartment inside the existing home — for ongoing rental income while you continue to own and occupy the property. Two units in total. Permitted as-of-right under City of London By-law Z.-1: no rezoning, and no additional parking required (Ontario's Bill 23 caps any parking requirement at no more than one space per unit). As the first additional residential unit, the suite is exempt from municipal development charges under Bill 23. This is the lowest-cost, fastest path to rental income, and it lines up with your goal of a suite built with government approval and available funding support. The suite's exact size and siting follow London's Z.-1 site standards, confirmed in Phase 2.</div>'''))
 
 R.append(('<div class="opt"><div class="oh">Option B — 6-Unit Multiplex + 1 Garden Suite (6+1) — Primary Recommendation</div>',
-          '<div class="opt"><div class="oh">Option B — Up to 3 Units (main + two ARUs)</div>'))
+          '<div class="opt"><div class="oh">Option B — Upside: Up to 3 Units (add a second additional unit)</div>'))
 R.append(('''      <div class="od">A detached 6-unit houseplex (as-of-right in Ward 19 under By-law 654-2025) plus one garden suite in the rear. Total: 7 independent units. This matches John's stated goal. The 20 ft frontage on a 170 ft deep lot is narrow but workable for a stacked or back-to-back configuration. The corner lot provides an additional entrance point improving unit separation and access. A minor variance may be required depending on the final design footprint. No parking spaces required. Development charges fully waived.</div>''',
-'''      <div class="od">Combine an interior secondary suite (e.g. a basement apartment) with a detached rear-yard suite for up to three units in total — the provincial as-of-right level under Bill 23. Both additional units (units two and three) are exempt from municipal development charges, and no additional parking is required. This is often the strongest income-to-cost balance for an established detached lot. Unit sizes and the rear-yard envelope are confirmed in Phase 2.</div>'''))
+'''      <div class="od">If you decide to go beyond a single suite: combine an interior secondary suite with a second additional unit — for example a suite in the main home plus a detached unit in the rear yard — for up to three units in total, the province-wide as-of-right level under Bill 23. Both additional units are exempt from municipal development charges, and no additional parking is required. On an established detached lot this is often the strongest income-to-cost balance. Unit sizes and the rear-yard envelope are confirmed in Phase 2.</div>'''))
 
 R.append(('<div class="opt"><div class="oh">Option C — Note on the Existing Garage / Rear Suite</div>',
-          '<div class="opt"><div class="oh">Option C — Up to 4 Units (London\'s as-of-right maximum)</div>'))
+          '<div class="opt"><div class="oh">Option C — Upside: Up to 4 Units (London\'s as-of-right maximum)</div>'))
 R.append(('''      <div class="od">The existing ~750 sq ft garage (12 ft ceilings, heated floors, running water, powder room) may have been converted or is in process. Under Toronto's Garden Suite By-law (February 2022), a rear ancillary suite on a non-laneway lot is permitted as-of-right in residential zones. Confirming the permit status of this structure is an essential first step — both for financing qualification and for counting it as a legal unit. If the conversion was done without a permit, a retroactive permit application will be required before any development or financing process can proceed.</div>''',
-'''      <div class="od">City of London permits up to four total dwelling units as-of-right — for example two units within the existing home plus two in a detached rear building (no more than two of the four units may be in a detached building). Four self-contained rental units, structured as purpose-built rental, is the threshold at which the federal (and newly announced Ontario) purpose-built-rental HST rebates open up. Note that the Bill 23 development-charge exemption covers the first two additional units only; the fourth unit's development-charge treatment is confirmed with the City. Feasibility of the full four-unit envelope on this lot is confirmed in Phase 2.</div>'''))
+'''      <div class="od">London's as-of-right maximum: up to four total dwelling units — the main dwelling plus up to three additional residential units — a step beyond Ontario's three-unit provincial floor, with no rezoning required. The exact mix of interior and detached units and the site standards are confirmed against By-law Z.-1 in Phase 2. Reaching four self-contained rental units, held as long-term rental, is the threshold at which the federal GST/HST Purpose-Built Rental Housing rebate opens up — a full rebate of the 5% federal GST on qualifying purpose-built rental, for construction beginning on or after September 14, 2023 and before 2031. Ontario has also announced a provincial HST rebate mirroring it, currently being legislated — confirm final eligibility with the CRA and the Ontario Ministry of Finance before relying on it. Note that Bill 23's development-charge exemption covers the first two additional units; the fourth unit's development-charge treatment is confirmed with the City of London.</div>'''))
 
 # ---- development goal summary (section 5) ----
 R.append((
 '''  <div class="barhead" style="text-align:left;">6+1 Configuration</div>
   <p>303 Coxwell Avenue is in Ward 19 — one of only nine wards in Toronto where up to six units are permitted as-of-right in a residential zone under By-law 654-2025. <strong>The 6+1 configuration is the clear primary recommendation.</strong></p>''',
-'''  <div class="barhead" style="text-align:left;">Tell us your target — we tailor the plan</div>
-  <p>241 Admiral Drive is a serviced residential lot in London where up to <strong>four units are permitted as-of-right</strong> under By-law Z.-1 — no rezoning required. A specific development goal was not provided with this request, so this report presents the full as-of-right range. <strong>Tell us your target — one rental suite, a three-unit build, or the four-unit maximum — and we will tailor the recommendation, the design and the incentive strategy to it.</strong></p>'''))
+'''  <div class="barhead" style="text-align:left;">Your Goal: A Secondary Suite</div>
+  <p>You told us your goal is to add a secondary suite — an additional residential unit for rental income — with government approval and available funding support. On a serviced residential lot in London, a secondary suite is permitted <strong>as-of-right</strong> under City of London By-law Z.-1, with no rezoning required. In fact London permits up to <strong>four total units</strong> as-of-right, so a single suite sits comfortably within what's allowed — and you have room to go further later if you choose. <strong>The single secondary suite is the recommended starting point for your stated goal.</strong> The exact lot-specific zone and site standards are confirmed in Phase 2.</p>'''))
 
 # ---- summary (section 8) current-zoning-review ----
 R.append((
@@ -201,25 +224,24 @@ R.append((
   <ul>
     <li><strong>The Six-Unit As-of-Right Advantage:</strong> This lot is in one of nine wards in Toronto where By-law 654-2025 allows a 6-unit houseplex as-of-right — no rezoning, no public hearing, no Council approval required.</li>
   </ul>''',
-'''  <p>241 Admiral Drive confirms a strong development option. This is a serviced residential lot in London, where up to <strong>four dwelling units are permitted as-of-right</strong> under City of London By-law Z.-1 — a step beyond the provincial three-unit standard, with no additional parking required and no rezoning needed if the site standards are met.</p>
+'''  <p>241 Admiral Drive confirms a clear path to your goal. This is a serviced residential lot in the east end of the City of London, where a <strong>secondary suite (an additional residential unit) is permitted as-of-right</strong> under City of London By-law Z.-1 — no rezoning, no public hearing and no Council approval required. London permits up to four total units as-of-right, so a single suite sits well within what's allowed.</p>
   <ul>
-    <li><strong>The Four-Unit As-of-Right Advantage:</strong> London permits up to four units on a qualifying residential lot with no rezoning, no public hearing and no Council approval — you build under existing zoning. The exact lot-specific zone and standards are confirmed in Phase 2.</li>
+    <li><strong>Your Secondary Suite, As-of-Right:</strong> London allows a secondary suite on a qualifying residential lot with no rezoning, and the first additional unit is exempt from municipal development charges under Bill 23. The exact lot-specific zone and site standards are confirmed in Phase 2.</li>
   </ul>'''))
 
-# ---- gated financing rows (section 6) : tiered, thresholds shown ----
-FIN_ROWS = (
-'''<tr><td>CMHC MLI Select &amp; Apartment Construction Loan Program (ACLP)</td><td>Available at a larger scale, <strong>from five rental units</strong> — beyond London's four-unit as-of-right envelope, so a five-plus-unit project would move into a rezoning / land-assembly path. MLI Select offers preferred multi-unit mortgage-loan insurance (minimum five units); the ACLP offers low-cost construction financing (minimum five self-contained units and a minimum $1,000,000 loan). Confirm current CMHC intake before relying on either. Shown here so you can see what scaling up unlocks.</td></tr>''')
-s2 = re.sub(r'<!-- GATED_FINANCING_ROWS.*?-->', lambda m: FIN_ROWS, s, count=1, flags=re.S)
+# ---- gated FINANCING rows (section 6): scoped 1 unit -> no unit-gated financing program clears ----
+# MLI Select / ACLP / Prefab Plus require 5+ units; no as-of-right option here reaches 5, so they are
+# DROPPED entirely (never name a 5+-unit program beside a one-suite recommendation). Only the any_scale
+# rows already in the master (refinance / HELOC / construction) remain.
+s2 = re.sub(r'\s*<!-- GATED_FINANCING_ROWS.*?-->', "", s, count=1, flags=re.S)
 if s2 == s:
     print("[FAIL] GATED_FINANCING_ROWS marker not found")
 s = s2
 
-# ---- gated grant rows (section 7) : tiered, thresholds shown ----
+# ---- gated GRANT rows (section 7): scoped 1 unit -> only programs clearing 1 unit in Ontario/London ----
 GRANT_ROWS = (
-'''<tr><td>Provincial</td><td>Development-Charge Exemption for Additional Units (Bill 23)</td><td>Under Ontario's Bill 23, the first two additional residential units (units two and three) on a serviced lot are exempt from municipal development charges, parkland dedication and cash-in-lieu — a meaningful per-unit saving. Applies at 2–3 units. The fourth unit's development-charge treatment is confirmed with the City of London.</td></tr>
-    <tr><td>Federal</td><td>GST/HST Purpose-Built Rental Housing (PBRH) Rebate</td><td>At <strong>four or more</strong> self-contained rental units held as long-term rental (90%+), a full 100% rebate of the federal GST (5%) applies, with no cap. Construction must begin after Sept 13, 2023 and before 2031, and complete before 2036. Opens up at the four-unit option. Eligibility confirmed in Phase 2.</td></tr>
-    <tr><td>Provincial</td><td>Ontario PBRH / Rental HST Rebate (2026 Budget — announced)</td><td>The 2026 Ontario Budget proposes rebating the provincial (8%) portion of HST on qualifying new purpose-built rental, mirroring the federal rebate (a reported enhanced rebate recovers up to $80,000 of the provincial portion per unit for construction beginning April 1, 2026 – March 31, 2027). At four or more rental units. This measure is being legislated — confirm final enactment and eligibility before relying on it.</td></tr>
-    <tr><td>Municipal</td><td>City of London Additional-Unit &amp; Affordable-Rental Incentives</td><td>The City of London runs additional-residential-unit and affordable-rental incentive programs (grants / forgivable loans) funded in part by the federal Housing Accelerator Fund, with reported per-unit amounts in roughly the $20,000–$45,000 range depending on the specific program and stream. Amounts, eligibility and application windows are time-limited and change — the exact figure for your project is confirmed directly with the City of London in Phase 2.</td></tr>''')
+'''<tr><td>Provincial</td><td>Development-Charge Exemption for Additional Residential Units (Bill 23)</td><td>Under Ontario's More Homes Built Faster Act (Bill 23), the first two additional residential units on a serviced residential lot are exempt from municipal development charges, parkland dedication and cash-in-lieu. Your secondary suite — the first additional unit — qualifies. Source: Ontario Bill 23. Eligibility for this specific lot is confirmed in Phase 2.</td></tr>
+    <tr><td>Municipal</td><td>City of London Additional-Unit &amp; Affordable-Rental Incentives</td><td>The City of London offers additional-residential-unit and affordable-rental incentive support (for example grants or forgivable loans), funded in part by the federal Housing Accelerator Fund. Program amounts, eligibility and application windows are time-limited and change frequently, so no figure is quoted here — the current program and any amount available for your project are confirmed directly with the City of London in Phase 2. Source: City of London.</td></tr>''')
 s2 = re.sub(r'<!-- GATED_GRANTS_ROWS.*?-->', lambda m: GRANT_ROWS, s, count=1, flags=re.S)
 if s2 == s:
     print("[FAIL] GATED_GRANTS_ROWS marker not found")
@@ -237,11 +259,19 @@ for old, new in R:
 
 open(OUT, "w", encoding="utf-8").write(s)
 
-# ---- leftover check: nothing Toronto/Coxwell/gated-out may survive ----
+# ---- leftover check: nothing Toronto/Coxwell, no wrong-city facts, no gated-out programs ----
 leftovers = ["Coxwell", "Toronto", "Ward 19", "Beaches", "John Arock", "654-2025",
-             "474-2023", "Bill 185", "6+1", "4+1", "M4L", "TTC", "nine wards",
-             "Garden Suite By-law", "Simcoe", "Greener Homes", "Multigenerational",
-             "MLI Select on", "303 Coxwell"]
+             "474-2023", "Bill 185", "6+1", "4+1", "M4L 3B5", "TTC", "nine wards",
+             "Garden Suite By-law", "303 Coxwell", "Woodbine",
+             # wrong-city / wrong-scope regressions this rebuild fixes:
+             "Huron Heights", "Fanshawe", "Middlesex", "northeast London",
+             # 5+-unit programs must never sit beside a one-suite recommendation:
+             "MLI Select", "ACLP", "Apartment Construction Loan", "Prefab",
+             "Multigenerational",
+             # banned / never-implemented:
+             "Canada Secondary Suite Loan", "free grant", "guaranteed return",
+             # unverified dollar figures that were in the prior draft:
+             "$80,000", "$20,000", "$45,000"]
 for t in leftovers:
     n = s.count(t)
     if n:
