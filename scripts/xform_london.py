@@ -72,14 +72,28 @@ R.append(('<div class="addr">303 Coxwell Avenue<span>Toronto, ON</span></div>',
 R.append(('<div class="barhead">303 Coxwell Avenue, Toronto, ON&nbsp;&nbsp;M4L 3B5</div>',
           '<div class="barhead">241 Admiral Drive, London, ON&nbsp;&nbsp;N5V 1H9</div>'))
 
-# ---- imagery: honest pending line, no unverified imagery (no licensed source for London) ----
+# ---- imagery: real, licensed Mapbox Satellite aerials (commercial print use permitted, attribution shown) ----
+# Two committed PNGs (templates/london_aerial.png, london_context.png) generated via the Mapbox
+# static API at the geocoded coordinates for 241 Admiral Drive. Verified non-blank (30k+/61k unique
+# colours) and visually a residential detached-home street. Captions avoid an unverifiable ground-span
+# figure; the licence line carries the Mapbox/Maxar/OSM credit and a Phase-2 confirmation hedge.
 R.append((
 '''  <div class="imgrow" style="margin-top:0;">
     <div class="imgbox tall"><span class="ic">◎</span>Aerial view<br><small>(auto-generated)</small></div>
     <div class="imgbox tall"><span class="ic">▤</span>Street view<br><small>(auto-generated)</small></div>
   </div>
   <div class="imglicense" style="font-size:6pt;color:#9aa2b2;margin:-6px 0 8px;">Imagery: source and licence inserted at generation.</div>''',
-'''  <div class="imglicense" style="font-size:8.4pt;color:#7a818f;margin:2px 0 12px;">Aerial and street-level photography pending a licensed imagery source for the City of London.</div>'''))
+'''  <div class="imgrow" style="margin-top:0;">
+    <div class="imgbox tall" style="padding:0;position:relative;overflow:hidden;">
+      <img src="london_aerial.png" alt="Aerial view of 241 Admiral Drive, London, ON" style="width:100%;height:148px;object-fit:cover;display:block;">
+      <div style="position:absolute;left:0;right:0;bottom:0;background:rgba(27,42,74,.74);color:#fff;font-size:6.4pt;padding:2px 6px;">Aerial view — 241 Admiral Drive (approx.)</div>
+    </div>
+    <div class="imgbox tall" style="padding:0;position:relative;overflow:hidden;">
+      <img src="london_context.png" alt="Neighbourhood context around 241 Admiral Drive, east London" style="width:100%;height:148px;object-fit:cover;display:block;">
+      <div style="position:absolute;left:0;right:0;bottom:0;background:rgba(27,42,74,.74);color:#fff;font-size:6.4pt;padding:2px 6px;">Neighbourhood context — east London</div>
+    </div>
+  </div>
+  <div class="imglicense" style="font-size:6pt;color:#9aa2b2;margin:-6px 0 8px;">Imagery © Mapbox © OpenStreetMap © Maxar — Mapbox Satellite (commercial print use permitted). Location and lot boundaries are approximate; confirm on the City of London zoning map in Phase 2.</div>'''))
 
 # ---- property table 1 (contact + goal) ----
 R.append((
